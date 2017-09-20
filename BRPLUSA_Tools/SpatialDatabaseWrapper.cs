@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Autodesk.Revit.DB;
 using Autodesk.Revit.DB.Mechanical;
+using Autodesk.Revit.UI;
 using LiteDB;
 
 namespace BRPLUSA_Tools
@@ -13,14 +14,18 @@ namespace BRPLUSA_Tools
     {
         private readonly LiteDatabase _db;
 
-        public SpatialDatabaseWrapper()
+        public SpatialDatabaseWrapper(Document doc)
         {
-            _db = new LiteDatabase(@"SpatialData.db");
+            var dbLocation = doc.PathName + "SpatialData.db";
+
+            _db = new LiteDatabase(dbLocation);
         }
 
-        private bool IsElementTracked(ElementId id)
+        public bool IsElementTracked(Space space)
         {
-            return false;
+            var x = FindElement(space.UniqueId);
+
+            return x != null;
         }
 
         public SpaceWrapper FindElement(string uniqueId)
@@ -38,7 +43,7 @@ namespace BRPLUSA_Tools
             return peers;
         }
 
-        public IEnumerable<SpaceWrapper> FindAllConnectedElements(string uniqueId)
+        public IEnumerable<SpaceWrapper> GetAll(string uniqueId)
         {
             var all = new List<SpaceWrapper>();
 
@@ -55,32 +60,28 @@ namespace BRPLUSA_Tools
         {
             var dbSpaces = _db.GetCollection<SpaceWrapper>();
 
-            var hasExistingSpace = spaces.Any(
-                                    revSp => dbSpaces.Exists(
-                                    dbSp => dbSp.Id == revSp.UniqueId));
+            var exstSp = spaces.Where(
+                          revSp => dbSpaces.Exists(
+                          dbSp => dbSp.Id == revSp.UniqueId));
 
-            // if one of the spaces is already in the db
-            if (hasExistingSpace)
+            // if any of the spaces is already in the db
+            if (exstSp != null)
             {
-                return false;
-                // update that space to contain the new spaces as it's peers
             }
 
             // else, add the space and it's peers along with their respective properties
-            else
+            var ids = spaces.Select(s => s.UniqueId);
+
+            var wrapped = MapEntities(spaces);
+            foreach (var w in wrapped)
             {
-
-                var ids = spaces.Select(s => s.UniqueId);
-
-                var wrapped = MapEntities(spaces);
-                foreach (var w in wrapped)
-                {
-                    w.ConnectedSpaces = ids;
-                }
+                w.ConnectedSpaces = ids;
             }
 
+            dbSpaces.Insert(wrapped);
+            dbSpaces.EnsureIndex(s => s.Id);
 
-            return false;
+            return true;
         }
 
         private IEnumerable<SpaceWrapper> MapEntities(IEnumerable<Space> revs)
@@ -118,7 +119,7 @@ namespace BRPLUSA_Tools
         //        .Field(r => r.DesignReturnAirflow, "specified_cfm_return");
         //}
 
-        public void UpdateElement(string uniqueId)
+        public void UpdateElement(Space space)
         {
             //var spaces = _db.GetCollection<SpaceWrapper>();
 
@@ -131,11 +132,11 @@ namespace BRPLUSA_Tools
             //UpdateElementPeers(uniqueId);
         }
 
-        public void UpdateElementPeers(string uniqueId, LiteCollection<Space> spaces)
+        public void AddConnectingPeers(Space space, LiteCollection<Space> spaces)
         {
-            var peers = FindElementPeers(uniqueId);
+            //var peers = FindElementPeers(uniqueId);
 
-            spaces.Update(s)
+            //spaces.Update(s)
         }
 
         public void Dispose()

@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Autodesk.Revit.DB.Mechanical;
+using BRPLUSA_Tools.Commands;
 
 namespace BRPLUSA_Tools
 {
@@ -58,8 +59,8 @@ namespace BRPLUSA_Tools
             app.CreateRibbonTab("BR+A");
 
             var brpa = app.CreateRibbonPanel("BR+A", "Utilities");
-
-            var spaceSync = new PushButtonData("Link Spaces", "Link Spaces", typeof(SpatialPropertyUpdater).Assembly.Location, typeof(SpatialPropertyUpdater).FullName);
+            
+            var spaceSync = new PushButtonData("Link Spaces", "Link Spaces", typeof(SpatialLink).Assembly.Location, typeof(SpatialLink).FullName);
 
             brpa.AddItem(spaceSync);
         }

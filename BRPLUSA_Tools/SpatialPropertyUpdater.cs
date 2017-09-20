@@ -5,65 +5,84 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Autodesk.Revit.DB.Mechanical;
+using Autodesk.Revit.UI;
 
 namespace BRPLUSA_Tools
 {
-    public class SpatialPropertyUpdater : IUpdater
+    public class SpatialPropertyUpdater : RegisterableUpdater
     {
-        static AddInId _appId;
-        private static UpdaterId _updaterId;
         private static SpatialDatabaseWrapper _db;
 
-        public SpatialPropertyUpdater(AddInId id)
+        public SpatialPropertyUpdater(UIControlledApplication app)
         {
-            _appId = id;
+            _app = app;
+            _appId = _app.ActiveAddInId;
             _updaterId = new UpdaterId(_appId, new Guid("995E2C51-3CF1-4241-8D04-EFBF335FACB0"));
-            _db = new SpatialDatabaseWrapper();
         }
 
-        public void Execute(UpdaterData data)
+        public override void Execute(UpdaterData data)
         {
-            UpdateSpatialProperties(data);
+            _db = new SpatialDatabaseWrapper(_doc);
+            CheckSpatialProperties(data);
         }
 
-        public string GetAdditionalInformation()
+        public override string GetAdditionalInformation()
         {
             return "BR+A All Rights Reserved.";
         }
 
-        public ChangePriority GetChangePriority()
+        public override ChangePriority GetChangePriority()
         {
             return ChangePriority.RoomsSpacesZones;
         }
 
-        public UpdaterId GetUpdaterId()
+        public override UpdaterId GetUpdaterId()
         {
             return _updaterId;
         }
 
-        public string GetUpdaterName()
+        public override string GetUpdaterName()
         {
             return "Spatial Property Updater";
         }
 
-        public void UpdateSpatialProperties(UpdaterData data)
+        public void CheckSpatialProperties(UpdaterData data)
+        {
+            var spaces = GetChangedSpaces(data);
+
+            var tracked = spaces.Where(IsCurrentlyTracked);
+
+            if (tracked == null)
+                return;
+
+            UpdateSpace(tracked);
+        }
+
+        private IEnumerable<Space> GetChangedSpaces(UpdaterData data)
         {
             var modified = data.GetModifiedElementIds();
 
             var doc = data.GetDocument();
-            var spaceIds = modified.Select(x => doc.GetElement(x).UniqueId);
-
-            if (!spaceIds.Any(IsCurrentlyTracked))
-                return;
-
-            var tracked = spaceIds.Select(IsCurrentlyTracked);
+            return modified.Select(x => doc.GetElement(x)).Cast<Space>();
         }
 
-        private static bool IsCurrentlyTracked(string id)
+        private static bool IsCurrentlyTracked(Space space)
         {
-            var element = _db.FindElement(id);
+            return _db.IsElementTracked(space);
+        }
 
-            return !(element is null);
+        private void UpdateSpace(Space space)
+        {
+            _db.UpdateElement(space);
+        }
+
+        private void UpdateSpace(IEnumerable<Space> spaces)
+        {
+            foreach (var s in spaces)
+            {
+                UpdateSpace(s);
+            }
         }
     }
 }

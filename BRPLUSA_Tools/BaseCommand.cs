@@ -3,8 +3,10 @@ using Autodesk.Revit.Attributes;
 using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
 
-namespace GREYSMITH.Autodesk.Revit.Base
+namespace BRPLUSA_Tools
 {
+    [Transaction(TransactionMode.Manual)]
+    [Regeneration(RegenerationOption.Manual)]
     public abstract class BaseCommand : IExternalCommand
     {
         protected ExternalCommandData ExternalCommandData { get; set; }
