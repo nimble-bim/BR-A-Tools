@@ -13,6 +13,8 @@ namespace BRPLUSA_Tools
 {
     public class RevitApplicationEnhancements : IExternalApplication
     {
+        private RegistrationService _registerServ;
+
         public Result OnStartup(UIControlledApplication app)
         {
             return Initialize(app);
@@ -28,8 +30,8 @@ namespace BRPLUSA_Tools
             try
             {
                 CreateRibbon(app);
-                var updater = new SpatialPropertyUpdater(app.ActiveAddInId);
-                UpdaterRegistry.RegisterUpdater(updater);
+                _registerServ = new RegistrationService(app);
+                _registerServ.RegisterServices(new SpatialPropertyUpdater(app));
                 return Result.Succeeded;
             }
             catch (Exception e)
@@ -43,8 +45,6 @@ namespace BRPLUSA_Tools
         {
             try
             {
-                var updater = new SpatialPropertyUpdater(app.ActiveAddInId);
-                UpdaterRegistry.UnregisterUpdater(updater.GetUpdaterId());
                 return Result.Succeeded;
             }
             catch (Exception e)

@@ -49,14 +49,23 @@ namespace BRPLUSA_Tools
 
         public void CheckSpatialProperties(UpdaterData data)
         {
-            var spaces = GetChangedSpaces(data);
+            try
+            {
+                var spaces = GetChangedSpaces(data);
 
-            var tracked = spaces.Where(IsCurrentlyTracked);
+                var tracked = spaces.Where(IsCurrentlyTracked).ToArray();
+                var needsUpdate = tracked.Where(NeedsUpdate).ToArray();
 
-            if (tracked == null)
-                return;
+                if (needsUpdate.Length < 1)
+                    return;
 
-            UpdateSpace(tracked);
+                UpdateSpace(needsUpdate);
+            }
+
+            catch (Exception e)
+            {
+                
+            }
         }
 
         private IEnumerable<Space> GetChangedSpaces(UpdaterData data)
@@ -69,7 +78,12 @@ namespace BRPLUSA_Tools
 
         private static bool IsCurrentlyTracked(Space space)
         {
-            return _db.IsElementTracked(space);
+            return _db.IsCurrentlyTracked(space);
+        }
+
+        private static bool NeedsUpdate(Space space)
+        {
+            return _db.NeedsUpdate(space);
         }
 
         private void UpdateSpace(Space space)
@@ -83,6 +97,12 @@ namespace BRPLUSA_Tools
             {
                 UpdateSpace(s);
             }
+        }
+
+        public override void Register(Document doc)
+        {
+            base.Register(doc);
+            UpdaterRegistry.AddTrigger(GetUpdaterId(), _doc, new SpaceFilter(), Element.GetChangeTypeAny());
         }
     }
 }

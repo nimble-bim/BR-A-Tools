@@ -16,8 +16,11 @@ namespace BRPLUSA_Tools
         private readonly List<IRegisterableService> _services;
         public RegistrationService(UIControlledApplication app)
         {
-            _app = app;
             _services = new List<IRegisterableService>();
+
+            _app = app;
+            _app.ControlledApplication.DocumentOpened += RegisterServices;
+            _app.ControlledApplication.DocumentClosed += DeregisterServices;
         }
 
         public void RegisterServices(IEnumerable<IRegisterableService> services)
@@ -42,8 +45,10 @@ namespace BRPLUSA_Tools
             }
         }
 
-        private void DeregisterServices()
+        private void DeregisterServices(object sender, DocumentClosedEventArgs args)
         {
+            _app.ControlledApplication.DocumentOpened -= RegisterServices;
+            _app.ControlledApplication.DocumentClosed -= DeregisterServices;
             foreach (var serv in _services)
             {
                 serv.Deregister();

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,21 +17,33 @@ namespace BRPLUSA_Tools
 
         public SpatialDatabaseWrapper(Document doc)
         {
-            var dbLocation = doc.PathName + "SpatialData.db";
+            var directory = Path.GetDirectoryName(doc.PathName);
+            var dbLocation = Path.Combine(directory, "SpatialData.db");
 
             _db = new LiteDatabase(dbLocation);
         }
 
-        public bool IsElementTracked(Space space)
+        public bool IsCurrentlyTracked(Space space)
         {
             var x = FindElement(space.UniqueId);
 
             return x != null;
         }
 
+        public bool NeedsUpdate(Space space)
+        {
+            var dbSpace = FindElement(space.UniqueId);
+
+            var exhaustNeedsUpdate = Math.Abs(space.DesignExhaustAirflow - dbSpace.SpecifiedExhaustAirflow) > .0001;
+            var returnNeedsUpdate = Math.Abs(space.DesignReturnAirflow - dbSpace.SpecifiedReturnAirflow) > .0001;
+            var supplyNeedsUpdate = Math.Abs(space.DesignSupplyAirflow - dbSpace.SpecifiedSupplyAirflow) > .0001;
+
+            return exhaustNeedsUpdate || returnNeedsUpdate || supplyNeedsUpdate;
+        }
+
         public SpaceWrapper FindElement(string uniqueId)
         {
-            var spaces = _db.GetCollection<SpaceWrapper>("spaces");
+            var spaces = _db.GetCollection<SpaceWrapper>();
             return spaces.Find(s => s.Id == uniqueId).FirstOrDefault();
         }
 
@@ -96,8 +109,8 @@ namespace BRPLUSA_Tools
                 Id = rev.UniqueId,
                 SpaceName = rev.Name,
                 SpaceNumber = rev.Number,
-                RoomName = rev.Room.Name,
-                RoomNumber = rev.Room.Number,
+                RoomName = rev.Room?.Name,
+                RoomNumber = rev.Room?.Number,
                 SpecifiedSupplyAirflow = rev.DesignSupplyAirflow,
                 SpecifiedExhaustAirflow = rev.DesignExhaustAirflow,
                 SpecifiedReturnAirflow = rev.DesignReturnAirflow
@@ -121,22 +134,29 @@ namespace BRPLUSA_Tools
 
         public void UpdateElement(Space space)
         {
-            //var spaces = _db.GetCollection<SpaceWrapper>();
+            var spaces = _db.GetCollection<SpaceWrapper>();
 
-            //var updatable = FindElement(uniqueId);
+            var updatable = FindElement(space.UniqueId);
 
-            //var changedValue = GetChangedValue(updatable)
+            spaces.Update(updatable);
 
-            //spaces.Update(updatable);
+            var others = updatable.ConnectedSpaces;
 
-            //UpdateElementPeers(uniqueId);
+            UpdateElementPeers(space, others, spaces);
         }
 
-        public void AddConnectingPeers(Space space, LiteCollection<Space> spaces)
+        private void UpdateElementPeers(Space parent, IEnumerable<string> peerIds, LiteCollection<SpaceWrapper> db)
         {
-            //var peers = FindElementPeers(uniqueId);
+            var peers = peerIds.Select(FindElement);
 
-            //spaces.Update(s)
+            foreach (var peer in peers)
+            {
+                peer.SpecifiedExhaustAirflow = parent.DesignExhaustAirflow;
+                peer.SpecifiedReturnAirflow = parent.DesignReturnAirflow;
+                peer.SpecifiedSupplyAirflow = parent.DesignSupplyAirflow;
+            }
+
+            db.Update(peers);
         }
 
         public void Dispose()

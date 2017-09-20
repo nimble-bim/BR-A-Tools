@@ -55,6 +55,8 @@
   <ItemGroup>
     <Compile Include="BaseCommand.cs" />
     <Compile Include="IRegisterableService.cs" />
+    <Compile Include="RegisterableService.cs" />
+    <Compile Include="RegisterableUpdater.cs" />
     <Compile Include="RegistrationService.cs" />
     <Compile Include="RevitApplicationEnhancements.cs" />
     <Compile Include="SpaceWrapper.cs" />

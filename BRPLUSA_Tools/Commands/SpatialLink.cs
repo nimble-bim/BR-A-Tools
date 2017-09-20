@@ -38,16 +38,18 @@ namespace BRPLUSA_Tools.Commands
 
         private Result ConnectSpaces()
         {
-            return null == _spaces 
+            var result = null == _spaces 
                 ? Result.Cancelled 
                 : TrackSpatialProperties(_spaces);
+
+            return result;
         }
 
         private Result TrackSpatialProperties(IEnumerable<Space> spaces)
         {
             bool complete;
 
-            using (_db = new SpatialDatabaseWrapper())
+            using (_db = new SpatialDatabaseWrapper(CurrentDocument))
             {
                 complete = _db.CreateElementRelationship(spaces);
             }

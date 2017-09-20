@@ -26,7 +26,17 @@ namespace BRPLUSA_Tools
             ExternalCommandData = excmd;
             ElementSet = elemset;
 
-            return InternalExecute();
+            var result = InternalExecute();
+
+            using (var tr = new Transaction(CurrentDocument))
+            {
+                tr.Start("Regenerating...");
+                UiDocument.Selection.Dispose();
+                CurrentDocument.Regenerate();
+                tr.Commit();
+            }
+
+            return result;
         }
 
         // Internal method that allows this class to use this private fields it contains
