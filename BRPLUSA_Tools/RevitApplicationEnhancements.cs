@@ -61,8 +61,10 @@ namespace BRPLUSA_Tools
             var brpa = app.CreateRibbonPanel("BR+A", "Utilities");
             
             var spaceSync = new PushButtonData("Link Spaces", "Link Spaces", typeof(SpatialLink).Assembly.Location, typeof(SpatialLink).FullName);
+            var spaceDeSync = new PushButtonData("Unlink Spaces", "Unlink Spaces", typeof(SpatialUnlink).Assembly.Location, typeof(SpatialUnlink).FullName);
 
             brpa.AddItem(spaceSync);
+            brpa.AddItem(spaceDeSync);
         }
     }
 }

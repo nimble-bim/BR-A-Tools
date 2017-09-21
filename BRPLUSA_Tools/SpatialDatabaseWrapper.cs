@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -14,6 +15,7 @@ namespace BRPLUSA_Tools
     public class SpatialDatabaseWrapper : IDisposable
     {
         private readonly LiteDatabase _db;
+        private IEnumerable<SpaceWrapper> Spaces => _db.GetCollection<SpaceWrapper>().FindAll();
 
         public SpatialDatabaseWrapper(Document doc)
         {
@@ -73,14 +75,11 @@ namespace BRPLUSA_Tools
         {
             var dbSpaces = _db.GetCollection<SpaceWrapper>();
 
-            var exstSp = spaces.Where(
-                          revSp => dbSpaces.Exists(
-                          dbSp => dbSp.Id == revSp.UniqueId));
-
-            // if any of the spaces is already in the db
-            if (exstSp != null)
-            {
-            }
+            // check if any of the spaces already exist in the db
+            // if so, prompt the user and ask whether they want to connect
+            // all the spaces and it's peers together
+            CheckForPriorRelationship(spaces, dbSpaces);
+            
 
             // else, add the space and it's peers along with their respective properties
             var ids = spaces.Select(s => s.UniqueId);
@@ -95,6 +94,98 @@ namespace BRPLUSA_Tools
             dbSpaces.EnsureIndex(s => s.Id);
 
             return true;
+        }
+
+        public bool BreakElementRelationship(IEnumerable<Space> spaces)
+        {
+            foreach (var s in spaces)
+            {
+                try
+                {
+                    BreakElementRelationship(s);
+                }
+
+                catch
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        public bool BreakElementRelationship(Space space)
+        {
+            try
+            {
+                var dbSp = _db.GetCollection<SpaceWrapper>().FindOne(s => s.Id == space.UniqueId);
+
+                // remove the space 
+                RemoveSpace(space);
+
+                // then remove it's connection to whatever spaces
+                // it was previously connected to
+                var peers = dbSp.ConnectedSpaces;
+
+                foreach (var p in peers)
+                {
+                    BreakConnection(p, space.UniqueId);
+                }
+
+                return true;
+            }
+
+            catch (Exception e)
+            {
+                Debug.WriteLine($"Failure attempting to break element's relationship. { e.Message }");
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="spaceConn">Space which should have the second space removed from it's list of connected spaces</param>
+        /// <param name="spaceDisconn">Space to be removed</param>
+        private void BreakConnection(string spaceConn, string spaceDisconn)
+        {
+            var sp1 = FindElement(spaceConn);
+
+            var newConns = sp1.ConnectedSpaces.ToList();
+            newConns.Remove(spaceDisconn);
+
+            sp1.ConnectedSpaces = newConns;
+
+            UpdateElement(sp1);
+        }
+
+        private void RemoveSpace(Space space)
+        {
+            RemoveSpace(space.UniqueId);
+        }
+
+        private void RemoveSpace(SpaceWrapper space)
+        {
+            RemoveSpace(space.Id);
+        }
+
+        private void RemoveSpace(string revitId)
+        {
+            var dbSp = _db.GetCollection<SpaceWrapper>();
+
+            dbSp.Delete(s => s.Id == revitId);
+        }
+
+        private void CheckForPriorRelationship(IEnumerable<Space> spaces, LiteCollection<SpaceWrapper> dbSpaces)
+        {
+            var exstSp = spaces.Where(
+                          revSp => dbSpaces.Exists(
+                          dbSp => dbSp.Id == revSp.UniqueId));
+
+            // if any of the spaces is already in the db
+            if (exstSp != null)
+            {
+            }
         }
 
         private IEnumerable<SpaceWrapper> MapEntities(IEnumerable<Space> revs)
@@ -143,6 +234,11 @@ namespace BRPLUSA_Tools
             var others = updatable.ConnectedSpaces;
 
             UpdateElementPeers(space, others, spaces);
+        }
+
+        public void UpdateElement(SpaceWrapper wrap)
+        {
+            _db.GetCollection<SpaceWrapper>().Update(wrap);
         }
 
         private void UpdateElementPeers(Space parent, IEnumerable<string> peerIds, LiteCollection<SpaceWrapper> db)

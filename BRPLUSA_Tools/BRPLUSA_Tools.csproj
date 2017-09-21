@@ -34,14 +34,17 @@
     <ApplicationManifest>BRPLUSA.addin</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AdWindows">
+      <HintPath>InternalPackages\Revit\2017\AdWindows.dll</HintPath>
+    </Reference>
     <Reference Include="LiteDB, Version=3.1.4.0, Culture=neutral, PublicKeyToken=4ee40123013c9f27, processorArchitecture=MSIL">
       <HintPath>..\packages\LiteDB.3.1.4\lib\net35\LiteDB.dll</HintPath>
     </Reference>
     <Reference Include="RevitAPI">
-      <HintPath>..\..\RevitAPI.dll</HintPath>
+      <HintPath>InternalPackages\Revit\2017\RevitAPI.dll</HintPath>
     </Reference>
     <Reference Include="RevitAPIUI">
-      <HintPath>..\..\RevitAPIUI.dll</HintPath>
+      <HintPath>InternalPackages\Revit\2017\RevitAPIUI.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -54,6 +57,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BaseCommand.cs" />
+    <Compile Include="Commands\SpatialUnlink.cs" />
     <Compile Include="IRegisterableService.cs" />
     <Compile Include="RegisterableService.cs" />
     <Compile Include="RegisterableUpdater.cs" />

@@ -53,7 +53,7 @@ namespace BRPLUSA_Tools
             {
                 var spaces = GetChangedSpaces(data);
 
-                var tracked = spaces.Where(IsCurrentlyTracked).ToArray();
+                var tracked = spaces.Where(IsCurrentlyTracked);
                 var needsUpdate = tracked.Where(NeedsUpdate).ToArray();
 
                 if (needsUpdate.Length < 1)
@@ -64,7 +64,8 @@ namespace BRPLUSA_Tools
 
             catch (Exception e)
             {
-                
+                TaskDialog.Show("Error Checking Spatial Properties",
+                    "There was an error checking the properties of a changed space - disable this updater when prompted and notify the CADD department");
             }
         }
 
