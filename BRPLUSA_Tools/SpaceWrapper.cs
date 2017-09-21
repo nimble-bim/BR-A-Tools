@@ -19,6 +19,8 @@ namespace BRPLUSA_Tools
         public double SpecifiedReturnAirflow { get; set; }
         public IEnumerable<string> ConnectedSpaces { get; set; }
 
+        public SpaceWrapper() { }
+
         public SpaceWrapper(Space rev)
         {
             Id = rev.UniqueId;

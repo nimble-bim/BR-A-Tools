@@ -12,18 +12,22 @@ namespace BRPLUSA_Tools
     public class RegistrationService
     {
         private Document _doc;
-        private UIControlledApplication _app;
+        private readonly UIControlledApplication _app;
         private readonly List<IRegisterableService> _services;
         public RegistrationService(UIControlledApplication app)
         {
-            _services = new List<IRegisterableService>();
-
             _app = app;
+            _services = new List<IRegisterableService>();
+            Initialize();
+        }
+
+        private void Initialize()
+        {
             _app.ControlledApplication.DocumentOpened += RegisterServices;
             _app.ControlledApplication.DocumentClosed += DeregisterServices;
         }
 
-        public void RegisterServices(IEnumerable<IRegisterableService> services)
+        public void RegisterServices(params IRegisterableService[] services)
         {
             foreach (var serv in services)
             {
