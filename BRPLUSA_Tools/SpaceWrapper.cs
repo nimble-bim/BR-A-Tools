@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Autodesk.Revit.DB.Mechanical;
 
 namespace BRPLUSA_Tools
 {
@@ -17,5 +18,17 @@ namespace BRPLUSA_Tools
         public double SpecifiedExhaustAirflow { get; set; }
         public double SpecifiedReturnAirflow { get; set; }
         public IEnumerable<string> ConnectedSpaces { get; set; }
+
+        public SpaceWrapper(Space rev)
+        {
+            Id = rev.UniqueId;
+            SpaceName = rev.Name;
+            SpaceNumber = rev.Number;
+            RoomName = rev.Room?.Name;
+            RoomNumber = rev.Room?.Number;
+            SpecifiedSupplyAirflow = rev.DesignSupplyAirflow;
+            SpecifiedExhaustAirflow = rev.DesignExhaustAirflow;
+            SpecifiedReturnAirflow = rev.DesignReturnAirflow;
+        }
     }
 }

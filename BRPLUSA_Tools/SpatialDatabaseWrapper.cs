@@ -190,22 +190,7 @@ namespace BRPLUSA_Tools
 
         private IEnumerable<SpaceWrapper> MapEntities(IEnumerable<Space> revs)
         {
-            return revs.Select(MapEntity);
-        }
-
-        private static SpaceWrapper MapEntity(Space rev)
-        {
-            return new SpaceWrapper
-            {
-                Id = rev.UniqueId,
-                SpaceName = rev.Name,
-                SpaceNumber = rev.Number,
-                RoomName = rev.Room?.Name,
-                RoomNumber = rev.Room?.Number,
-                SpecifiedSupplyAirflow = rev.DesignSupplyAirflow,
-                SpecifiedExhaustAirflow = rev.DesignExhaustAirflow,
-                SpecifiedReturnAirflow = rev.DesignReturnAirflow
-            };
+            return revs.Select(r => new SpaceWrapper(r));
         }
 
         //private void MapEntity(Space space)
@@ -225,15 +210,9 @@ namespace BRPLUSA_Tools
 
         public void UpdateElement(Space space)
         {
-            var spaces = _db.GetCollection<SpaceWrapper>();
+            _db.GetCollection<SpaceWrapper>().Update(new SpaceWrapper(space));
 
-            var updatable = FindElement(space.UniqueId);
-
-            spaces.Update(updatable);
-
-            var others = updatable.ConnectedSpaces;
-
-            UpdateElementPeers(space, others, spaces);
+            UpdateElementPeers(space);
         }
 
         public void UpdateElement(SpaceWrapper wrap)
@@ -241,8 +220,10 @@ namespace BRPLUSA_Tools
             _db.GetCollection<SpaceWrapper>().Update(wrap);
         }
 
-        private void UpdateElementPeers(Space parent, IEnumerable<string> peerIds, LiteCollection<SpaceWrapper> db)
+        private void UpdateElementPeers(Space parent)
         {
+            var db = _db.GetCollection<SpaceWrapper>();
+            var peerIds = db.FindOne(s => s.Id == parent.UniqueId).ConnectedSpaces;
             var peers = peerIds.Select(FindElement);
 
             foreach (var peer in peers)

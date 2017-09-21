@@ -60,6 +60,7 @@ namespace BRPLUSA_Tools
                     return;
 
                 UpdateSpace(needsUpdate);
+                TaskDialog.Show("Update Complete", $"Updated {needsUpdate.Length} linked spaces");
             }
 
             catch (Exception e)
