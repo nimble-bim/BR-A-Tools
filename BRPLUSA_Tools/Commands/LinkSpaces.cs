@@ -11,7 +11,7 @@ namespace BRPLUSA_Tools.Commands
 {
     [Transaction(TransactionMode.Manual)]
     [Regeneration(RegenerationOption.Manual)]
-    public class SpatialLink : BaseCommand
+    public class LinkSpaces : BaseCommand
     {
         private IEnumerable<Space> _spaces;
         private SpatialDatabaseWrapper _db;
