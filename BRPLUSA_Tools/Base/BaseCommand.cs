@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using Autodesk.Revit.Attributes;
 using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
@@ -26,17 +27,31 @@ namespace BRPLUSA.Base
             ExternalCommandData = excmd;
             ElementSet = elemset;
 
-            var result = InternalExecute();
-
             using (var tr = new Transaction(CurrentDocument))
             {
                 tr.Start("Regenerating...");
-                UiDocument.Selection.Dispose();
-                CurrentDocument.Regenerate();
-                tr.Commit();
-            }
 
-            return result;
+                Result result;
+
+                try
+                {
+                    result = InternalExecute();
+                }
+
+                catch (Exception e)
+                {
+                    result = Result.Failed;
+                }
+
+                finally
+                {
+                    UiDocument.Selection.Dispose();
+                    CurrentDocument.Regenerate();
+                }
+
+                tr.Commit();
+                return result;
+            }
         }
 
         // Internal method that allows this class to use this private fields it contains
