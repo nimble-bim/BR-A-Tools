@@ -66,7 +66,7 @@ namespace BRPLUSA.Base
 
             catch(Exception e)
             {
-                if (e.Message == "The user aborted the pick operation.")
+                if (e.Message.Contains("The user aborted the pick operation."))
                     return Result.Cancelled;
 
                 Debug.WriteLine("Command failed because of an unknown exception");

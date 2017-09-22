@@ -28,17 +28,13 @@ namespace BRPLUSA.Client.Commands
         {
             using (var items = UiDocument.Selection)
             {
-                var spaceRefs = items.PickObjects(ObjectType.Element,
+                var spaceRefs = items.PickObjects(ObjectType.Element, 
+                    new SpaceSelectionFilter(),
                     "Please select the spaces you'd like to connect.");
 
                 var spaceElems = spaceRefs.Select(r => CurrentDocument.GetElement(r.ElementId));
 
-                if (spaceElems.All(s => s is Space))
-                    return spaceElems.Cast<Space>();
-
-                TaskDialog.Show("Selection Error", "One of the items selected is not a space - please try again");
-                UiDocument.Selection.Dispose();
-                return SelectSpaces();
+                return spaceElems.Cast<Space>();
             }
         }
 

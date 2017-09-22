@@ -20,7 +20,11 @@ namespace BRPLUSA.Client.Commands
 
         protected override Result Work()
         {
-            _spaces = SelectSpaces();
+            using (_db = new SpatialDatabaseWrapper(CurrentDocument))
+            {
+                _spaces = SelectSpaces();
+            }
+
             return ConnectSpaces();
         }
 
@@ -28,22 +32,14 @@ namespace BRPLUSA.Client.Commands
         {
             using (var items = UiDocument.Selection)
             {
-                var spaceRefs = items.PickObjects(ObjectType.Element,
-                    "Please select the spaces you'd like to connect.");
+                var spaceRefs = items.PickObjects(ObjectType.Element, new SpaceSelectionFilter(), "Please select the spaces you'd like to connect.");
 
                 var spaceElems = spaceRefs.Select(r => CurrentDocument.GetElement(r.ElementId));
 
-                if (spaceElems.All(s => s is Space))
-                {
-                    if (spaceElems.Cast<Space>().Any(s => _db.IsInDatabase(s)))
-                        RequestSelectionClarification();
+                if (spaceElems.Cast<Space>().Any(s => _db.IsInDatabase(s)))
+                    RequestSelectionClarification();
 
-                    return spaceElems.Cast<Space>();
-                }
-
-                TaskDialog.Show("Selection Error", "One of the items selected is not a space - please try again");
-                UiDocument.Selection.Dispose();
-                return SelectSpaces();
+                return spaceElems.Cast<Space>();
             }
         }
 
@@ -52,7 +48,7 @@ namespace BRPLUSA.Client.Commands
             TaskDialog.Show("Selection Error",
                 "At least one of the spaces you've selected is already connected to other spaces - please select again.");
 
-            throw new Exception("The user aborted the picked operation");
+            throw new Exception("The user aborted the pick operation.");
         }
 
         private Result ConnectSpaces()
@@ -66,14 +62,9 @@ namespace BRPLUSA.Client.Commands
 
         private Result TrackSpatialProperties(IEnumerable<Space> spaces)
         {
-            bool complete;
-
-            using (_db = new SpatialDatabaseWrapper(CurrentDocument))
-            {
-                complete = _db.CreateElementRelationship(spaces);
-            }
-
-            return complete ? Result.Succeeded : Result.Failed;
+            return _db.CreateElementRelationship(spaces) 
+                ? Result.Succeeded 
+                : Result.Failed;
         }
     }
 }

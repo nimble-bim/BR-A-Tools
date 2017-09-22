@@ -57,6 +57,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Base\BaseCommand.cs" />
+    <Compile Include="Base\SpaceSelectionFilter.cs" />
     <Compile Include="Client\Commands\UnlinkSpaces.cs" />
     <Compile Include="Interfaces\IRegisterableService.cs" />
     <Compile Include="Base\BaseRegisterableService.cs" />
