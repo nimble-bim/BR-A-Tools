@@ -7,8 +7,8 @@
     <ProjectGuid>{19A8E334-7B4F-47AE-9B8B-FB8F8278F418}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>BRPLUSA_Tools</RootNamespace>
-    <AssemblyName>BRPLUSA_Tools</AssemblyName>
+    <RootNamespace>BRPLUSA</RootNamespace>
+    <AssemblyName>BRPLUSA</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
@@ -56,17 +56,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BaseCommand.cs" />
-    <Compile Include="Commands\UnlinkSpaces.cs" />
-    <Compile Include="IRegisterableService.cs" />
-    <Compile Include="RegisterableService.cs" />
-    <Compile Include="RegisterableUpdater.cs" />
-    <Compile Include="RegistrationService.cs" />
-    <Compile Include="RevitApplicationEnhancements.cs" />
-    <Compile Include="SpaceWrapper.cs" />
-    <Compile Include="SpatialDatabaseWrapper.cs" />
-    <Compile Include="SpatialPropertyUpdater.cs" />
-    <Compile Include="Commands\LinkSpaces.cs" />
+    <Compile Include="Base\BaseCommand.cs" />
+    <Compile Include="Client\Commands\UnlinkSpaces.cs" />
+    <Compile Include="Interfaces\IRegisterableService.cs" />
+    <Compile Include="Base\BaseRegisterableService.cs" />
+    <Compile Include="Base\BaseRegisterableUpdater.cs" />
+    <Compile Include="Services\RegistrationService.cs" />
+    <Compile Include="Client\Applications\RevitApplicationEnhancements.cs" />
+    <Compile Include="Entities\Wrappers\SpaceWrapper.cs" />
+    <Compile Include="Data\SpatialDatabaseWrapper.cs" />
+    <Compile Include="Client\Updaters\SpatialPropertyUpdater.cs" />
+    <Compile Include="Client\Commands\LinkSpaces.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -75,6 +75,7 @@
     </None>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>xcopy "$(TargetDir)*" /E  /Y /D "C:\ProgramData\Autodesk\Revit\Addins\2017\"</PostBuildEvent>

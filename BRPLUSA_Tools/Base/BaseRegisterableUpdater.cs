@@ -1,9 +1,8 @@
 ﻿using Autodesk.Revit.DB;
-using Autodesk.Revit.DB.Mechanical;
 
-namespace BRPLUSA_Tools
+namespace BRPLUSA.Base
 {
-    public abstract class RegisterableUpdater : RegisterableService, IUpdater
+    public abstract class BaseRegisterableUpdater : BaseRegisterableService, IUpdater
     {
         public abstract void Execute(UpdaterData data);
         public abstract UpdaterId GetUpdaterId();

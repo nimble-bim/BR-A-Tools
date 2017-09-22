@@ -6,12 +6,14 @@ using Autodesk.Revit.DB;
 using Autodesk.Revit.DB.Mechanical;
 using Autodesk.Revit.UI;
 using Autodesk.Revit.UI.Selection;
+using BRPLUSA.Base;
+using BRPLUSA.Data;
 
-namespace BRPLUSA_Tools.Commands
+namespace BRPLUSA.Client.Commands
 {
     [Transaction(TransactionMode.Manual)]
     [Regeneration(RegenerationOption.Manual)]
-    public class UnlinkSpaces : BaseCommand
+    public class LinkSpaces : BaseCommand
     {
         private IEnumerable<Space> _spaces;
         private SpatialDatabaseWrapper _db;
@@ -23,7 +25,7 @@ namespace BRPLUSA_Tools.Commands
 
             using (var items = UiDocument.Selection)
             {
-                var spaceRefs = items.PickObjects(ObjectType.Element, "Please select the spaces you'd like to disconnect.");
+                var spaceRefs = items.PickObjects(ObjectType.Element, "Please select the spaces you'd like to connect.");
 
                 var spaceElems = spaceRefs.Select(r => CurrentDocument.GetElement(r.ElementId));
 
@@ -33,25 +35,25 @@ namespace BRPLUSA_Tools.Commands
                 _spaces = spaceElems.Cast<Space>();
             }
 
-            return DisconnectSpaces();
+            return ConnectSpaces();
         }
 
-        private Result DisconnectSpaces()
+        private Result ConnectSpaces()
         {
             var result = null == _spaces 
                 ? Result.Cancelled 
-                : StopTrackingSpaces(_spaces);
+                : TrackSpatialProperties(_spaces);
 
             return result;
         }
 
-        private Result StopTrackingSpaces(IEnumerable<Space> spaces)
+        private Result TrackSpatialProperties(IEnumerable<Space> spaces)
         {
             bool complete;
 
             using (_db = new SpatialDatabaseWrapper(CurrentDocument))
             {
-                complete = _db.BreakElementRelationship(spaces);
+                complete = _db.CreateElementRelationship(spaces);
             }
 
             return complete ? Result.Succeeded : Result.Failed;

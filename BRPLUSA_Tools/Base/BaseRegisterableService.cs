@@ -1,9 +1,10 @@
 ﻿using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
+using BRPLUSA.Interfaces;
 
-namespace BRPLUSA_Tools
+namespace BRPLUSA.Base
 {
-    public abstract class RegisterableService : IRegisterableService
+    public abstract class BaseRegisterableService : IRegisterableService
     {
         protected static AddInId _appId;
         protected static UpdaterId _updaterId;

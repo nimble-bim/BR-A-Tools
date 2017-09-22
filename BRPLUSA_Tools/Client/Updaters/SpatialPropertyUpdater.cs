@@ -1,16 +1,15 @@
-﻿using Autodesk.Revit.DB;
-using LiteDB;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Autodesk.Revit.DB;
 using Autodesk.Revit.DB.Mechanical;
 using Autodesk.Revit.UI;
+using BRPLUSA.Base;
+using BRPLUSA.Data;
 
-namespace BRPLUSA_Tools
+namespace BRPLUSA.Client.Updaters
 {
-    public class SpatialPropertyUpdater : RegisterableUpdater
+    public class SpatialPropertyUpdater : BaseRegisterableUpdater
     {
         private static SpatialDatabaseWrapper _db;
 

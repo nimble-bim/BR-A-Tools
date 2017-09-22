@@ -1,7 +1,6 @@
-﻿using System;
-using Autodesk.Revit.DB;
+﻿using Autodesk.Revit.DB;
 
-namespace BRPLUSA_Tools
+namespace BRPLUSA.Interfaces
 {
     public interface IRegisterableService
     {

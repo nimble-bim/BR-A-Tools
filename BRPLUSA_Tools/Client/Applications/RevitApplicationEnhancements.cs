@@ -1,15 +1,11 @@
-﻿using Autodesk.Revit.DB;
-using Autodesk.Revit.UI;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Autodesk.Revit.DB.Mechanical;
-using BRPLUSA_Tools.Commands;
+using Autodesk.Revit.UI;
+using BRPLUSA.Client.Commands;
+using BRPLUSA.Client.Updaters;
+using BRPLUSA.Services;
 
-namespace BRPLUSA_Tools
+namespace BRPLUSA.Client.Applications
 {
     public class RevitApplicationEnhancements : IExternalApplication
     {
