@@ -71,27 +71,56 @@ namespace BRPLUSA.Data
 
         public bool CreateElementRelationship(IEnumerable<Space> spaces)
         {
-            var dbSpaces = _db.GetCollection<SpaceWrapper>();
-
             // check if any of the spaces already exist in the db
             // if so, prompt the user and ask whether they want to connect
             // all the spaces and it's peers together
-            CheckForPriorRelationship(spaces, dbSpaces);
-            
+            return spaces.Any(IsInDatabase) 
+                ? HandleNewAndOldSpaces(spaces) 
+                : HandleNewSpaces(spaces);
+        }
 
-            // else, add the space and it's peers along with their respective properties
-            var ids = spaces.Select(s => s.UniqueId);
+        private bool HandleNewAndOldSpaces(IEnumerable<Space> spaces)
+        {
+            throw new NotImplementedException();
+        }
 
-            var wrapped = MapEntities(spaces);
-            foreach (var w in wrapped)
+        public bool IsInDatabase(Space space)
+        {
+            return IsInDatabase(space.UniqueId);
+        }
+
+        private bool IsInDatabase(string uniqueId)
+        {
+            var element = _db.GetCollection<SpaceWrapper>().FindOne(s => s.Id == uniqueId);
+
+            return element != null;
+        }
+
+        private bool HandleNewSpaces(IEnumerable<Space> spaces)
+        {
+            try
             {
-                w.ConnectedSpaces = ids;
+                var dbSpaces = _db.GetCollection<SpaceWrapper>();
+
+                // else, add the space and it's peers along with their respective properties
+                var ids = spaces.Select(s => s.UniqueId);
+
+                var wrapped = MapEntities(spaces);
+                foreach (var w in wrapped)
+                {
+                    w.ConnectedSpaces = ids;
+                }
+
+                dbSpaces.Insert(wrapped);
+                dbSpaces.EnsureIndex(s => s.Id);
+
+                return true;
             }
 
-            dbSpaces.Insert(wrapped);
-            dbSpaces.EnsureIndex(s => s.Id);
-
-            return true;
+            catch (Exception e)
+            {
+                return false;
+            }
         }
 
         public bool BreakElementRelationship(IEnumerable<Space> spaces)
@@ -172,18 +201,6 @@ namespace BRPLUSA.Data
             var dbSp = _db.GetCollection<SpaceWrapper>();
 
             dbSp.Delete(s => s.Id == revitId);
-        }
-
-        private void CheckForPriorRelationship(IEnumerable<Space> spaces, LiteCollection<SpaceWrapper> dbSpaces)
-        {
-            var exstSp = spaces.Where(
-                          revSp => dbSpaces.Exists(
-                          dbSp => dbSp.Id == revSp.UniqueId));
-
-            // if any of the spaces is already in the db
-            if (exstSp != null)
-            {
-            }
         }
 
         private IEnumerable<SpaceWrapper> MapEntities(IEnumerable<Space> revs)

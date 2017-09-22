@@ -34,12 +34,25 @@ namespace BRPLUSA.Client.Commands
                 var spaceElems = spaceRefs.Select(r => CurrentDocument.GetElement(r.ElementId));
 
                 if (spaceElems.All(s => s is Space))
+                {
+                    if (spaceElems.Cast<Space>().Any(s => _db.IsInDatabase(s)))
+                        RequestSelectionClarification();
+
                     return spaceElems.Cast<Space>();
+                }
 
                 TaskDialog.Show("Selection Error", "One of the items selected is not a space - please try again");
                 UiDocument.Selection.Dispose();
                 return SelectSpaces();
             }
+        }
+
+        private void RequestSelectionClarification()
+        {
+            TaskDialog.Show("Selection Error",
+                "At least one of the spaces you've selected is already connected to other spaces - please select again.");
+
+            throw new Exception("The user aborted the picked operation");
         }
 
         private Result ConnectSpaces()
