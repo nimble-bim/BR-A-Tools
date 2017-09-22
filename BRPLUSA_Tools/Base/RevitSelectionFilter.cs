@@ -9,11 +9,12 @@ using Autodesk.Revit.UI.Selection;
 
 namespace BRPLUSA.Base
 {
-    public class SpaceSelectionFilter : ISelectionFilter
+
+    public class RevitSelectionFilter<T> : ISelectionFilter where T : Element
     {
         public bool AllowElement(Element elem)
         {
-            return elem is Space;
+            return elem is T;
         }
 
         public bool AllowReference(Reference reference, XYZ position)

@@ -32,7 +32,9 @@ namespace BRPLUSA.Client.Commands
         {
             using (var items = UiDocument.Selection)
             {
-                var spaceRefs = items.PickObjects(ObjectType.Element, new SpaceSelectionFilter(), "Please select the spaces you'd like to connect.");
+                var spaceRefs = items.PickObjects(ObjectType.Element,
+                    new RevitSelectionFilter<Space>(),
+                    "Please select the spaces you'd like to connect.");
 
                 var spaceElems = spaceRefs.Select(r => CurrentDocument.GetElement(r.ElementId));
 
