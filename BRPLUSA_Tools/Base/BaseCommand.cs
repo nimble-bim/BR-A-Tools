@@ -64,9 +64,12 @@ namespace BRPLUSA.Base
                 return Work();
             }
 
-            catch
+            catch(Exception e)
             {
-                Debug.WriteLine("Command failed because of an exception");
+                if (e.Message == "The user aborted the pick operation.")
+                    return Result.Cancelled;
+
+                Debug.WriteLine("Command failed because of an unknown exception");
                 TaskDialog.Show("Command Failed",
                     "There was an error behind the scenes that caused the command to fail horribly and die.");
             }

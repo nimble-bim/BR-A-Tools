@@ -17,25 +17,29 @@ namespace BRPLUSA.Client.Commands
     {
         private IEnumerable<Space> _spaces;
         private SpatialDatabaseWrapper _db;
-        private View _currentView;
 
         protected override Result Work()
         {
-            _currentView = CurrentDocument.ActiveView;
+            _spaces = SelectSpaces();
+            return ConnectSpaces();
+        }
 
+        private IEnumerable<Space> SelectSpaces()
+        {
             using (var items = UiDocument.Selection)
             {
-                var spaceRefs = items.PickObjects(ObjectType.Element, "Please select the spaces you'd like to connect.");
+                var spaceRefs = items.PickObjects(ObjectType.Element,
+                    "Please select the spaces you'd like to connect.");
 
                 var spaceElems = spaceRefs.Select(r => CurrentDocument.GetElement(r.ElementId));
 
-                if (spaceElems.Any(s => !(s is Space)))
-                    throw new Exception("One of the items selected is not a space - please try again");
+                if (spaceElems.All(s => s is Space))
+                    return spaceElems.Cast<Space>();
 
-                _spaces = spaceElems.Cast<Space>();
+                TaskDialog.Show("Selection Error", "One of the items selected is not a space - please try again");
+                UiDocument.Selection.Dispose();
+                return SelectSpaces();
             }
-
-            return ConnectSpaces();
         }
 
         private Result ConnectSpaces()
