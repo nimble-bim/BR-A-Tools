@@ -14,13 +14,19 @@ namespace BRPLUSA.Data
     {
         private readonly LiteDatabase _db;
         private IEnumerable<SpaceWrapper> Spaces => _db.GetCollection<SpaceWrapper>().FindAll();
+        private readonly string _location;
 
         public SpatialDatabaseWrapper(Document doc)
         {
             var directory = Path.GetDirectoryName(doc.PathName);
-            var dbLocation = Path.Combine(directory, "SpatialData.db");
+            _location = Path.Combine(directory, "SpatialData.db");
 
-            _db = new LiteDatabase(dbLocation);
+            _db = new LiteDatabase(_location);
+        }
+
+        private bool IsDatabaseCreated()
+        {
+            return File.Exists(_location);
         }
 
         public bool IsCurrentlyTracked(Space space)
@@ -74,7 +80,9 @@ namespace BRPLUSA.Data
             // check if any of the spaces already exist in the db
             // if so, prompt the user and ask whether they want to connect
             // all the spaces and it's peers together
-            return spaces.Any(IsInDatabase) 
+            var hasOldSpaces = spaces.Any(IsInDatabase);
+
+            return hasOldSpaces
                 ? HandleNewAndOldSpaces(spaces) 
                 : HandleNewSpaces(spaces);
         }
@@ -91,9 +99,15 @@ namespace BRPLUSA.Data
 
         private bool IsInDatabase(string uniqueId)
         {
-            var element = _db.GetCollection<SpaceWrapper>().FindOne(s => s.Id == uniqueId);
+            if (!IsDatabaseCreated())
+                return false;
 
-            return element != null;
+            var elements = _db.GetCollection<SpaceWrapper>();
+            var element = elements.FindOne(s => s.Id == uniqueId);
+
+            var isInDb = element != null;
+
+            return isInDb;
         }
 
         private bool HandleNewSpaces(IEnumerable<Space> spaces)
