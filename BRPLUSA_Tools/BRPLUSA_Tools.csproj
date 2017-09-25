@@ -7,8 +7,8 @@
     <ProjectGuid>{19A8E334-7B4F-47AE-9B8B-FB8F8278F418}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>BRPLUSA_Tools</RootNamespace>
-    <AssemblyName>BRPLUSA_Tools</AssemblyName>
+    <RootNamespace>BRPLUSA</RootNamespace>
+    <AssemblyName>BRPLUSA</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
@@ -34,14 +34,17 @@
     <ApplicationManifest>BRPLUSA.addin</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AdWindows">
+      <HintPath>InternalPackages\Revit\2017\AdWindows.dll</HintPath>
+    </Reference>
     <Reference Include="LiteDB, Version=3.1.4.0, Culture=neutral, PublicKeyToken=4ee40123013c9f27, processorArchitecture=MSIL">
       <HintPath>..\packages\LiteDB.3.1.4\lib\net35\LiteDB.dll</HintPath>
     </Reference>
     <Reference Include="RevitAPI">
-      <HintPath>..\..\RevitAPI.dll</HintPath>
+      <HintPath>InternalPackages\Revit\2017\RevitAPI.dll</HintPath>
     </Reference>
     <Reference Include="RevitAPIUI">
-      <HintPath>..\..\RevitAPIUI.dll</HintPath>
+      <HintPath>InternalPackages\Revit\2017\RevitAPIUI.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -53,14 +56,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BaseCommand.cs" />
-    <Compile Include="IRegisterableService.cs" />
-    <Compile Include="RegistrationService.cs" />
-    <Compile Include="RevitApplicationEnhancements.cs" />
-    <Compile Include="SpaceWrapper.cs" />
-    <Compile Include="SpatialDatabaseWrapper.cs" />
-    <Compile Include="SpatialPropertyUpdater.cs" />
-    <Compile Include="Commands\SpatialLink.cs" />
+    <Compile Include="Base\BaseCommand.cs" />
+    <Compile Include="Base\RevitSelectionFilter.cs" />
+    <Compile Include="Client\Commands\UnlinkSpaces.cs" />
+    <Compile Include="Interfaces\IRegisterableService.cs" />
+    <Compile Include="Base\BaseRegisterableService.cs" />
+    <Compile Include="Base\BaseRegisterableUpdater.cs" />
+    <Compile Include="Services\RegistrationService.cs" />
+    <Compile Include="Client\Applications\RevitApplicationEnhancements.cs" />
+    <Compile Include="Entities\Wrappers\SpaceWrapper.cs" />
+    <Compile Include="Data\SpatialDatabaseWrapper.cs" />
+    <Compile Include="Client\Updaters\SpatialPropertyUpdater.cs" />
+    <Compile Include="Client\Commands\LinkSpaces.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -69,6 +76,7 @@
     </None>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>xcopy "$(TargetDir)*" /E  /Y /D "C:\ProgramData\Autodesk\Revit\Addins\2017\"</PostBuildEvent>
