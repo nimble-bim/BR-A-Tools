@@ -20,8 +20,14 @@ namespace BRPLUSA.Client.Commands
 
         protected override Result Work()
         {
-            _spaces = SelectSpaces();
-            return DisconnectSpaces();
+            Result disconnected;
+            using (_db = new SpatialDatabaseWrapper(CurrentDocument))
+            {
+                _spaces = SelectSpaces();
+                disconnected = DisconnectSpaces();
+            }
+
+            return disconnected;
         }
 
         private IEnumerable<Space> SelectSpaces()
@@ -49,14 +55,11 @@ namespace BRPLUSA.Client.Commands
 
         private Result StopTrackingSpaces(IEnumerable<Space> spaces)
         {
-            bool complete;
+            var complete = _db.BreakElementRelationship(spaces);
 
-            using (_db = new SpatialDatabaseWrapper(CurrentDocument))
-            {
-                complete = _db.BreakElementRelationship(spaces);
-            }
-
-            return complete ? Result.Succeeded : Result.Failed;
+            return complete 
+                ? Result.Succeeded 
+                : Result.Failed;
         }
     }
 }

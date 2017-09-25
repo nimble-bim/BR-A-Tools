@@ -28,6 +28,9 @@ namespace BRPLUSA.Client.Commands
                 connected = ConnectSpaces();
             }
 
+            if (connected == Result.Succeeded)
+                TaskDialog.Show("Success", "Connected the requested spaces!");
+
             return connected;
         }
 
