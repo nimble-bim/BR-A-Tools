@@ -52,7 +52,10 @@ namespace BRPLUSA.AutoCAD
             var xTotal = Math.Round(coords[0] - coords[1]);
             var yTotal = Math.Round(coords[2] - coords[3]);
 
-            return new[] { xTotal, yTotal };
+            var xRound = RoundRoughSize(xTotal);
+            var yRound = RoundRoughSize(yTotal);
+
+            return new[] { xRound, yRound };
         }
 
         private static double RoundRoughSize(double size)
