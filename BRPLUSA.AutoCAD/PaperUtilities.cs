@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Autodesk.AutoCAD.DatabaseServices;
+using BRPLUSA.AutoCAD.PaperSizes;
 using BRPLUSA.AutoCAD.Wrappers;
 
 namespace BRPLUSA.AutoCAD

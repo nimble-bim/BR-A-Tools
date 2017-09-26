@@ -1,4 +1,4 @@
-namespace BRPLUSA.AutoCAD.Wrappers
+namespace BRPLUSA.AutoCAD.PaperSizes
 {
     public class ArchD : PaperSize
     {
