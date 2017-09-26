@@ -8,7 +8,7 @@ using BRPLUSA.AutoCAD.PaperSizes;
 
 namespace BRPLUSA.AutoCAD.Wrappers
 {
-    public class LayoutWrapper
+    public class ACADLayout
     {
         private readonly Layout _layout;
 
@@ -19,7 +19,7 @@ namespace BRPLUSA.AutoCAD.Wrappers
         public PaperSize PaperSize { get; private set; }
         public PaperOrientation Orientation { get; private set; }
 
-        public LayoutWrapper(Layout lay)
+        public ACADLayout(Layout lay)
         {
             _layout = lay;
             Initialize();
