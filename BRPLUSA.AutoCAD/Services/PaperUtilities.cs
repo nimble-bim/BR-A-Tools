@@ -13,6 +13,7 @@ namespace BRPLUSA.AutoCAD
     public static class PaperUtilities
     {
         public static double[] CommonPaperValues = { 8.5, 11, 17, 22, 24, 30, 34, 36, 42, 48 };
+        private const double Tolerance = .5;
 
         public static PaperSize[] CommonPaperSizes => new PaperSize[]
         {
@@ -30,12 +31,14 @@ namespace BRPLUSA.AutoCAD
         {
             var roughSize = CalculateRoughPaperSize(layout);
 
-            var common = CommonPaperSizes.FirstOrDefault(c => c.SizeValue == roughSize || c.SizeValue.Reverse() == roughSize);
+            var common = CommonPaperSizes.FirstOrDefault(c => 
+                            c.SizeValue == roughSize || 
+                            c.SizeValue.Reverse() == roughSize);
 
             if (common != null)
                 return common;
 
-
+            // 
 
 
         }
@@ -52,20 +55,21 @@ namespace BRPLUSA.AutoCAD
             var xTotal = Math.Round(coords[0] - coords[1]);
             var yTotal = Math.Round(coords[2] - coords[3]);
 
-            var xRound = RoundRoughSize(xTotal);
-            var yRound = RoundRoughSize(yTotal);
+            var xRound = RoundRoughSizeToCommonSize(xTotal);
+            var yRound = RoundRoughSizeToCommonSize(yTotal);
 
             return new[] { xRound, yRound };
         }
 
-        private static double RoundRoughSize(double size)
+        // Finds the size closest to the more common paper values
+        private static double RoundRoughSizeToCommonSize(double size)
         {
             if (CommonPaperValues.Contains(size))
                 return size;
 
             foreach (var value in CommonPaperValues)
             {
-                if (value >= size)
+                if (value >= size - Tolerance)
                     return value;
             }
 
@@ -73,7 +77,7 @@ namespace BRPLUSA.AutoCAD
 
         }
 
-        private static PaperOrientation CalculatePaperOrientation(Layout layout)
+        public static PaperOrientation CalculatePaperOrientation(Layout layout)
         {
             throw new NotImplementedException();
         }

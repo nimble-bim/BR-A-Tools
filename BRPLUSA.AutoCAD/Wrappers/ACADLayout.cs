@@ -28,11 +28,17 @@ namespace BRPLUSA.AutoCAD.Wrappers
         private void Initialize()
         {
             CalculatePaperSize();
+            CalculateOrientation();
         }
 
         private void CalculatePaperSize()
         {
             PaperSize = PaperUtilities.CalculatePaperSize(_layout);
+        }
+
+        private void CalculateOrientation()
+        {
+            Orientation = PaperUtilities.CalculatePaperOrientation(_layout);
         }
     }
 }
