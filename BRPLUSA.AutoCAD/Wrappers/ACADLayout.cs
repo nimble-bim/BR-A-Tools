@@ -10,35 +10,19 @@ namespace BRPLUSA.AutoCAD.Wrappers
 {
     public class ACADLayout
     {
-        private readonly Layout _layout;
+        public double Height { get; set; }
+        public double Width { get; set; }
+        public PaperSize PaperSize { get; set; }
+        public PaperOrientation Orientation { get; set; }
 
-        public double Height => Math.Round(_layout.PlotPaperSize.X / 25.4 );
-
-        public double Width => Math.Round(_layout.PlotPaperSize.Y / 25.4);
-
-        public PaperSize PaperSize { get; private set; }
-        public PaperOrientation Orientation { get; private set; }
-
-        public ACADLayout(Layout lay)
+        public ACADLayout()
         {
-            _layout = lay;
             Initialize();
         }
 
         private void Initialize()
         {
-            CalculatePaperSize();
-            CalculateOrientation();
-        }
-
-        private void CalculatePaperSize()
-        {
-            PaperSize = PaperUtilities.CalculatePaperSize(_layout);
-        }
-
-        private void CalculateOrientation()
-        {
-            Orientation = PaperUtilities.CalculatePaperOrientation(_layout);
+            throw new NotImplementedException();
         }
     }
 }

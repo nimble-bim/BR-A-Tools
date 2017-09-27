@@ -55,6 +55,8 @@
     <Compile Include="Class1.cs" />
     <Compile Include="Extensions\DocumentExtensions.cs" />
     <Compile Include="Extensions\LayoutExtensions.cs" />
+    <Compile Include="Mappers\IMapper.cs" />
+    <Compile Include="Mappers\LayoutMapper.cs" />
     <Compile Include="PaperSizes\AnsiA.cs" />
     <Compile Include="PaperSizes\AnsiB.cs" />
     <Compile Include="PaperSizes\AnsiC.cs" />
