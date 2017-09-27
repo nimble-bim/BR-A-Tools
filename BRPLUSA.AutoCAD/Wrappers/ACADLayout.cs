@@ -14,6 +14,7 @@ namespace BRPLUSA.AutoCAD.Wrappers
         public double Width { get; set; }
         public PaperSize PaperSize { get; set; }
         public PaperOrientation Orientation { get; set; }
+        public IEnumerable<ACADViewport> Viewports { get; set; }
 
         public ACADLayout()
         {

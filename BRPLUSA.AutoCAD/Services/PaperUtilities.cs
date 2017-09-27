@@ -1,14 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Autodesk.AutoCAD.DatabaseServices;
-using Autodesk.AutoCAD.Runtime;
 using BRPLUSA.AutoCAD.PaperSizes;
 using BRPLUSA.AutoCAD.Wrappers;
 
-namespace BRPLUSA.AutoCAD
+namespace BRPLUSA.AutoCAD.Services
 {
     public static class PaperUtilities
     {
@@ -27,10 +23,10 @@ namespace BRPLUSA.AutoCAD
             new ArchE1(),
         };
 
-        public static PaperSize CalculatePaperSize(Layout layout)
+        public static PaperSize CalculatePaperSize(double xMin, double xMax, double yMin, double yMax)
         {
-            var roughSize = CalculateRoughPaperSize(layout);
-
+            var roughSize = CalculateRoughPaperSize(xMin, xMax, yMin, yMax);
+            
             var common = CommonPaperSizes.FirstOrDefault(c => 
                             c.SizeValue == roughSize || 
                             c.SizeValue.Reverse() == roughSize);
@@ -43,13 +39,8 @@ namespace BRPLUSA.AutoCAD
 
         }
 
-        private static double[] CalculateRoughPaperSize(Layout layout)
+        private static double[] CalculateRoughPaperSize(double xMin, double xMax, double yMin, double yMax)
         {
-            var xMin = layout.Limits.MinPoint.X;
-            var xMax = layout.Limits.MaxPoint.Y;
-            var yMin = layout.Limits.MinPoint.X;
-            var yMax = layout.Limits.MaxPoint.Y;
-
             double[] coords = { xMin, xMax, yMin, yMax };
 
             var xTotal = Math.Round(coords[0] - coords[1]);
