@@ -68,7 +68,7 @@ namespace BRPLUSA.AutoCAD.Services
 
         }
 
-        public static PaperOrientation CalculatePaperOrientation(Layout layout)
+        public static PaperOrientation CalculatePaperOrientation(double width, double height)
         {
             throw new NotImplementedException();
         }

@@ -23,7 +23,7 @@ namespace BRPLUSA.AutoCAD.Mappers
                 Height = Math.Round(layout.PlotPaperSize.X / 25.4),
                 Width = Math.Round(layout.PlotPaperSize.Y / 25.4),
                 PaperSize = PaperUtilities.CalculatePaperSize(xMin, xMax, yMin, yMax),
-                Orientation = PaperUtilities.CalculatePaperOrientation(layout)
+                Orientation = PaperUtilities.CalculatePaperOrientation(xMin + xMax, yMin + yMax )
             };
         }
     }
