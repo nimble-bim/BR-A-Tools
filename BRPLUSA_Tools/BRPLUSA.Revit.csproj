@@ -7,8 +7,8 @@
     <ProjectGuid>{19A8E334-7B4F-47AE-9B8B-FB8F8278F418}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>BRPLUSA</RootNamespace>
-    <AssemblyName>BRPLUSA</AssemblyName>
+    <RootNamespace>BRPLUSA.Revit</RootNamespace>
+    <AssemblyName>BRPLUSA.Revit</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />

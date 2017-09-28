@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26730.15
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BRPLUSA_Tools", "BRPLUSA_Tools\BRPLUSA_Tools.csproj", "{19A8E334-7B4F-47AE-9B8B-FB8F8278F418}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BRPLUSA.Revit", "BRPLUSA_Tools\BRPLUSA.Revit.csproj", "{19A8E334-7B4F-47AE-9B8B-FB8F8278F418}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BRPLUSA.AutoCAD", "BRPLUSA.AutoCAD\BRPLUSA.AutoCAD.csproj", "{1D58705D-521F-4FAF-8DEC-41E1DB5E915C}"
 EndProject

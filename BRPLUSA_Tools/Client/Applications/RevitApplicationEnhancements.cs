@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Diagnostics;
 using Autodesk.Revit.UI;
-using BRPLUSA.Client.Commands;
-using BRPLUSA.Client.Updaters;
-using BRPLUSA.Services;
+using BRPLUSA.Revit.Client.Commands;
+using BRPLUSA.Revit.Client.Updaters;
+using BRPLUSA.Revit.Services;
 
-namespace BRPLUSA.Client.Applications
+namespace BRPLUSA.Revit.Client.Applications
 {
     public class RevitApplicationEnhancements : IExternalApplication
     {
