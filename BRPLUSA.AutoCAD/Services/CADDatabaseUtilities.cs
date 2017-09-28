@@ -15,6 +15,7 @@ namespace BRPLUSA.AutoCAD.Services
     {
         private static Document CurrentDocument => Application.DocumentManager.MdiActiveDocument;
         private static Database CurrentDatabase => CurrentDocument.Database;
+        private static string CurrentDirectory => Path.GetDirectoryName(CurrentDatabase.Filename);
 
         public static IEnumerable<BlockTableRecord> GetAllBlockTableRecords()
         {
@@ -47,6 +48,38 @@ namespace BRPLUSA.AutoCAD.Services
             }
 
             return xrefs;
+        }
+
+        public static void CopyExternalReference(BlockTableRecord xref, string pathToCopyTo)
+        {
+            try
+            {
+                var xrefFile = FindExternalReference(xref);
+
+                File.Copy(xrefFile, pathToCopyTo, true);
+            }
+
+            catch (Exception e)
+            {
+                
+            }
+        }
+
+        private static string FindExternalReference(BlockTableRecord xref)
+        {
+            try
+            {
+                var drawings = FileUtilities.GetAllDrawingFiles(CurrentDirectory);
+
+                var xrefFile = drawings.FirstOrDefault(d => Path.GetFileName(d).Equals(xref.Name + ".dwg"));
+
+                return xrefFile;
+            }
+
+            catch(Exception e)
+            {
+                throw e;
+            }
         }
 
         public static void ExportExternalReference(BlockTableRecord xref, string pathToExportTo)
@@ -104,7 +137,50 @@ namespace BRPLUSA.AutoCAD.Services
             if (!xref.IsResolved)
                 CurrentDatabase.ResolveXrefs(true, false);
 
+            if (!xref.IsResolved)
+                ForceExternalReferenceResolution(xref);
+
             return xref.IsResolved;
+        }
+
+        private static void ForceExternalReferenceResolution(BlockTableRecord xref)
+        {
+            var xrefFile = FindExternalReference(xref);
+
+            ModifyExternalReferenceSavedPath(xref, xrefFile);
+        }
+
+        private static bool ModifyExternalReferenceSavedPath(BlockTableRecord xref, string newPath)
+        {
+            return ModifyBlockTableRecordField(xref, "PatName", newPath);
+        }
+
+        private static bool ModifyBlockTableRecordField(BlockTableRecord obj, string fieldName, string fieldValue)
+        {
+            using (var tr = CurrentDatabase.TransactionManager.StartTransaction())
+            {
+                if (!obj.HasFields)
+                    return false;
+
+                var fields = ((Field) tr.GetObject(obj.GetField(), OpenMode.ForRead)).GetChildren();
+
+                var requestedField = fields.FirstOrDefault(f => f.Equals(fieldName));
+
+                var fieldCode = requestedField.GetFieldCode(FieldCodeFlags.AddMarkers | FieldCodeFlags.FieldCode);
+
+                var newField = new Field(fieldValue);
+
+                obj.SetField(fieldCode, newField);
+
+                tr.Commit();
+            }
+
+            return obj.FieldValueEquals(fieldName, fieldValue);
+        }
+
+        private static bool FieldValueEquals(this BlockTableRecord record, string fieldName, string fieldValue)
+        {
+            throw new NotImplementedException();
         }
     }
 }
