@@ -52,11 +52,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
     <Compile Include="Extensions\DocumentExtensions.cs" />
     <Compile Include="Extensions\LayoutExtensions.cs" />
     <Compile Include="Mappers\IMapper.cs" />
     <Compile Include="Mappers\LayoutMapper.cs" />
+    <Compile Include="Mappers\ViewportMapper.cs" />
     <Compile Include="PaperSizes\AnsiA.cs" />
     <Compile Include="PaperSizes\AnsiB.cs" />
     <Compile Include="PaperSizes\AnsiC.cs" />
@@ -66,6 +66,7 @@
     <Compile Include="PaperSizes\ArchE.cs" />
     <Compile Include="PaperSizes\ArchE1.cs" />
     <Compile Include="Services\CADDatabaseUtilities.cs" />
+    <Compile Include="Services\CADDocumentUtilities.cs" />
     <Compile Include="Services\FileUtilities.cs" />
     <Compile Include="Services\PaperUtilities.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

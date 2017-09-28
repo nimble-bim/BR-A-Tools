@@ -33,6 +33,19 @@ namespace BRPLUSA.AutoCAD.Services
             return records;
         }
 
+        public static IEnumerable<Layout> GetAllLayouts()
+        {
+            var records = GetAllBlockTableRecords().Where(r => r.IsLayout);
+            Layout[] layouts;
+
+            using (var tr = CurrentDatabase.TransactionManager.StartTransaction())
+            {
+                layouts = records.Select(r => (Layout) tr.GetObject(r.Id, OpenMode.ForRead)).ToArray();
+            }
+
+            return layouts;
+        }
+
         /// <summary>
         /// Gets a collection of the BlockTableRecords that are actually External References
         /// </summary>
