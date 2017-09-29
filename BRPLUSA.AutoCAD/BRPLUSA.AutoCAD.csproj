@@ -52,6 +52,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BackgroundCreator.cs" />
     <Compile Include="Extensions\DocumentExtensions.cs" />
     <Compile Include="Extensions\LayoutExtensions.cs" />
     <Compile Include="Mappers\IMapper.cs" />
@@ -76,6 +77,8 @@
     <Compile Include="Wrappers\Orientation.cs" />
     <Compile Include="PaperSizes\PaperSize.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="TitleBlocks\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
