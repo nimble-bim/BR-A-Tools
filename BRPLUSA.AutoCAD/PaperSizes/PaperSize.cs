@@ -18,6 +18,8 @@
         }
 
         public abstract string PlotConfigurationName { get; }
+        public abstract string TitleBlockName { get; }
+        public abstract string TitleBlockInformation { get; }
 
         public double[] SizeValue => new[] { X, Y };
 
