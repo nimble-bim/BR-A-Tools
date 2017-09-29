@@ -29,6 +29,45 @@ namespace BRPLUSA.AutoCAD.Extensions
                 return !record.GetAllObjectsFromBlockTableRecord().Any();
             }
         }
+
+        public static void SetPageSize(this Layout layout)
+        {
+            using (var docLock = CurrentDocument.LockDocument())
+            {
+                using (var tr = CurrentDatabase.TransactionManager.StartTransaction())
+                {
+                    using (var settings = new PlotSettings(layout.ModelType))
+                    {
+                        settings.CopyFrom(layout);
+                        var validator = PlotSettingsValidator.Current;
+                        validator.SetZoomToPaperOnUpdate(settings, true);
+
+                        var newLayout = (Layout)tr.GetObject(layout.ObjectId, OpenMode.ForRead);
+                        newLayout.UpgradeOpen();
+                        newLayout.CopyFrom(settings);
+
+                        tr.Commit();
+                    }
+                }
+            }
+        }
+
+        public static IEnumerable<Viewport> GetAllViewports(this Layout layout)
+        {
+            var viewports = new Viewport[] { };
+
+            using (var tr = CurrentDatabase.TransactionManager.StartTransaction())
+            {
+                if (layout.ModelType)
+                    return null;
+
+                var viewportIds = layout.GetViewports().Cast<ObjectId>();
+
+                viewports = viewportIds.Select(CADDatabaseUtilities.TryObjectConversionFromObjectId<Viewport>).ToArray();
+            }
+
+            return viewports;
+        }
     }
 
     public static class BlockTableRecordExtensions

@@ -67,7 +67,7 @@ namespace BRPLUSA.AutoCAD.Services
         {
             try
             {
-                var xrefFile = FindExternalReference(xref);
+                var xrefFile = FindExternalReferenceOnFileSystem(xref);
 
                 File.Copy(xrefFile, pathToCopyTo, true);
             }
@@ -78,7 +78,7 @@ namespace BRPLUSA.AutoCAD.Services
             }
         }
 
-        private static string FindExternalReference(BlockTableRecord xref)
+        private static string FindExternalReferenceOnFileSystem(BlockTableRecord xref)
         {
             try
             {
@@ -92,6 +92,48 @@ namespace BRPLUSA.AutoCAD.Services
             catch(Exception e)
             {
                 throw e;
+            }
+        }
+
+        private static void FindExternalReferenceInDrawing(BlockTableRecord xref)
+        {
+            var instances = xref.GetBlockReferenceIds(true, true).Cast<ObjectId>().ToArray();
+
+            var layouts = instances.Select(FindBlockReferenceInDrawing<Layout>);
+        }
+
+        /// <summary>
+        /// Finds the Layout where a given BlockReference exists - may exist in other layouts as well
+        /// </summary>
+        /// <param name="id">ObjectId of BlockReference</param>
+        /// <returns>Parent Layout of given Block Reference</returns>
+        private static T FindBlockReferenceInDrawing<T>(ObjectId id) where T : DBObject 
+        {
+            T expected;
+
+            using (var tr = CurrentDatabase.TransactionManager.StartTransaction())
+            {
+                var reference = (BlockReference)tr.GetObject(id, OpenMode.ForRead);
+                var layoutRecord = (BlockTableRecord)tr.GetObject(reference.OwnerId, OpenMode.ForRead);
+                expected = (T)tr.GetObject(layoutRecord.LayoutId, OpenMode.ForRead);
+                tr.Commit();
+            }
+
+            return expected;
+        }
+
+        public static T TryObjectConversionFromObjectId<T>(ObjectId id) where T : DBObject
+        {
+            try
+            {
+                var obj = (T) id.GetObject(OpenMode.ForRead);
+
+                return obj;
+            }
+
+            catch (Exception e)
+            {
+                throw new Exception("Unable to convert object from objectId");
             }
         }
 
@@ -158,7 +200,7 @@ namespace BRPLUSA.AutoCAD.Services
 
         private static void ForceExternalReferenceResolution(BlockTableRecord xref)
         {
-            var xrefFile = FindExternalReference(xref);
+            var xrefFile = FindExternalReferenceOnFileSystem(xref);
 
             ModifyExternalReferenceSavedPath(xref, xrefFile);
         }
