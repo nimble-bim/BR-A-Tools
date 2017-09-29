@@ -77,8 +77,6 @@
     <Compile Include="Wrappers\Orientation.cs" />
     <Compile Include="PaperSizes\PaperSize.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="TitleBlocks\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

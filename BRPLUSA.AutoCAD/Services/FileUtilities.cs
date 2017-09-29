@@ -30,5 +30,10 @@ namespace BRPLUSA.AutoCAD.Services
                     SearchOption.AllDirectories)
                 .ToArray();
         }
+
+        public static void CreateTypicalProjectDirectories()
+        {
+            
+        }
     }
 }

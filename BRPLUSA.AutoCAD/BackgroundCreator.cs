@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.Runtime;
+using BRPLUSA.AutoCAD.Services;
 
 namespace BRPLUSA.AutoCAD
 {
@@ -13,6 +15,7 @@ namespace BRPLUSA.AutoCAD
         public static void CreateBackgroundFromDrawing()
         {
             // Access and lock the current drawing document + database
+            HostApplicationServices.WorkingDatabase = CADDatabaseUtilities.CurrentDatabase;
 
             /* If the drawing has any AEC or Proxy Objects, send out to
              * AECTOACAD, Audit, Purge and then start processing

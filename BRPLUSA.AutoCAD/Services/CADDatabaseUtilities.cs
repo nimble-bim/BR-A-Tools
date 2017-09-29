@@ -13,9 +13,9 @@ namespace BRPLUSA.AutoCAD.Services
 {
     public static class CADDatabaseUtilities
     {
-        private static Document CurrentDocument => Application.DocumentManager.MdiActiveDocument;
-        private static Database CurrentDatabase => CurrentDocument.Database;
-        private static string CurrentDirectory => Path.GetDirectoryName(CurrentDatabase.Filename);
+        public static Document CurrentDocument => Application.DocumentManager.MdiActiveDocument;
+        public static Database CurrentDatabase => CurrentDocument.Database;
+        public static string CurrentDirectory => Path.GetDirectoryName(CurrentDatabase.Filename);
 
         public static IEnumerable<BlockTableRecord> GetAllBlockTableRecords()
         {
@@ -78,7 +78,7 @@ namespace BRPLUSA.AutoCAD.Services
             }
         }
 
-        private static string FindExternalReferenceOnFileSystem(BlockTableRecord xref)
+        public static string FindExternalReferenceOnFileSystem(BlockTableRecord xref)
         {
             try
             {
@@ -95,7 +95,7 @@ namespace BRPLUSA.AutoCAD.Services
             }
         }
 
-        private static void FindExternalReferenceInDrawing(BlockTableRecord xref)
+        public static void FindExternalReferenceInDrawing(BlockTableRecord xref)
         {
             var instances = xref.GetBlockReferenceIds(true, true).Cast<ObjectId>().ToArray();
 
@@ -107,7 +107,7 @@ namespace BRPLUSA.AutoCAD.Services
         /// </summary>
         /// <param name="id">ObjectId of BlockReference</param>
         /// <returns>Parent Layout of given Block Reference</returns>
-        private static T FindBlockReferenceInDrawing<T>(ObjectId id) where T : DBObject 
+        public static T FindBlockReferenceInDrawing<T>(ObjectId id) where T : DBObject 
         {
             T expected;
 
