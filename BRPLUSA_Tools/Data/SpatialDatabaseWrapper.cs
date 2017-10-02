@@ -14,13 +14,19 @@ namespace BRPLUSA.Data
     {
         private readonly LiteDatabase _db;
         private IEnumerable<SpaceWrapper> Spaces => _db.GetCollection<SpaceWrapper>().FindAll();
+        private readonly string _location;
 
         public SpatialDatabaseWrapper(Document doc)
         {
             var directory = Path.GetDirectoryName(doc.PathName);
-            var dbLocation = Path.Combine(directory, "SpatialData.db");
+            _location = Path.Combine(directory, "SpatialData.db");
 
-            _db = new LiteDatabase(dbLocation);
+            _db = new LiteDatabase(_location);
+        }
+
+        private bool IsDatabaseCreated()
+        {
+            return File.Exists(_location);
         }
 
         public bool IsCurrentlyTracked(Space space)
@@ -34,9 +40,9 @@ namespace BRPLUSA.Data
         {
             var dbSpace = FindElement(space.UniqueId);
 
-            var exhaustNeedsUpdate = Math.Abs(space.DesignExhaustAirflow - dbSpace.SpecifiedExhaustAirflow) > .0001;
-            var returnNeedsUpdate = Math.Abs(space.DesignReturnAirflow - dbSpace.SpecifiedReturnAirflow) > .0001;
-            var supplyNeedsUpdate = Math.Abs(space.DesignSupplyAirflow - dbSpace.SpecifiedSupplyAirflow) > .0001;
+            var exhaustNeedsUpdate = dbSpace.ExhaustNeedsUpdate(space);
+            var returnNeedsUpdate = dbSpace.ReturnNeedsUpate(space);
+            var supplyNeedsUpdate = dbSpace.SupplyNeedsUpdate(space);
 
             return exhaustNeedsUpdate || returnNeedsUpdate || supplyNeedsUpdate;
         }
@@ -74,7 +80,9 @@ namespace BRPLUSA.Data
             // check if any of the spaces already exist in the db
             // if so, prompt the user and ask whether they want to connect
             // all the spaces and it's peers together
-            return spaces.Any(IsInDatabase) 
+            var hasOldSpaces = spaces.Any(IsInDatabase);
+
+            return hasOldSpaces
                 ? HandleNewAndOldSpaces(spaces) 
                 : HandleNewSpaces(spaces);
         }
@@ -91,9 +99,15 @@ namespace BRPLUSA.Data
 
         private bool IsInDatabase(string uniqueId)
         {
-            var element = _db.GetCollection<SpaceWrapper>().FindOne(s => s.Id == uniqueId);
+            if (!IsDatabaseCreated())
+                return false;
 
-            return element != null;
+            var elements = _db.GetCollection<SpaceWrapper>();
+            var element = elements.FindOne(s => s.Id == uniqueId);
+
+            var isInDb = element != null;
+
+            return isInDb;
         }
 
         private bool HandleNewSpaces(IEnumerable<Space> spaces)
@@ -103,15 +117,17 @@ namespace BRPLUSA.Data
                 var dbSpaces = _db.GetCollection<SpaceWrapper>();
 
                 // else, add the space and it's peers along with their respective properties
-                var ids = spaces.Select(s => s.UniqueId);
+                var ids = spaces.Select(s => s.UniqueId).ToArray();
 
                 var wrapped = MapEntities(spaces);
+                var newWrap = new List<SpaceWrapper>();
                 foreach (var w in wrapped)
                 {
-                    w.ConnectedSpaces = ids;
+                    w.ConnectPeers(ids);
+                    newWrap.Add(w);
                 }
 
-                dbSpaces.Insert(wrapped);
+                dbSpaces.Insert(newWrap);
                 dbSpaces.EnsureIndex(s => s.Id);
 
                 return true;
@@ -181,7 +197,7 @@ namespace BRPLUSA.Data
             var newConns = sp1.ConnectedSpaces.ToList();
             newConns.Remove(spaceDisconn);
 
-            sp1.ConnectedSpaces = newConns;
+            sp1.ConnectPeers(newConns);
 
             UpdateElement(sp1);
         }
@@ -225,9 +241,14 @@ namespace BRPLUSA.Data
 
         public void UpdateElement(Space space)
         {
-            _db.GetCollection<SpaceWrapper>().Update(new SpaceWrapper(space));
+            var dbSpaces = _db.GetCollection<SpaceWrapper>();
+            var dbSp = dbSpaces.FindOne(s => s.Id == space.UniqueId);
 
-            UpdateElementPeers(space);
+            dbSp.SpecifiedExhaustAirflow = space.DesignExhaustAirflow;
+            dbSp.SpecifiedReturnAirflow = space.DesignReturnAirflow;
+            dbSp.SpecifiedSupplyAirflow = space.DesignSupplyAirflow;
+
+            dbSpaces.Update(dbSp);
         }
 
         public void UpdateElement(SpaceWrapper wrap)
@@ -235,21 +256,27 @@ namespace BRPLUSA.Data
             _db.GetCollection<SpaceWrapper>().Update(wrap);
         }
 
-        private void UpdateElementPeers(Space parent)
-        {
-            var db = _db.GetCollection<SpaceWrapper>();
-            var peerIds = db.FindOne(s => s.Id == parent.UniqueId).ConnectedSpaces;
-            var peers = peerIds.Select(FindElement);
+        //private void UpdateElementPeers(Space parent)
+        //{
+        //    var dbSpaces = _db.GetCollection<SpaceWrapper>();
+        //    var dbSp = dbSpaces.FindOne(s => s.Id == parent.UniqueId);
+        //    var peerIds = dbSp.ConnectedSpaces;
+        //    var peers = peerIds.Select(FindElement).ToArray();
 
-            foreach (var peer in peers)
-            {
-                peer.SpecifiedExhaustAirflow = parent.DesignExhaustAirflow;
-                peer.SpecifiedReturnAirflow = parent.DesignReturnAirflow;
-                peer.SpecifiedSupplyAirflow = parent.DesignSupplyAirflow;
-            }
+        //    foreach (var peer in peers)
+        //    {
+        //        if(peer.ExhaustNeedsUpdate(parent))
+        //            peer.SpecifiedExhaustAirflow = parent.DesignExhaustAirflow;
 
-            db.Update(peers);
-        }
+        //        if(peer.ReturnNeedsUpate(parent))
+        //            peer.SpecifiedReturnAirflow = parent.DesignReturnAirflow;
+
+        //        if(peer.SupplyNeedsUpdate(parent))
+        //            peer.SpecifiedSupplyAirflow = parent.DesignSupplyAirflow;
+        //    }
+
+        //    dbSpaces.Update(peers);
+        //}
 
         public void Dispose()
         {

@@ -6,6 +6,7 @@ using Autodesk.Revit.DB.Mechanical;
 using Autodesk.Revit.UI;
 using BRPLUSA.Base;
 using BRPLUSA.Data;
+using BRPLUSA.Entities.Wrappers;
 
 namespace BRPLUSA.Client.Updaters
 {
@@ -22,8 +23,10 @@ namespace BRPLUSA.Client.Updaters
 
         public override void Execute(UpdaterData data)
         {
-            _db = new SpatialDatabaseWrapper(_doc);
-            CheckSpatialProperties(data);
+            using (_db = new SpatialDatabaseWrapper(_doc))
+            {
+                CheckSpatialProperties(data);
+            }
         }
 
         public override string GetAdditionalInformation()
@@ -59,7 +62,6 @@ namespace BRPLUSA.Client.Updaters
                     return;
 
                 UpdateSpace(needsUpdate);
-                TaskDialog.Show("Update Complete", $"Updated {needsUpdate.Length} linked spaces");
             }
 
             catch (Exception e)
@@ -89,7 +91,43 @@ namespace BRPLUSA.Client.Updaters
 
         private void UpdateSpace(Space space)
         {
-            _db.UpdateElement(space);
+            var wrapper = UpdateRevitDocument(space);
+
+            _db.UpdateElement(wrapper);
+        }
+
+        private SpaceWrapper UpdateRevitDocument(Space space)
+        {
+            var changedSp = _db.FindElement(space.UniqueId);
+
+            var spacesToUpdate = changedSp.ConnectedSpaces.ToArray();
+
+            var newEx = space.DesignExhaustAirflow;
+            var newRet = space.DesignReturnAirflow;
+            var newSup = space.DesignSupplyAirflow;
+
+            foreach (var id in spacesToUpdate)
+            {
+                using (var trans = new SubTransaction(_doc))
+                {
+                    if (!trans.HasStarted())
+                        trans.Start();
+
+                    var spRev = (Space) _doc.GetElement(id);
+
+                    spRev.DesignExhaustAirflow = newEx;
+                    spRev.DesignReturnAirflow = newRet;
+                    spRev.DesignSupplyAirflow = newSup;
+
+                    trans.Commit();
+
+                    _db.UpdateElement(spRev);
+                }
+            }
+
+            TaskDialog.Show("Update Complete!", $"{spacesToUpdate.Length - 1} linked spaces updated!");
+
+            return changedSp;
         }
 
         private void UpdateSpace(IEnumerable<Space> spaces)

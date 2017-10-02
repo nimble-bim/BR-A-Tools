@@ -20,12 +20,18 @@ namespace BRPLUSA.Client.Commands
 
         protected override Result Work()
         {
+            Result connected;
+
             using (_db = new SpatialDatabaseWrapper(CurrentDocument))
             {
                 _spaces = SelectSpaces();
+                connected = ConnectSpaces();
             }
 
-            return ConnectSpaces();
+            if (connected == Result.Succeeded)
+                TaskDialog.Show("Success", "Connected the requested spaces!");
+
+            return connected;
         }
 
         private IEnumerable<Space> SelectSpaces()
@@ -36,7 +42,7 @@ namespace BRPLUSA.Client.Commands
                     new RevitSelectionFilter<Space>(),
                     "Please select the spaces you'd like to connect.");
 
-                var spaceElems = spaceRefs.Select(r => CurrentDocument.GetElement(r.ElementId));
+                var spaceElems = spaceRefs.Select(r => CurrentDocument.GetElement(r.ElementId)).ToArray();
 
                 if (spaceElems.Cast<Space>().Any(s => _db.IsInDatabase(s)))
                     RequestSelectionClarification();
@@ -64,9 +70,11 @@ namespace BRPLUSA.Client.Commands
 
         private Result TrackSpatialProperties(IEnumerable<Space> spaces)
         {
-            return _db.CreateElementRelationship(spaces) 
+            var isTracking = _db.CreateElementRelationship(spaces) 
                 ? Result.Succeeded 
                 : Result.Failed;
+
+            return isTracking;
         }
     }
 }
