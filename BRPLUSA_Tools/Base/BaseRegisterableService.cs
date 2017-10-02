@@ -1,8 +1,8 @@
 ﻿using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
-using BRPLUSA.Interfaces;
+using BRPLUSA.Revit.Interfaces;
 
-namespace BRPLUSA.Base
+namespace BRPLUSA.Revit.Base
 {
     public abstract class BaseRegisterableService : IRegisterableService
     {

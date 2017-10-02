@@ -2,9 +2,9 @@
 using Autodesk.Revit.DB;
 using Autodesk.Revit.DB.Events;
 using Autodesk.Revit.UI;
-using BRPLUSA.Interfaces;
+using BRPLUSA.Revit.Interfaces;
 
-namespace BRPLUSA.Services
+namespace BRPLUSA.Revit.Services
 {
     public class RegistrationService
     {

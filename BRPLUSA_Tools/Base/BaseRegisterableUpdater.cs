@@ -1,6 +1,6 @@
 ﻿using Autodesk.Revit.DB;
 
-namespace BRPLUSA.Base
+namespace BRPLUSA.Revit.Base
 {
     public abstract class BaseRegisterableUpdater : BaseRegisterableService, IUpdater
     {
