@@ -27,7 +27,7 @@ namespace BRPLUSA.Revit.Client.Applications
             {
                 CreateRibbon(app);
                 _registerServ = new RegistrationService(app);
-                _registerServ.RegisterServices(new SpatialPropertyUpdater(app));
+
                 return Result.Succeeded;
             }
             catch (Exception e)

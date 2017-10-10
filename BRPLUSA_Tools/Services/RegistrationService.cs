@@ -2,6 +2,7 @@
 using Autodesk.Revit.DB;
 using Autodesk.Revit.DB.Events;
 using Autodesk.Revit.UI;
+using BRPLUSA.Revit.Client.Updaters;
 using BRPLUSA.Revit.Interfaces;
 
 namespace BRPLUSA.Revit.Services
@@ -15,16 +16,19 @@ namespace BRPLUSA.Revit.Services
         {
             _app = app;
             _services = new List<IRegisterableService>();
+
             Initialize();
         }
 
         private void Initialize()
         {
+            RegisterServices(new SpatialPropertyUpdater(_app));
+
             _app.ControlledApplication.DocumentOpened += RegisterServices;
             _app.ControlledApplication.DocumentClosed += DeregisterServices;
         }
 
-        public void RegisterServices(params IRegisterableService[] services)
+        private void RegisterServices(params IRegisterableService[] services)
         {
             foreach (var serv in services)
             {
@@ -32,7 +36,7 @@ namespace BRPLUSA.Revit.Services
             }
         }
 
-        public void RegisterServices(IRegisterableService serv)
+        private void RegisterServices(IRegisterableService serv)
         {
             _services.Add(serv);
         }
