@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Autodesk.AutoCAD.ApplicationServices;
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.Runtime;
 using BRPLUSA.AutoCAD.Services;
@@ -11,6 +13,10 @@ namespace BRPLUSA.AutoCAD
 {
     public class BackgroundCreator
     {
+        public static Document CurrentDocument => Application.DocumentManager.MdiActiveDocument;
+        public static Database CurrentDatabase => CurrentDocument.Database;
+        public static string CurrentDirectory => Path.GetDirectoryName(CurrentDatabase.Filename);
+
         [CommandMethod("ProjSet", CommandFlags.Session)]
         public static void CreateBackgroundFromDrawing()
         {
@@ -22,26 +28,40 @@ namespace BRPLUSA.AutoCAD
              */
 
             // Create appropriate directories
+            CADFileUtilities.CreateTypicalProjectDirectories();
+            using (var locked = CurrentDocument.LockDocument())
+            {
+                // Gather a list of all necessary external references from document
+                // Export each external reference to the file system
+                CADDatabaseUtilities.ExportAllExternalReferences();
 
-            // Gather a list of all necessary external references from document
+                // audit and purge the document of extraneous data
+                CurrentDocument.CleanDocument();
 
-            // Export each external reference to the file system
+                // Create a list of layouts in the document
 
-            // Create a list of layouts in the document
+                // Create a list of the viewports and their status/data
 
-            // Create a list of the viewports and their status/data
+                // Save the consultant drawing to the file system
 
-            // Save the consultant drawing to the file system
+                // *************************************************
 
-            // *************************************************
+                // Create new drawing based on BR+A drawing template
 
-            // Create new drawing based on BR+A drawing template
+                // Insert consultant drawing as external reference
 
-            // Insert consultant drawing as external reference
+                // Create an appropiately sized layout based on Layout in Architectural Drawing
 
-            // Create an appropiately sized layout based on Layout in Architectural Drawing
+                // Place a BR+A Title Block and TBLKInfo on the Layout
 
-            // Place a BR+A Title Block and TBLKInfo on the Layout
+                // audit and purge the document of extraneous data
+                CurrentDocument.CleanDocument();
+            }
+        }
+
+        public static IEnumerable<Layout> GetAllLayoutsFromDocument()
+        {
+            return CADDatabaseUtilities.GetAllLayouts();
         }
     }
 }

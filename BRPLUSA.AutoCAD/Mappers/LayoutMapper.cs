@@ -18,12 +18,16 @@ namespace BRPLUSA.AutoCAD.Mappers
             var yMin = layout.Limits.MinPoint.X;
             var yMax = layout.Limits.MaxPoint.Y;
 
+            var vpMapper = new ViewportMapper();
+            var viewports = CADDocumentUtilities.GetAllViewports(layout);
+
             return new ACADLayout
             {
                 Height = Math.Round(layout.PlotPaperSize.X / 25.4),
                 Width = Math.Round(layout.PlotPaperSize.Y / 25.4),
                 PaperSize = PaperUtilities.CalculatePaperSize(xMin, xMax, yMin, yMax),
-                Orientation = PaperUtilities.CalculatePaperOrientation(xMin + xMax, yMin + yMax )
+                Orientation = PaperUtilities.CalculatePaperOrientation(xMin + xMax, yMin + yMax ),
+                Viewports = viewports.Select(vp => vpMapper.Map(vp))
             };
         }
     }

@@ -63,6 +63,24 @@ namespace BRPLUSA.AutoCAD.Services
             return xrefs;
         }
 
+        public static void ExportAllExternalReferences()
+        {
+            try
+            {
+                var xrefs = GetAllExternalReferences();
+
+                foreach (var xref in xrefs)
+                {
+                    CopyExternalReference(xref, CADFileUtilities.CurrentReferenceDirectory);
+                }
+            }
+
+            catch (Exception e)
+            {
+                
+            }
+        }
+
         public static void CopyExternalReference(BlockTableRecord xref, string pathToCopyTo)
         {
             try
@@ -126,7 +144,7 @@ namespace BRPLUSA.AutoCAD.Services
         {
             try
             {
-                var obj = (T) id.GetObject(OpenMode.ForRead);
+                var obj = (T) id.GetObject(OpenMode.ForRead, false, true);
 
                 return obj;
             }

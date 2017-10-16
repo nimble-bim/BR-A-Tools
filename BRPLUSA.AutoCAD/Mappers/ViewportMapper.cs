@@ -20,7 +20,7 @@ namespace BRPLUSA.AutoCAD.Mappers
                 Width = item.Width,
                 Height = item.Height,
                 ViewHeight = item.ViewHeight,
-                FrozenLayers = layers
+                FrozenLayers = layers // might need some work
             };
         }
     }
