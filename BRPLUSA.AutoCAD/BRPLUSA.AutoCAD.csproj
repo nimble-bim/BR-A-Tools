@@ -67,7 +67,6 @@
     <Compile Include="PaperSizes\ArchE.cs" />
     <Compile Include="PaperSizes\ArchE1.cs" />
     <Compile Include="Services\CADDatabaseUtilities.cs" />
-    <Compile Include="Services\CADDocumentUtilities.cs" />
     <Compile Include="Services\CADFileUtilities.cs" />
     <Compile Include="Services\PaperUtilities.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -14,6 +14,7 @@ namespace BRPLUSA.AutoCAD
 {
     public class BackgroundCreator
     {
+        private const string DrawingTemplate = @"G:\Shared\CADD\ACAD2011\Template\BR+A.dwt";
         public static Document CurrentDocument => Application.DocumentManager.MdiActiveDocument;
         public static Database CurrentDatabase => CurrentDocument.Database;
         public static string CurrentDirectory => Path.GetDirectoryName(CurrentDatabase.Filename);
@@ -43,7 +44,7 @@ namespace BRPLUSA.AutoCAD
 
                 // Create a list of layouts in the document
                 // Create a list of the viewports and their status/data
-                layouts = CADDocumentUtilities.CopyLayouts().ToArray();
+                layouts = CADDatabaseUtilities.CopyLayouts().ToArray();
             }
 
             // Save the consultant drawing to the file system
@@ -70,10 +71,24 @@ namespace BRPLUSA.AutoCAD
 
         private static void SaveCurrentBackground()
         {
-            CurrentDatabase.SaveAs(CADFileUtilities.CurrentReferenceDirectory,
-                true,
-                DwgVersion.AC1800,
-                CurrentDatabase.SecurityParameters);
+            try
+            {
+
+                CurrentDatabase.SaveAs(CADFileUtilities.CurrentReferenceDirectory,
+                    true,
+                    DwgVersion.AC1800,
+                    CurrentDatabase.SecurityParameters);
+            }
+
+            catch (Autodesk.AutoCAD.Runtime.Exception aex)
+            {
+                
+            }
+        }
+
+        private static void CreateNewDrawingFromTemplate()
+        {
+            var newDoc = CurrentDocument.CreateNew
         }
     }
 }
