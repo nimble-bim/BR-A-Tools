@@ -82,7 +82,7 @@ namespace BRPLUSA.AutoCAD.Services
         {
             try
             {
-                var drawings = FileUtilities.GetAllDrawingFiles(CurrentDirectory);
+                var drawings = CADFileUtilities.GetAllDrawingFiles(CurrentDirectory);
 
                 var xrefFile = drawings.FirstOrDefault(d => Path.GetFileName(d).Equals(xref.Name + ".dwg"));
 

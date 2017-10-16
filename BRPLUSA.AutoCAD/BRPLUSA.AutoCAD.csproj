@@ -68,7 +68,7 @@
     <Compile Include="PaperSizes\ArchE1.cs" />
     <Compile Include="Services\CADDatabaseUtilities.cs" />
     <Compile Include="Services\CADDocumentUtilities.cs" />
-    <Compile Include="Services\FileUtilities.cs" />
+    <Compile Include="Services\CADFileUtilities.cs" />
     <Compile Include="Services\PaperUtilities.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Wrappers\ACADCoordinate.cs" />
@@ -77,6 +77,11 @@
     <Compile Include="Wrappers\Orientation.cs" />
     <Compile Include="PaperSizes\PaperSize.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\BRPLUSA.Core\BRPLUSA.Core.csproj">
+      <Project>{ec0e8d93-3d21-482a-9f97-e7e5d2f8a192}</Project>
+      <Name>BRPLUSA.Core</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
