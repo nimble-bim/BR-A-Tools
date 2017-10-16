@@ -8,6 +8,7 @@ using Autodesk.AutoCAD.ApplicationServices;
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.Runtime;
 using BRPLUSA.AutoCAD.Services;
+using BRPLUSA.AutoCAD.Wrappers;
 
 namespace BRPLUSA.AutoCAD
 {
@@ -27,6 +28,8 @@ namespace BRPLUSA.AutoCAD
              * AECTOACAD, Audit, Purge and then start processing
              */
 
+            ACADLayout[] layouts = { };
+
             // Create appropriate directories
             CADFileUtilities.CreateTypicalProjectDirectories();
             using (var locked = CurrentDocument.LockDocument())
@@ -39,29 +42,38 @@ namespace BRPLUSA.AutoCAD
                 CurrentDocument.CleanDocument();
 
                 // Create a list of layouts in the document
-
                 // Create a list of the viewports and their status/data
-
-                // Save the consultant drawing to the file system
-
-                // *************************************************
-
-                // Create new drawing based on BR+A drawing template
-
-                // Insert consultant drawing as external reference
-
-                // Create an appropiately sized layout based on Layout in Architectural Drawing
-
-                // Place a BR+A Title Block and TBLKInfo on the Layout
-
-                // audit and purge the document of extraneous data
-                CurrentDocument.CleanDocument();
+                layouts = CADDocumentUtilities.CopyLayouts().ToArray();
             }
+
+            // Save the consultant drawing to the file system
+            SaveCurrentBackground();
+
+            // *************************************************
+
+            // Create new drawing based on BR+A drawing template
+
+            // Insert consultant drawing as external reference
+
+            // Create an appropiately sized layout based on Layout in Architectural Drawing
+
+            // Place a BR+A Title Block and TBLKInfo on the Layout
+
+            // audit and purge the document of extraneous data
+            CurrentDocument.CleanDocument();
         }
 
         public static IEnumerable<Layout> GetAllLayoutsFromDocument()
         {
             return CADDatabaseUtilities.GetAllLayouts();
+        }
+
+        private static void SaveCurrentBackground()
+        {
+            CurrentDatabase.SaveAs(CADFileUtilities.CurrentReferenceDirectory,
+                true,
+                DwgVersion.AC1800,
+                CurrentDatabase.SecurityParameters);
         }
     }
 }

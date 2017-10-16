@@ -46,6 +46,17 @@ namespace BRPLUSA.AutoCAD.Services
             return layouts;
         }
 
+
+        public static IEnumerable<Viewport> GetAllViewports(Layout layout)
+        {
+            ObjectId[] vpIds = { };
+            layout.GetViewports().CopyTo(vpIds, 0);
+
+            var viewports = vpIds.Select(v => (Viewport)v.GetObject(OpenMode.ForRead, false, true));
+
+            return viewports;
+        }
+
         /// <summary>
         /// Gets a collection of the BlockTableRecords that are actually External References
         /// </summary>

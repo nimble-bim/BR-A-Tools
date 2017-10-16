@@ -73,34 +73,17 @@ namespace BRPLUSA.AutoCAD.Services
 
         public static IEnumerable<ACADLayout> CopyLayouts()
         {
+            Layout[] layouts = { };
+            var mapper = new LayoutMapper();
+
             using (var tr = CurrentDatabase.TransactionManager.StartTransaction())
             {
-                var layouts = CADDatabaseUtilities.GetAllLayouts();
-
-
+                layouts = CADDatabaseUtilities.GetAllLayouts().ToArray();
 
                 tr.Commit();
             }
-        }
 
-        public static IEnumerable<Viewport> GetAllViewports(Layout layout)
-        {
-            ObjectId[] vpIds = {};
-            layout.GetViewports().CopyTo(vpIds, 0);
-
-            var viewports = vpIds.Select(v => (Viewport) v.GetObject(OpenMode.ForRead, false, true));
-
-            return viewports;
-        }
-
-        private static ACADLayout MapLayout(Layout layout)
-        {
-            return new LayoutMapper().Map(layout);
-        }
-
-        public static ACADViewport MapViewport(Viewport viewport)
-        {
-            return new ViewportMapper().Map(viewport);
+            return layouts.Select(l => mapper.Map(l));
         }
     }
 }
