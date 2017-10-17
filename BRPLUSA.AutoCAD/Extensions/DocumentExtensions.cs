@@ -1,7 +1,10 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using Autodesk.AutoCAD.ApplicationServices;
 using Autodesk.AutoCAD.DatabaseServices;
+using Autodesk.AutoCAD.Geometry;
+using BRPLUSA.AutoCAD.Services;
 
 namespace BRPLUSA.AutoCAD.Extensions
 {
@@ -41,6 +44,94 @@ namespace BRPLUSA.AutoCAD.Extensions
             }
         }
 
+        /// <summary>
+        /// An extension method which adds an external reference to the current document
+        /// </summary>
+        /// <param name="doc">The document which should have the xref added to it</param>
+        /// <param name="xrefPath">The path of the xref to be added</param>
+        /// <param name="xrefName">How the name of the xref should appear in the new document</param>
+        /// <param name="layoutName">Space where the xref should be added; can only be Model or PaperSpace</param>
+        public static void AttachExternalReference(this Document doc, string xrefPath, string xrefName, string layoutName)
+        {
+            if (File.Exists(xrefPath))
+                return;
+
+            var db = doc.Database;
+
+            using (var locked = doc.LockDocument())
+            {
+                using (var tr = db.TransactionManager.StartTransaction())
+                {
+                    var xrefId = new ObjectId(IntPtr.Zero);
+                    doc.CreateNewLayer("x-xref");
+
+                    try
+                    {
+                        xrefId = db.AttachXref(xrefPath, xrefName);
+                    }
+
+                    catch (Autodesk.AutoCAD.Runtime.Exception)
+                    {
+                        
+                    }
+
+
+
+                }
+            }
+        }
+
+        private static void PlaceExternalReferenceInModelSpace(this Document doc, ObjectId xrefId)
+        {
+            var db = doc.Database;
+
+            using (var locked = doc.LockDocument())
+            {
+                using (var tr = db.TransactionManager.StartTransaction())
+                {
+                    var origin = new Point3d(0, 0, 0);
+                    var block = new BlockReference(origin, xrefId);
+
+                    var table = (BlockTable) tr.GetObject(db.BlockTableId, OpenMode.ForRead);
+                    var modelSpace = (BlockTableRecord) tr.GetObject(table[BlockTableRecord.ModelSpace], OpenMode.ForWrite);
+
+                    modelSpace.AppendEntity(block);
+                    tr.AddNewlyCreatedDBObject(block, true);
+
+                    tr.Commit();
+                }
+            }
+        }
+
+        private static void PlaceExternalReferenceInExistingLayout(this Document doc, ObjectId xrefId, string layoutName)
+        {
+            var db = doc.Database;
+
+            using (var locked = doc.LockDocument())
+            {
+                using (var tr = db.TransactionManager.StartTransaction())
+                {
+                    var origin = new Point3d(0, 0, 0);
+                    var block = new BlockReference(origin, xrefId);
+
+
+
+                    var table = (BlockTable)tr.GetObject(db.BlockTableId, OpenMode.ForRead);
+                    var layoutSpace = (BlockTableRecord)tr.GetObject(table[BlockTableRecord.PaperSpace], OpenMode.ForWrite);
+
+                    layoutSpace.AppendEntity(block);
+                    tr.AddNewlyCreatedDBObject(block, true);
+
+                    tr.Commit();
+                }
+            }
+        }
+
+        private static void PlaceExternalReferenceInNewLayout(this Document doc, ObjectId xrefId)
+        {
+            
+        }
+
         public static Document CreateNewDocument(this Document doc, string templateLocation, string directoryToSaveIn, string dwgName)
         {
             var docmgr = Application.DocumentManager;
@@ -57,18 +148,6 @@ namespace BRPLUSA.AutoCAD.Extensions
                 doc.Database.SecurityParameters);
 
             return newdoc;
-        }
-
-        /// <summary>
-        /// An extension method which adds an external reference to the current document
-        /// </summary>
-        /// <param name="doc">The document which should have the xref added to it</param>
-        /// <param name="xrefPath">The path of the xref to be added</param>
-        /// <param name="xrefName">How the name of the xref should appear in the new document</param>
-        /// <param name="layoutName">Space where the xref should be added; can only be Model or PaperSpace</param>
-        public static void AttachExternalReference(this Document doc, string xrefPath, string xrefName, string layoutName)
-        {
-            
         }
 
         private static void CreateNewLayer(this Document doc, string layerName, bool isLocked = false, bool isFrozen = false)
@@ -90,6 +169,23 @@ namespace BRPLUSA.AutoCAD.Extensions
 
                 tr.Commit();
             }
+        }
+
+        private static Layout CreateNewLayout(this Document doc, string layoutName)
+        {
+            var db = doc.Database;
+            var newLayout = new Layout();
+
+            using (var tr = db.TransactionManager.StartTransaction())
+            {
+                var manager = LayoutManager.Current;
+                var newLayoutId = manager.CreateLayout(layoutName);
+                newLayout = (Layout) tr.GetObject(newLayoutId, OpenMode.ForRead);
+
+                tr.Commit();
+            }
+
+            return newLayout;
         }
 
         private static LayerTableRecord GetLayer(this Document doc, string layerName)
@@ -192,6 +288,33 @@ namespace BRPLUSA.AutoCAD.Extensions
             {
                 throw new Exception();
             }
+        }
+
+        public static Layout GetLayout(this Document doc, string layoutName)
+        {
+            try
+            {
+                var existing = CADDatabaseUtilities
+                    .GetAllLayouts()
+                    .Single(l => l.LayoutName.Equals(layoutName));
+
+                return existing;
+            }
+
+            catch (Exception e)
+            {
+                return doc.CreateNewLayout(layoutName);
+            }
+
+        }
+
+        private static Layout GetModelSpaceLayout(this Document doc)
+        {
+            var layouts = CADDatabaseUtilities.GetAllLayouts();
+
+            var model = layouts.FirstOrDefault(lay => lay.LayoutName.ToUpper() == "MODEL");
+
+            return model;
         }
     }
 }
