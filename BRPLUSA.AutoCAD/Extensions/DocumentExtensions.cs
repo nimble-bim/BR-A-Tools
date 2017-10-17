@@ -1,12 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Autodesk.AutoCAD.ApplicationServices;
 using Autodesk.AutoCAD.DatabaseServices;
-using Microsoft.SqlServer.Server;
 
 namespace BRPLUSA.AutoCAD.Extensions
 {
@@ -64,14 +59,37 @@ namespace BRPLUSA.AutoCAD.Extensions
             return newdoc;
         }
 
-        public static void AttachExternalReference(this Document doc)
+        /// <summary>
+        /// An extension method which adds an external reference to the current document
+        /// </summary>
+        /// <param name="doc">The document which should have the xref added to it</param>
+        /// <param name="xrefPath">The path of the xref to be added</param>
+        /// <param name="xrefName">How the name of the xref should appear in the new document</param>
+        /// <param name="layoutName">Space where the xref should be added; can only be Model or PaperSpace</param>
+        public static void AttachExternalReference(this Document doc, string xrefPath, string xrefName, string layoutName)
         {
             
         }
 
-        private static void CreateNewLayer(this Document doc, string layerName)
+        private static void CreateNewLayer(this Document doc, string layerName, bool isLocked = false, bool isFrozen = false)
         {
+            var db = doc.Database;
+            var record = new LayerTableRecord
+            {
+                Name = layerName,
+                IsLocked = isLocked,
+                IsFrozen = isFrozen
+            };
 
+            using (var tr = db.TransactionManager.StartTransaction())
+            {
+                var table = (LayerTable) tr.GetObject(db.LayerTableId, OpenMode.ForRead);
+
+                table.UpgradeOpen();
+                tr.AddNewlyCreatedDBObject(record, true);
+
+                tr.Commit();
+            }
         }
 
         private static LayerTableRecord GetLayer(this Document doc, string layerName)
