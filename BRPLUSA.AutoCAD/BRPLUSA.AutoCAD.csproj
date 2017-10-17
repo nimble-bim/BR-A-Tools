@@ -68,6 +68,8 @@
     <Compile Include="PaperSizes\ArchE1.cs" />
     <Compile Include="Services\CADDatabaseUtilities.cs" />
     <Compile Include="Services\CADFileUtilities.cs" />
+    <Compile Include="Services\LayerServices.cs" />
+    <Compile Include="Services\LayoutServices.cs" />
     <Compile Include="Services\PaperUtilities.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Wrappers\ACADCoordinate.cs" />
