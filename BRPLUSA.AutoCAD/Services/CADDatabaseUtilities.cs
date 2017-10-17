@@ -55,40 +55,6 @@ namespace BRPLUSA.AutoCAD.Services
             }
         }
 
-        public static void CleanDocument(this Document doc)
-        {
-            doc.ForceDocumentAudit();
-            doc.ForceDocumentPurge();
-        }
-
-        private static void ForceDocumentAudit(this Document doc)
-        {
-            try
-            {
-                doc.SendStringToExecute("_AUDIT\n", true, false, true);
-                doc.SendStringToExecute("Y\n", true, false, true);
-            }
-
-            catch
-            {
-            }
-        }
-
-        private static void ForceDocumentPurge(this Document doc)
-        {
-            try
-            {
-                doc.SendStringToExecute("-PURGE\n", true, false, true);
-                doc.SendStringToExecute("All\n", true, false, true);
-                doc.SendStringToExecute("*\n", true, false, true);
-                doc.SendStringToExecute("N\n", true, false, true);
-            }
-
-            catch
-            {
-            }
-        }
-
         public static IEnumerable<ACADLayout> CopyLayouts()
         {
             Layout[] layouts = { };
@@ -152,7 +118,7 @@ namespace BRPLUSA.AutoCAD.Services
 
                 foreach (var xref in xrefs)
                 {
-                    CopyExternalReference(xref, CADFileUtilities.CurrentReferenceDirectory);
+                    CopyExternalReference(xref, CADFileUtilities.ReferenceBackgroundDirectory);
                 }
             }
 

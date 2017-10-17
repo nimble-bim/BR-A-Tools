@@ -14,8 +14,8 @@ namespace BRPLUSA.AutoCAD.Services
     {
         private const string XrefFolderName = "SETUP";
         private const string DwgFolderName = "_Setup Files";
-        public static string CurrentReferenceDirectory { get; private set; }
-        public static string CurrentDrawingLocation { get; private set; }
+        public static string ReferenceBackgroundDirectory { get; private set; }
+        public static string NewBackgroundDirectory { get; private set; }
 
         /// <summary>
         /// Recursively gathers all drawing files
@@ -37,10 +37,10 @@ namespace BRPLUSA.AutoCAD.Services
 
             var currentLocation = db.Filename;
 
-            CurrentReferenceDirectory = Path.Combine(currentLocation, XrefFolderName);
-            CurrentDrawingLocation = Path.Combine(CurrentReferenceDirectory, DwgFolderName);
+            ReferenceBackgroundDirectory = Path.Combine(currentLocation, XrefFolderName);
+            NewBackgroundDirectory = Path.Combine(ReferenceBackgroundDirectory, DwgFolderName);
 
-            FileUtility.CreateDirectory(CurrentDrawingLocation);
+            FileUtility.CreateDirectory(NewBackgroundDirectory);
         }
     }
 }

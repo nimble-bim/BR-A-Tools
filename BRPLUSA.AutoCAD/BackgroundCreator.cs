@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Autodesk.AutoCAD.ApplicationServices;
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.Runtime;
+using BRPLUSA.AutoCAD.Extensions;
 using BRPLUSA.AutoCAD.Services;
 using BRPLUSA.AutoCAD.Wrappers;
 
@@ -74,7 +75,7 @@ namespace BRPLUSA.AutoCAD
             try
             {
 
-                CurrentDatabase.SaveAs(CADFileUtilities.CurrentReferenceDirectory,
+                CurrentDatabase.SaveAs(CADFileUtilities.ReferenceBackgroundDirectory,
                     true,
                     DwgVersion.AC1800,
                     CurrentDatabase.SecurityParameters);
@@ -86,9 +87,12 @@ namespace BRPLUSA.AutoCAD
             }
         }
 
-        private static void CreateNewDrawingFromTemplate()
+        private static Document CreateNewDrawingFromTemplate(string drawingName)
         {
-            var newDoc = CurrentDocument.CreateNew
+            var newDoc = CurrentDocument.CreateNewDocument(DrawingTemplate, CADFileUtilities.NewBackgroundDirectory,
+                drawingName);
+
+            return newDoc;
         }
     }
 }
