@@ -17,7 +17,7 @@ namespace BRPLUSA.AutoCAD.Services
         /// <param name="doc"></param>
         /// <param name="layerName"></param>
         /// <returns></returns>
-        private static LayerTableRecord GetLayer(this Document doc, string layerName, bool isLocked = false, bool isFrozen = false)
+        public static LayerTableRecord GetLayer(this Document doc, string layerName, bool isLocked = false, bool isFrozen = false, bool createIfNotExisting = false)
         {
             try
             {
@@ -39,18 +39,18 @@ namespace BRPLUSA.AutoCAD.Services
 
             catch (Exception e)
             {
-                return doc.CreateNewLayer(layerName, isLocked, isFrozen);
+                return createIfNotExisting ? doc.CreateNewLayer(layerName, isLocked, isFrozen) : null;
             }
         }
 
-        private static void LockLayer(this Document doc, string layerName)
+        public static void LockLayer(this Document doc, string layerName)
         {
             var layer = doc.GetLayer(layerName);
 
             doc.LockLayer(layer);
         }
 
-        private static void LockLayer(this Document doc, LayerTableRecord layer)
+        public static void LockLayer(this Document doc, LayerTableRecord layer)
         {
             var db = doc.Database;
 
@@ -61,14 +61,14 @@ namespace BRPLUSA.AutoCAD.Services
             }
         }
 
-        private static void UnlockLayer(this Document doc, string layerName)
+        public static void UnlockLayer(this Document doc, string layerName)
         {
             var layer = doc.GetLayer(layerName);
 
             doc.UnlockLayer(layer);
         }
 
-        private static void UnlockLayer(this Document doc, LayerTableRecord layer)
+        public static void UnlockLayer(this Document doc, LayerTableRecord layer)
         {
             var db = doc.Database;
 
@@ -79,7 +79,7 @@ namespace BRPLUSA.AutoCAD.Services
             }
         }
 
-        private static void FreezeLayer(this Document doc, LayerTableRecord layer)
+        public static void FreezeLayer(this Document doc, LayerTableRecord layer)
         {
             var db = doc.Database;
 
@@ -90,7 +90,7 @@ namespace BRPLUSA.AutoCAD.Services
             }
         }
 
-        private static void ThawLayer(this Document doc, LayerTableRecord layer)
+        public static void ThawLayer(this Document doc, LayerTableRecord layer)
         {
             var db = doc.Database;
 
@@ -101,7 +101,7 @@ namespace BRPLUSA.AutoCAD.Services
             }
         }
 
-        private static LayerTable GetLayerTable(this Document doc)
+        public static LayerTable GetLayerTable(this Document doc)
         {
             var db = doc.Database;
 
@@ -121,6 +121,20 @@ namespace BRPLUSA.AutoCAD.Services
             catch
             {
                 throw new Exception();
+            }
+        }
+
+        public static void SetLayerCurrent(this Document doc, string layerName)
+        {
+            try
+            {
+                Autodesk.AutoCAD.ApplicationServices.Application.SetSystemVariable("CLAYER", layerName);
+            }
+
+            catch
+            {
+                var layer = doc.GetLayer(layerName);
+                Autodesk.AutoCAD.ApplicationServices.Application.SetSystemVariable("CLAYER", layer.Name);
             }
         }
 

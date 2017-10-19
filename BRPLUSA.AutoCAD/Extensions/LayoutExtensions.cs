@@ -8,6 +8,7 @@ using Autodesk.AutoCAD.ApplicationServices;
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.Runtime;
 using BRPLUSA.AutoCAD.Services;
+using BRPLUSA.AutoCAD.Wrappers;
 using Exception = Autodesk.AutoCAD.Runtime.Exception;
 
 namespace BRPLUSA.AutoCAD.Extensions
@@ -71,35 +72,41 @@ namespace BRPLUSA.AutoCAD.Extensions
             return viewports;
         }
 
-        public static Layout CreateNewLayout(this Document doc, string name)
+        public static void AddViewports(this Layout layout, IEnumerable<Viewport> viewports)
         {
-            var layout = new Layout();
+            
+        }
 
-            using (var locked = doc.LockDocument())
+        public static void AddViewport(this Layout layout, Viewport viewport)
+        {
+            var db = layout.Database;
+            var vportLayer = CurrentDocument.GetLayer("x-vport");
+
+            using (var locked = CurrentDocument.LockDocument())
             {
-                using (var tr = doc.Database.TransactionManager.StartTransaction())
+                using (var tr = db.TransactionManager.StartTransaction())
                 {
-                    var manager = LayoutManager.Current;
-                    var id = new ObjectId();
+                    //var table = (BlockTable) tr.GetObject(db.BlockTableId, OpenMode.ForRead);
+                    var layoutRecord = (BlockTableRecord) tr.GetObject(layout.OwnerId, OpenMode.ForWrite);
+                    
+                    CurrentDocument.Editor.SwitchToPaperSpace();
 
-                    try
+                    var vp = new Viewport
                     {
-                        id = manager.CreateLayout(name);
-                    }
+                        Width = viewport.Width,
+                        Height = viewport.Height,
+                        CenterPoint = viewport.CenterPoint,
+                    };
 
-                    catch(Exception e)
-                    {
-                        if (e.ErrorStatus == ErrorStatus.DuplicateKey)
-                            id = manager.CreateLayout(name + "(1)");
-                    }
+                    layoutRecord.AppendEntity(vp);
+                    tr.AddNewlyCreatedDBObject(vp, true);
 
-                    layout = (Layout) tr.GetObject(id, OpenMode.ForWrite);
+                    vp.ViewCenter = viewport.ViewCenter;
+                    vp.ViewHeight = viewport.ViewHeight;
+                    vp.ViewTarget = viewport.ViewTarget;
+                    vp.FreezeLayersInViewport(viewport.Frozen);
                 }
-
-                layout.RemoveAllViewports();
             }
-
-            return layout;
         }
 
         public static void RemoveAllViewports(this Layout layout)

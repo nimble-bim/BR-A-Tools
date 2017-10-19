@@ -59,7 +59,11 @@ namespace BRPLUSA.AutoCAD
                 var newDoc =
                     CurrentDocument.CreateNewDocument(DrawingTemplate, CADFileUtilities.NewBackgroundDirectory, layout.Name);
 
+                Application.DocumentManager.MdiActiveDocument = newDoc;
 
+                var newLayout = newDoc.CreateNewLayout("Work");
+
+                newLayout.AddViewports(layout.Viewports);
             }
 
             // Insert consultant drawing as external reference

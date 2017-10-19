@@ -7,7 +7,9 @@ using System.Threading.Tasks;
 using Autodesk.AutoCAD.ApplicationServices;
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.Geometry;
+using Autodesk.AutoCAD.Runtime;
 using BRPLUSA.AutoCAD.Extensions;
+using Exception = System.Exception;
 
 namespace BRPLUSA.AutoCAD.Services
 {
@@ -18,21 +20,35 @@ namespace BRPLUSA.AutoCAD.Services
             
         }
 
-        public static Layout CreateNewLayout(this Document doc, string layoutName)
+        public static Layout CreateNewLayout(this Document doc, string name)
         {
-            var db = doc.Database;
-            var newLayout = new Layout();
+            var layout = new Layout();
 
-            using (var tr = db.TransactionManager.StartTransaction())
+            using (var locked = doc.LockDocument())
             {
-                var manager = LayoutManager.Current;
-                var newLayoutId = manager.CreateLayout(layoutName);
-                newLayout = (Layout)tr.GetObject(newLayoutId, OpenMode.ForRead);
+                using (var tr = doc.Database.TransactionManager.StartTransaction())
+                {
+                    var manager = LayoutManager.Current;
+                    var id = new ObjectId();
 
-                tr.Commit();
+                    try
+                    {
+                        id = manager.CreateLayout(name);
+                    }
+
+                    catch (Autodesk.AutoCAD.Runtime.Exception e)
+                    {
+                        if (e.ErrorStatus == ErrorStatus.DuplicateKey)
+                            id = manager.CreateLayout(name + "(1)");
+                    }
+
+                    layout = (Layout)tr.GetObject(id, OpenMode.ForWrite);
+                }
+
+                layout.RemoveAllViewports();
             }
 
-            return newLayout;
+            return layout;
         }
 
         /// <summary>
@@ -108,7 +124,7 @@ namespace BRPLUSA.AutoCAD.Services
                     var origin = new Point3d(0, 0, 0);
                     var block = new BlockReference(origin, xrefId);
 
-                    var layoutSpace = (BlockTableRecord)tr.GetObject(layout.OwnerId, OpenMode.ForRead);
+                    var layoutSpace = (BlockTableRecord)tr.GetObject(layout.OwnerId, OpenMode.ForWrite);
 
                     layoutSpace.AppendEntity(block);
                     tr.AddNewlyCreatedDBObject(block, true);
