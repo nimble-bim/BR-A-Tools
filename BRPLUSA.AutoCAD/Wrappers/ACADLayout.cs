@@ -15,6 +15,7 @@ namespace BRPLUSA.AutoCAD.Wrappers
         public PaperSize PaperSize { get; set; }
         public PaperOrientation Orientation { get; set; }
         public IEnumerable<ACADViewport> Viewports { get; set; }
+        public string Name { get; set; }
 
         public ACADLayout()
         {
@@ -23,7 +24,7 @@ namespace BRPLUSA.AutoCAD.Wrappers
 
         private void Initialize()
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
     }
 }

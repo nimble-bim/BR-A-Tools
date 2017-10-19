@@ -24,6 +24,7 @@ namespace BRPLUSA.AutoCAD.Mappers
 
             return new ACADLayout
             {
+                Name = layout.LayoutName,
                 Height = Math.Round(layout.PlotPaperSize.X / 25.4),
                 Width = Math.Round(layout.PlotPaperSize.Y / 25.4),
                 PaperSize = PaperUtilities.CalculatePaperSize(xMin, xMax, yMin, yMax),

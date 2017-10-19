@@ -6,7 +6,9 @@ using System.Text;
 using System.Threading.Tasks;
 using Autodesk.AutoCAD.ApplicationServices;
 using Autodesk.AutoCAD.DatabaseServices;
+using Autodesk.AutoCAD.Runtime;
 using BRPLUSA.AutoCAD.Services;
+using Exception = Autodesk.AutoCAD.Runtime.Exception;
 
 namespace BRPLUSA.AutoCAD.Extensions
 {
@@ -67,6 +69,62 @@ namespace BRPLUSA.AutoCAD.Extensions
             }
 
             return viewports;
+        }
+
+        public static Layout CreateNewLayout(this Document doc, string name)
+        {
+            var layout = new Layout();
+
+            using (var locked = doc.LockDocument())
+            {
+                using (var tr = doc.Database.TransactionManager.StartTransaction())
+                {
+                    var manager = LayoutManager.Current;
+                    var id = new ObjectId();
+
+                    try
+                    {
+                        id = manager.CreateLayout(name);
+                    }
+
+                    catch(Exception e)
+                    {
+                        if (e.ErrorStatus == ErrorStatus.DuplicateKey)
+                            id = manager.CreateLayout(name + "(1)");
+                    }
+
+                    layout = (Layout) tr.GetObject(id, OpenMode.ForWrite);
+                }
+
+                layout.RemoveAllViewports();
+            }
+
+            return layout;
+        }
+
+        public static void RemoveAllViewports(this Layout layout)
+        {
+            var db = layout.Database;
+
+            using (var tr = db.TransactionManager.StartTransaction())
+            {
+                var layoutRecord = (BlockTableRecord) tr.GetObject(layout.BlockTableRecordId, OpenMode.ForWrite);
+
+                var viewportType = RXObject.GetClass(typeof(Viewport));
+
+                foreach (var obj in layoutRecord)
+                {
+                    if(obj.ObjectClass != viewportType)
+                        continue;
+
+                    var vp = (Viewport) tr.GetObject(obj, OpenMode.ForWrite);
+                    vp.Erase();
+
+                    CurrentDocument.Editor.Regen();
+                }
+
+                tr.Commit();
+            }
         }
     }
 

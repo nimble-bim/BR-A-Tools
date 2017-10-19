@@ -49,11 +49,18 @@ namespace BRPLUSA.AutoCAD
             }
 
             // Save the consultant drawing to the file system
-            SaveCurrentBackground();
+            SaveCurrentDrawing();
 
             // *************************************************
 
             // Create new drawing based on BR+A drawing template
+            foreach (var layout in layouts)
+            {
+                var newDoc =
+                    CurrentDocument.CreateNewDocument(DrawingTemplate, CADFileUtilities.NewBackgroundDirectory, layout.Name);
+
+
+            }
 
             // Insert consultant drawing as external reference
 
@@ -70,7 +77,7 @@ namespace BRPLUSA.AutoCAD
             return CADDatabaseUtilities.GetAllLayouts();
         }
 
-        private static void SaveCurrentBackground()
+        private static void SaveCurrentDrawing()
         {
             try
             {
