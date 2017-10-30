@@ -77,6 +77,11 @@ namespace BRPLUSA.AutoCAD.Extensions
             
         }
 
+        public static void AddViewports(this Layout layout, IEnumerable<ACADViewport> viewports)
+        {
+
+        }
+
         public static void AddViewport(this Layout layout, Viewport viewport)
         {
             var db = layout.Database;
@@ -104,7 +109,9 @@ namespace BRPLUSA.AutoCAD.Extensions
                     vp.ViewCenter = viewport.ViewCenter;
                     vp.ViewHeight = viewport.ViewHeight;
                     vp.ViewTarget = viewport.ViewTarget;
-                    vp.FreezeLayersInViewport(viewport.Frozen);
+                    vp.FreezeLayersInViewport(viewport.GetFrozenLayers().GetEnumerator());
+
+                    tr.Commit();()
                 }
             }
         }

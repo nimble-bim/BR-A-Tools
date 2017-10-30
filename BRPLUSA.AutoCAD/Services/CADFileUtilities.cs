@@ -25,7 +25,7 @@ namespace BRPLUSA.AutoCAD.Services
         /// <param name="path">file to start search from</param>
         public static IEnumerable<string> GetAllDrawingFiles(string path)
         {
-            return FileUtility.GetAllFilesOfType(path, "*.dwg");
+            return FileUtils.GetAllFilesOfType(path, "*.dwg");
         }
 
         public static void CreateTypicalProjectDirectories()
@@ -40,7 +40,7 @@ namespace BRPLUSA.AutoCAD.Services
             ReferenceBackgroundDirectory = Path.Combine(currentLocation, XrefFolderName);
             NewBackgroundDirectory = Path.Combine(ReferenceBackgroundDirectory, DwgFolderName);
 
-            FileUtility.CreateDirectory(NewBackgroundDirectory);
+            FileUtils.CreateDirectory(NewBackgroundDirectory);
         }
     }
 }

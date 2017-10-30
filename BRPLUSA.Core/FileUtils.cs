@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace BRPLUSA.Core
 {
-    public static class FileUtility
+    public static class FileUtils
     {
         public static void CreateDirectory(string path)
         {
