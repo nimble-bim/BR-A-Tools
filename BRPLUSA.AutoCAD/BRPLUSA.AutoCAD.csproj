@@ -9,8 +9,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>BRPLUSA.AutoCAD</RootNamespace>
     <AssemblyName>BRPLUSA.AutoCAD</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -39,9 +40,6 @@
     <Reference Include="acmgd">
       <HintPath>..\References\AutoCAD\2013\acmgd.dll</HintPath>
     </Reference>
-    <Reference Include="AdWindows">
-      <HintPath>..\References\AutoCAD\2013\AdWindows.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -52,7 +50,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BackgroundCreator.cs" />
+    <Compile Include="Commands\BackgroundCreator.cs" />
+    <Compile Include="Commands\TestCommand.cs" />
     <Compile Include="Extensions\DocumentExtensions.cs" />
     <Compile Include="Extensions\LayoutExtensions.cs" />
     <Compile Include="Mappers\IMapper.cs" />

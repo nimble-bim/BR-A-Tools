@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Autodesk.AutoCAD.ApplicationServices;
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.Runtime;
@@ -11,7 +8,7 @@ using BRPLUSA.AutoCAD.Extensions;
 using BRPLUSA.AutoCAD.Services;
 using BRPLUSA.AutoCAD.Wrappers;
 
-namespace BRPLUSA.AutoCAD
+namespace BRPLUSA.AutoCAD.Commands
 {
     public class BackgroundCreator
     {

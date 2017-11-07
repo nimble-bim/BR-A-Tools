@@ -111,7 +111,7 @@ namespace BRPLUSA.AutoCAD.Extensions
                     vp.ViewTarget = viewport.ViewTarget;
                     vp.FreezeLayersInViewport(viewport.GetFrozenLayers().GetEnumerator());
 
-                    tr.Commit();()
+                    tr.Commit();
                 }
             }
         }

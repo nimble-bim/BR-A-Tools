@@ -44,7 +44,6 @@ namespace BRPLUSA.AutoCAD.Extensions
             }
         }
 
-
         public static Document CreateNewDocument(this Document doc, string templateLocation, string directoryToSaveIn, string dwgName)
         {
             var docmgr = Application.DocumentManager;

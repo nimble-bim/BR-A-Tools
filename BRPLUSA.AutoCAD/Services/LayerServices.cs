@@ -43,6 +43,37 @@ namespace BRPLUSA.AutoCAD.Services
             }
         }
 
+        public static IEnumerable<LayerTableRecord> GetLayers(this Document doc)
+        {
+            try
+            {
+                var db = doc.Database;
+                var records = new List<LayerTableRecord>();
+
+
+                using (var tr = db.TransactionManager.StartTransaction())
+                {
+                    var table = (LayerTable) tr.GetObject(db.LayerTableId, OpenMode.ForRead);
+                    var tableMover = table.GetEnumerator();
+
+                    while (tableMover.MoveNext())
+                    {
+                        var record = (LayerTableRecord) tr.GetObject(tableMover.Current, OpenMode.ForWrite, false, true);
+                        records.Add(record);
+                    }
+
+                    tr.Commit();
+                }
+
+                return records.ToArray();
+            }
+
+            catch (Exception e)
+            {
+                return null;
+            }
+        }
+
         public static void LockLayer(this Document doc, string layerName)
         {
             var layer = doc.GetLayer(layerName);
