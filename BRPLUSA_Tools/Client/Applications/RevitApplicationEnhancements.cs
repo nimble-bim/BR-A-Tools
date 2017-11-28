@@ -58,9 +58,13 @@ namespace BRPLUSA.Revit.Client.Applications
             
             var spaceSync = new PushButtonData("Link Spaces", "Link Spaces", typeof(LinkSpaces).Assembly.Location, typeof(LinkSpaces).FullName);
             var spaceDeSync = new PushButtonData("Unlink Spaces", "Unlink Spaces", typeof(UnlinkSpaces).Assembly.Location, typeof(UnlinkSpaces).FullName);
+            var findElement = new PushButtonData("Find Element By Name", "Find Element", typeof(SelectByName).Assembly.Location, typeof(SelectByName).FullName);
+            var findPanel = new PushButtonData("Find Panel By Name", "Find Panel", typeof(SelectPanelSchedule).Assembly.Location, typeof(SelectPanelSchedule).FullName);
 
             brpa.AddItem(spaceSync);
             brpa.AddItem(spaceDeSync);
+            brpa.AddItem(findElement);
+            brpa.AddItem(findPanel);
         }
     }
 }
