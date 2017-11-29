@@ -13,7 +13,7 @@ namespace BRPLUSA.Revit.Client.Commands
 {
     [Transaction(TransactionMode.Manual)]
     [Regeneration(RegenerationOption.Manual)]
-    public class SelectPanelSchedule : BaseCommand
+    public class SelectPanelFromSchedule : BaseCommand
     {
         protected override Result Work()
         {

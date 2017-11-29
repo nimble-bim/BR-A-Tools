@@ -113,8 +113,6 @@ namespace BRPLUSA.Revit.Services
         {
             try
             {
-                //Application.ActiveUIDocument.ActiveView = view;
-                //Application.ActiveUIDocument.RefreshActiveView();
                 Application.ActiveUIDocument.RequestViewChange(view);
 
                 var result = TaskDialog.Show("View Selection", "Please confirm whether this view shows your item",
