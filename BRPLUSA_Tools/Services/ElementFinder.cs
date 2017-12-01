@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
+using BRPLUSA.Core.Extensions;
 
 namespace BRPLUSA.Revit.Services
 {
@@ -15,6 +16,95 @@ namespace BRPLUSA.Revit.Services
         private static ParameterValueProvider FindNamedParameter(string field)
         {
             throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Runtime is about O(n) * O(1): O(n)
+        /// </summary>
+        /// <param name="doc"></param>
+        /// <param name="fieldName"></param>
+        /// <param name="fieldValue"></param>
+        /// <returns></returns>
+        private static Parameter SearchElementParametersByHash(Document doc, string fieldName, string fieldValue)
+        {
+            try
+            {
+                var iter = new FilteredElementCollector(doc)
+                    .WhereElementIsNotElementType()
+                    .GetElementIterator();
+
+                // store parameter name, paramter value and elementId
+                while (iter.MoveNext())
+                {
+                    var elem = iter.Current;
+
+                    // skip any elements that don't have the parameter
+                    if (elem?.ParametersMap == null)
+                        continue;
+
+                    if(!elem.ParametersMap.Contains(fieldName))
+                        continue;
+
+                    var possible = elem.ParametersMap.get_Item(fieldName);
+
+                    var val = possible.AsValueString();
+
+                    if (val == fieldValue)
+                        return possible;
+                }
+
+                TaskDialog.Show("Doesn't exist", "The requested parameter does not exist in the model");
+                throw new Exception("Could not find parameter");
+            }
+
+            catch (Exception e)
+            {
+                throw new Exception("Could not find parameter", e);
+            }
+        }
+
+        /// <summary>
+        /// Runtime is about O(n) * O(n): O(n^2)
+        /// </summary>
+        /// <param name="doc"></param>
+        /// <param name="fieldName"></param>
+        /// <param name="fieldValue"></param>
+        /// <returns></returns>
+        private static Parameter SearchElementSimply(Document doc, string fieldName, string fieldValue)
+        {
+            try
+            {
+                var iter = new FilteredElementCollector(doc)
+                    .WhereElementIsViewIndependent()
+                    .GetElementIterator();
+
+                // store parameter name, paramter value and elementId
+                while (iter.MoveNext())
+                {
+                    var elem = iter.Current;
+
+                    if (elem == null)
+                        continue;
+
+                    foreach (var p in elem.GetOrderedParameters())
+                    {
+                        if (p?.Definition?.Name == null)
+                            continue;
+
+                        if (String.Equals(p?.Definition?.Name, fieldName, StringComparison.CurrentCultureIgnoreCase) &&
+                            String.Equals(p.AsValueString(), fieldValue, StringComparison.CurrentCultureIgnoreCase))
+                            return p;
+                    }
+                }
+
+                TaskDialog.Show("Doesn't exist", "The requested parameter does not exist in the model");
+                throw new Exception("Could not find parameter");
+            }
+
+            catch (Exception e)
+            {
+                throw new Exception("Could not find parameter", e);
+            }
         }
 
         private static Parameter SearchElementSlow(Document doc, string fieldName, string fieldValue)
@@ -35,8 +125,11 @@ namespace BRPLUSA.Revit.Services
                 store.AddRange(elem.GetOrderedParameters());
             }
             
+            // remove nulls
+            var array = store.ToArray().Where(p => p?.Definition?.Name != null).ToArray();
+
             // quicksort the parameters
-            var parameters = QuickSortParameters(store.ToArray());
+            var parameters = QuickSortParameters(array);
 
             // then binary search it for the parameter in question
             var parameter = FindParameter(parameters, fieldName, fieldValue);
@@ -49,15 +142,16 @@ namespace BRPLUSA.Revit.Services
         {
             var low = 0;
             var high = array.Length - 1;
-            var mid = (low + high) / 2;
-
-            var guess = array[mid];
-            var searchField = paramName + paramValue;
-
-            var current = guess.Definition.Name + guess.AsValueString();
 
             while (low <= high)
             {
+                var mid = (low + high) / 2;
+
+                var guess = array[mid];
+                var searchField = paramName + paramValue;
+
+                var current = guess.Definition.Name + guess.AsValueString();
+
                 if (current == searchField)
                     return guess;
 
@@ -80,15 +174,27 @@ namespace BRPLUSA.Revit.Services
                 return pars;
 
             var pivot = pars[count / 2];
+            var lesser = new List<Parameter>();
+            var greater = new List<Parameter>();
 
-            var lesser = pars.Where(p => string.CompareOrdinal(p?.Definition?.Name.ToLower(), pivot?.Definition?.Name.ToLower()) < 0).ToArray();
-            var greater = pars.Where(p => string.CompareOrdinal(p?.Definition?.Name.ToLower(), pivot?.Definition?.Name.ToLower()) > 0).ToArray();
+            foreach (var p in pars)
+            {
+                if(pivot.IsBeforeInOrder(p))
+                    lesser.Add(p);
+                else
+                {
+                    greater.Add(p);
+                }
+            }
 
             var list = new List<Parameter>();
 
-            list.AddRange(QuickSortParameters(lesser));
+            var less = QuickSortParameters(lesser.ToArray());
+            var great = QuickSortParameters(greater.ToArray());
+
+            list.AddRange(less);
             list.Add(pivot);
-            list.AddRange(QuickSortParameters(greater));
+            list.AddRange(great);
 
             return list.ToArray();
         }
@@ -97,7 +203,7 @@ namespace BRPLUSA.Revit.Services
         {
             return field == "mark" 
                 ? FindByMark(doc, value) 
-                : SearchElementSlow(doc, field, value).Element;
+                : SearchElementParametersByHash(doc, field, value).Element;
         }
 
         public static Element FindByMark(Document doc, string value)
@@ -204,6 +310,32 @@ namespace BRPLUSA.Revit.Services
             ElementFilter filter = new ElementParameterFilter(filterRule);
 
             return filter;
+        }
+
+        private static bool IsBeforeInOrder(this Parameter pivot, Parameter p)
+        {
+            try
+            {
+                if (p?.Definition?.Name == null)
+                    return true;
+
+                var pivotP = (pivot?.Definition?.Name + pivot?.AsValueString()).ToLower();
+                var checkP = (p?.Definition?.Name + p?.AsValueString()).ToLower();
+
+                var isBefore = pivotP.IsLessThan(checkP);
+
+                return isBefore;
+            }
+
+            catch (Exception e)
+            {
+                throw new Exception("The parameter could no be processed", e);
+            }
+        }
+
+        private static bool IsAfterInOrder(this Parameter pivot, Parameter p)
+        {
+            return !pivot.IsBeforeInOrder(p);
         }
 
     }

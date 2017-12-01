@@ -93,6 +93,12 @@
       <DependentUpon>SearchSelectionBox.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BRPLUSA.Core\BRPLUSA.Core.csproj">
+      <Project>{ec0e8d93-3d21-482a-9f97-e7e5d2f8a192}</Project>
+      <Name>BRPLUSA.Core</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>xcopy "$(TargetDir)*" /E  /Y /D "C:\ProgramData\Autodesk\Revit\Addins\2017\"</PostBuildEvent>
