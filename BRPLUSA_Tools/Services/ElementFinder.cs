@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
@@ -29,29 +26,46 @@ namespace BRPLUSA.Revit.Services
         {
             try
             {
+                //var iter = new FilteredElementCollector(doc)
+                //    .WhereElementIsNotElementType()
+                //    .GetElementIterator();
+
                 var iter = new FilteredElementCollector(doc)
-                    .WhereElementIsNotElementType()
-                    .GetElementIterator();
+                    .WhereElementIsViewIndependent()
+                    .ToElements().ToArray();
 
-                // store parameter name, paramter value and elementId
-                while (iter.MoveNext())
+                Parameter possible = null;
+
+                Parallel.ForEach(iter, (elem) =>
                 {
-                    var elem = iter.Current;
-
                     // skip any elements that don't have the parameter
-                    if (elem?.ParametersMap == null)
-                        continue;
+                    var temp = TryGetParameter(elem, fieldName);
 
-                    if(!elem.ParametersMap.Contains(fieldName))
-                        continue;
-
-                    var possible = elem.ParametersMap.get_Item(fieldName);
-
-                    var val = possible.AsValueString();
+                    var val = possible?.AsValueString();
 
                     if (val == fieldValue)
-                        return possible;
-                }
+                        possible = temp;
+                });
+
+                // store parameter name, paramter value and elementId
+                //while (iter.MoveNext())
+                //{
+                //    var elem = iter.Current;
+
+                //    // skip any elements that don't have the parameter
+                //    var possible = TryGetParameter(elem, fieldName);
+
+                //    if(possible == null)
+                //        continue;
+
+                //    var val = possible.AsValueString();
+
+                //    if (val == fieldValue)
+                //        return possible;
+                //}
+
+                if (possible != null)
+                    return possible;
 
                 TaskDialog.Show("Doesn't exist", "The requested parameter does not exist in the model");
                 throw new Exception("Could not find parameter");
@@ -60,6 +74,21 @@ namespace BRPLUSA.Revit.Services
             catch (Exception e)
             {
                 throw new Exception("Could not find parameter", e);
+            }
+        }
+
+        private static Parameter TryGetParameter(Element elem, string fieldName)
+        {
+            try
+            {
+                var possible = elem?.ParametersMap?.get_Item(fieldName);
+
+                return possible;
+            }
+
+            catch (Exception e)
+            {
+                return null;
             }
         }
 
@@ -75,13 +104,15 @@ namespace BRPLUSA.Revit.Services
             try
             {
                 var iter = new FilteredElementCollector(doc)
-                    .WhereElementIsViewIndependent()
-                    .GetElementIterator();
+                    .WhereElementIsElementType()
+                    .ToElements();
+
+                var i = 0;
 
                 // store parameter name, paramter value and elementId
-                while (iter.MoveNext())
+                foreach(var elem in iter)
                 {
-                    var elem = iter.Current;
+                    i++;
 
                     if (elem == null)
                         continue;
@@ -201,9 +232,13 @@ namespace BRPLUSA.Revit.Services
 
         public static Element FindElementByName(Document doc, string value, string field = "mark")
         {
-            return field == "mark" 
-                ? FindByMark(doc, value) 
-                : SearchElementParametersByHash(doc, field, value).Element;
+            //return field == "mark" 
+            //    ? FindByMark(doc, value) 
+            //    : SearchElementParametersByHash(doc, field, value).Element;
+
+            return field == "mark"
+                ? FindByMark(doc, value)
+                : SearchElementSimply(doc, field, value).Element;
         }
 
         public static Element FindByMark(Document doc, string value)
