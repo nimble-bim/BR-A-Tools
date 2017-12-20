@@ -60,6 +60,7 @@
   <ItemGroup>
     <Compile Include="Base\BaseCommand.cs" />
     <Compile Include="Base\RevitSelectionFilter.cs" />
+    <Compile Include="Client\Commands\ExportAreaToNavis.cs" />
     <Compile Include="Client\Commands\SelectByName.cs" />
     <Compile Include="Client\Commands\SelectPanelFromSchedule.cs" />
     <Compile Include="Client\Commands\UnlinkSpaces.cs" />
@@ -74,6 +75,7 @@
     <Compile Include="Base\BaseRegisterableUpdater.cs" />
     <Compile Include="Services\ElementFinder.cs" />
     <Compile Include="Services\ElementPresenter.cs" />
+    <Compile Include="Services\NavisworksExporter.cs" />
     <Compile Include="Services\RegistrationService.cs" />
     <Compile Include="Client\Applications\RevitApplicationEnhancements.cs" />
     <Compile Include="Entities\Wrappers\SpaceWrapper.cs" />
