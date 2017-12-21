@@ -100,6 +100,10 @@
       <Project>{ec0e8d93-3d21-482a-9f97-e7e5d2f8a192}</Project>
       <Name>BRPLUSA.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\BRPLUSA.Navisworks\BRPLUSA.Navisworks.csproj">
+      <Project>{309cbca2-aa99-4e3d-87fe-98cdeda3ccfb}</Project>
+      <Name>BRPLUSA.Navisworks</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

@@ -2,16 +2,21 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
+using Autodesk.Revit.Attributes;
 using Autodesk.Revit.Creation;
 using Autodesk.Revit.DB;
 using Autodesk.Revit.DB.ExternalService;
 using Autodesk.Revit.UI;
+using BRPLUSA.Navisworks;
 using BRPLUSA.Revit.Base;
 using Document = Autodesk.Revit.DB.Document;
 
 namespace BRPLUSA.Revit.Client.Commands
 {
+    [Transaction(TransactionMode.Manual)]
+    [Regeneration(RegenerationOption.Manual)]
     public class ExportAreaToNavis : BaseCommand
     {
         protected override Result Work()
@@ -35,9 +40,13 @@ namespace BRPLUSA.Revit.Client.Commands
             // create folders and other variables
             var projFolder = FindProjectFolder(CurrentDocument);
             var projNumber = GetProjectNumber(projFolder);
+            var navisFileName = $"{projNumber}_ALL";
 
             // export to NWC
-            CurrentDocument.Export(projFolder, $"{projNumber}_ALL", opts);
+            CurrentDocument.Export(projFolder, navisFileName, opts);
+
+            // starts clash detection in separate thread
+            StartClashDetectionThread(navisFileName);
 
             return Result.Succeeded;
 
@@ -52,6 +61,17 @@ namespace BRPLUSA.Revit.Client.Commands
              * Export to HTML
              * Export to Viewpoints
              */
+        }
+
+        private void StartClashDetectionThread(string navisFileName)
+        {
+            void ClashThread()
+            {
+                NavisworksServer.InitiateClashDetection(navisFileName);
+            }
+
+            var thread = new Thread(ClashThread);
+            thread.Start();
         }
 
         private string GetProjectNumber(string projFolder)
