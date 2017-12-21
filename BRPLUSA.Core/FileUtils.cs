@@ -19,7 +19,7 @@ namespace BRPLUSA.Core
 
         public static IEnumerable<string> GetAllFilesOfType(string path, string extension)
         {
-            return String.IsNullOrEmpty(path)
+            return string.IsNullOrEmpty(path)
                 ? null
                 : Directory.EnumerateFiles(
                         Path.GetDirectoryName(path),

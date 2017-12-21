@@ -7,6 +7,7 @@ using Autodesk.Revit.UI;
 using Autodesk.Revit.UI.Selection;
 using BRPLUSA.Revit.Base;
 using BRPLUSA.Revit.Data;
+using BRPLUSA.Revit.Exceptions;
 
 namespace BRPLUSA.Revit.Client.Commands
 {
@@ -55,7 +56,7 @@ namespace BRPLUSA.Revit.Client.Commands
             TaskDialog.Show("Selection Error",
                 "At least one of the spaces you've selected is already connected to other spaces - please select again.");
 
-            throw new Exception("The user aborted the pick operation.");
+            throw new CancellableException("The user aborted the pick operation.");
         }
 
         private Result ConnectSpaces()

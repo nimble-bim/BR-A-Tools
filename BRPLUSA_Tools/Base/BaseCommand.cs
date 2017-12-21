@@ -3,6 +3,7 @@ using System.Diagnostics;
 using Autodesk.Revit.Attributes;
 using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
+using BRPLUSA.Revit.Exceptions;
 
 namespace BRPLUSA.Revit.Base
 {
@@ -64,11 +65,13 @@ namespace BRPLUSA.Revit.Base
                 return Work();
             }
 
+            catch (CancellableException e)
+            {
+                return Result.Cancelled;
+            }
+
             catch(Exception e)
             {
-                if (e.Message.Contains("The user aborted the pick operation."))
-                    return Result.Cancelled;
-
                 Debug.WriteLine("Command failed because of an unknown exception");
                 TaskDialog.Show("Command Failed",
                     "There was an error behind the scenes that caused the command to fail horribly and die.");

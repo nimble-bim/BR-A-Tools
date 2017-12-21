@@ -70,6 +70,7 @@
     <Compile Include="Client\Views\SearchSelectionBox.Designer.cs">
       <DependentUpon>SearchSelectionBox.cs</DependentUpon>
     </Compile>
+    <Compile Include="Exceptions\CancellableException.cs" />
     <Compile Include="Interfaces\IRegisterableService.cs" />
     <Compile Include="Base\BaseRegisterableService.cs" />
     <Compile Include="Base\BaseRegisterableUpdater.cs" />
