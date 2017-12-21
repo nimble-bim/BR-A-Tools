@@ -76,7 +76,7 @@
     <Compile Include="Services\ElementFinder.cs" />
     <Compile Include="Services\ElementPresenter.cs" />
     <Compile Include="Services\NavisworksExporter.cs" />
-    <Compile Include="Services\RegistrationService.cs" />
+    <Compile Include="Services\UpdaterRegistrationService.cs" />
     <Compile Include="Client\Applications\RevitApplicationEnhancements.cs" />
     <Compile Include="Entities\Wrappers\SpaceWrapper.cs" />
     <Compile Include="Data\SpatialDatabaseWrapper.cs" />

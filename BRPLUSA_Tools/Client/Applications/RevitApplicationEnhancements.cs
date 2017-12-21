@@ -9,8 +9,6 @@ namespace BRPLUSA.Revit.Client.Applications
 {
     public class RevitApplicationEnhancements : IExternalApplication
     {
-        private RegistrationService _registerServ;
-
         public Result OnStartup(UIControlledApplication app)
         {
             return Initialize(app);
@@ -26,7 +24,11 @@ namespace BRPLUSA.Revit.Client.Applications
             try
             {
                 CreateRibbon(app);
-                _registerServ = new RegistrationService(app);
+                
+                UpdaterRegistrationService.AddRegisterableServices(new SpatialPropertyUpdater(app));
+
+                app.ControlledApplication.DocumentOpened += UpdaterRegistrationService.RegisterServices;
+                app.ControlledApplication.DocumentClosed += UpdaterRegistrationService.DeregisterServices;
 
                 return Result.Succeeded;
             }
@@ -41,6 +43,8 @@ namespace BRPLUSA.Revit.Client.Applications
         {
             try
             {
+                app.ControlledApplication.DocumentOpened -= UpdaterRegistrationService.RegisterServices;
+                app.ControlledApplication.DocumentClosed -= UpdaterRegistrationService.DeregisterServices;
                 return Result.Succeeded;
             }
             catch (Exception e)

@@ -4,7 +4,7 @@ using BRPLUSA.Revit.Interfaces;
 
 namespace BRPLUSA.Revit.Base
 {
-    public abstract class BaseRegisterableService : IRegisterableService
+    public abstract class BaseRegisterableService : IRegisterableUpdater
     {
         protected static AddInId _appId;
         protected static UpdaterId _updaterId;
