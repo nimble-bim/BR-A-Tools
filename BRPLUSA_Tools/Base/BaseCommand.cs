@@ -28,11 +28,11 @@ namespace BRPLUSA.Revit.Base
             ExternalCommandData = excmd;
             ElementSet = elemset;
 
+            Result result;
+
             using (var tr = new Transaction(CurrentDocument))
             {
                 tr.Start("Regenerating...");
-
-                Result result;
 
                 try
                 {
@@ -51,8 +51,9 @@ namespace BRPLUSA.Revit.Base
                 }
 
                 tr.Commit();
-                return result;
             }
+
+            return result;
         }
 
         // Internal method that allows this class to use this private fields it contains

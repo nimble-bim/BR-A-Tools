@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Forms.VisualStyles;
 using Autodesk.Revit.ApplicationServices;
 using Autodesk.Revit.Attributes;
 using Autodesk.Revit.Creation;
@@ -11,6 +13,7 @@ using Autodesk.Revit.DB;
 using Autodesk.Revit.DB.ExternalService;
 using Autodesk.Revit.UI;
 using Autodesk.Revit.UI.Selection;
+using BRPLUSA.Core;
 using BRPLUSA.Navisworks;
 using BRPLUSA.Revit.Base;
 using BRPLUSA.Revit.Exceptions;
@@ -37,7 +40,7 @@ namespace BRPLUSA.Revit.Client.Commands
                 Coordinates = NavisworksCoordinates.Shared,
                 ExportLinks = true,
                 ExportScope = NavisworksExportScope.View,
-                ViewId = view.Id
+                ViewId = CurrentDocument.ActiveView.Id
             };
 
             // if the export of a specific VIEW for each linked model doesn't work - 
@@ -47,12 +50,19 @@ namespace BRPLUSA.Revit.Client.Commands
             var projFolder = FindProjectFolder(CurrentDocument);
             var projNumber = GetProjectNumber(projFolder);
             var navisFileName = $"{projNumber}_ALL";
+            var fullNavPath = Directory.GetParent(projFolder)?.Parent?.FullName + @"\NAVIS\" + navisFileName + ".nwc";
+            var navisFolder = Directory.GetParent(fullNavPath).FullName;
 
             // export to NWC
-            CurrentDocument.Export(projFolder, navisFileName, opts);
+            const string testFolder = @"C:\_Revit\";
+
+            bool isExportable = OptionalFunctionalityUtils.IsNavisworksExporterAvailable();
+
+            CurrentDocument.Export(testFolder, navisFileName, opts);
+            //CurrentDocument.Export(navisFolder, navisFileName, opts);
 
             // starts clash detection in separate thread
-            StartClashDetectionThread(navisFileName);
+            //StartClashDetectionThread(fullNavPath);
 
             return Result.Succeeded;
 
@@ -82,12 +92,24 @@ namespace BRPLUSA.Revit.Client.Commands
 
         private string GetProjectNumber(string projFolder)
         {
-            throw new NotImplementedException();
+            return FileUtils.ParseForBrplusaProjectNumber(projFolder);
         }
 
-        private string FindProjectFolder(Document currentDocument)
+        private string FindProjectFolder(Document document)
         {
-            throw new NotImplementedException();
+            var path =  document.IsWorkshared
+                ? GetCentralServerPath(document)
+                : document.PathName;
+
+            return path;
+        }
+
+        private string GetCentralServerPath(Document doc)
+        {
+            var modelPath = doc.GetWorksharingCentralModelPath();
+            var centralServerPath = ModelPathUtils.ConvertModelPathToUserVisiblePath(modelPath);
+
+            return centralServerPath;
         }
 
         private View Create3DViewFromArea()
@@ -154,7 +176,5 @@ namespace BRPLUSA.Revit.Client.Commands
 
             return finalView;
         }
-
-        
     }
 }
