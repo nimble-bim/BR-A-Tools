@@ -23,10 +23,24 @@ namespace BRPLUSA.Revit.Client.Commands
 {
     [Transaction(TransactionMode.Manual)]
     [Regeneration(RegenerationOption.Manual)]
-    public class ExportAreaToNavis : BaseCommand
+    public class ExportAreaToNavis : IExternalCommand
     {
-        protected override Result Work()
+        protected ExternalCommandData ExternalCommandData { get; set; }
+        protected string MainMessage { get; set; }
+        protected ElementSet ElementSet { get; set; }
+        protected UIApplication CurrentApplication { get; set; }
+        protected Document CurrentDocument { get; set; }
+        protected UIDocument UiDocument { get; set; }
+
+        Result IExternalCommand.Execute(
+            ExternalCommandData excmd,
+            ref string mainmessage,
+            ElementSet elemset)
         {
+            CurrentApplication = excmd.Application;
+            UiDocument = CurrentApplication.ActiveUIDocument;
+            CurrentDocument = CurrentApplication.ActiveUIDocument.Document;
+
             // draw box for area or pick a named scope box
             var view = Create3DViewFromArea();
 
@@ -55,8 +69,6 @@ namespace BRPLUSA.Revit.Client.Commands
 
             // export to NWC
             const string testFolder = @"C:\_Revit\";
-
-            bool isExportable = OptionalFunctionalityUtils.IsNavisworksExporterAvailable();
 
             CurrentDocument.Export(testFolder, navisFileName, opts);
             //CurrentDocument.Export(navisFolder, navisFileName, opts);
@@ -139,7 +151,7 @@ namespace BRPLUSA.Revit.Client.Commands
                 .Cast<ViewFamilyType>()
                 .FirstOrDefault(v => v.ViewFamily == ViewFamily.ThreeDimensional).Id;
 
-            using (var sub = new SubTransaction(CurrentDocument))
+            using (var sub = new Transaction(CurrentDocument, "Creating 3D view"))
             {
                 if(!sub.HasStarted())
                     sub.Start();
