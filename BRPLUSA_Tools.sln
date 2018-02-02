@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27130.2010
+VisualStudioVersion = 15.0.27130.2027
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BRPLUSA.Revit", "BRPLUSA_Tools\BRPLUSA.Revit.csproj", "{19A8E334-7B4F-47AE-9B8B-FB8F8278F418}"
 EndProject
@@ -12,6 +12,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BRPLUSA.Navisworks", "BRPLUSA.Navisworks\BRPLUSA.Navisworks.csproj", "{309CBCA2-AA99-4E3D-87FE-98CDEDA3CCFB}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BRPLUSA.Core.Tests", "BRPLUSA.Core.Tests\BRPLUSA.Core.Tests.csproj", "{5D14FE8D-7758-48CD-B71E-EFDC36D34373}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BRPLUSA.Database", "BRPLUSA.Database\BRPLUSA.Database.csproj", "{B56FEBB5-8F1A-4B67-AD47-9201F7BE49AA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BRPLUSA.Domain", "BRPLUSA.Domain\BRPLUSA.Domain.csproj", "{123711A9-C92E-4F15-8BD0-B1222A2D5F0B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +43,14 @@ Global
 		{5D14FE8D-7758-48CD-B71E-EFDC36D34373}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5D14FE8D-7758-48CD-B71E-EFDC36D34373}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5D14FE8D-7758-48CD-B71E-EFDC36D34373}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B56FEBB5-8F1A-4B67-AD47-9201F7BE49AA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B56FEBB5-8F1A-4B67-AD47-9201F7BE49AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B56FEBB5-8F1A-4B67-AD47-9201F7BE49AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B56FEBB5-8F1A-4B67-AD47-9201F7BE49AA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{123711A9-C92E-4F15-8BD0-B1222A2D5F0B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{123711A9-C92E-4F15-8BD0-B1222A2D5F0B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{123711A9-C92E-4F15-8BD0-B1222A2D5F0B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{123711A9-C92E-4F15-8BD0-B1222A2D5F0B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

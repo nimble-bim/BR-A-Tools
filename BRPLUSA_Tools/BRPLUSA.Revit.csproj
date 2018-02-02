@@ -80,6 +80,7 @@
     <Compile Include="Client\Commands\SelectByName.cs" />
     <Compile Include="Client\Commands\SelectPanelFromSchedule.cs" />
     <Compile Include="Client\Commands\UnlinkSpaces.cs" />
+    <Compile Include="Client\Updaters\WorksharingMonitorUpdater.cs" />
     <Compile Include="Client\Views\SearchSelectionBox.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -116,6 +117,14 @@
     <ProjectReference Include="..\BRPLUSA.Core\BRPLUSA.Core.csproj">
       <Project>{ec0e8d93-3d21-482a-9f97-e7e5d2f8a192}</Project>
       <Name>BRPLUSA.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BRPLUSA.Database\BRPLUSA.Database.csproj">
+      <Project>{B56FEBB5-8F1A-4B67-AD47-9201F7BE49AA}</Project>
+      <Name>BRPLUSA.Database</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BRPLUSA.Domain\BRPLUSA.Domain.csproj">
+      <Project>{123711a9-c92e-4f15-8bd0-b1222a2d5f0b}</Project>
+      <Name>BRPLUSA.Domain</Name>
     </ProjectReference>
     <ProjectReference Include="..\BRPLUSA.Navisworks\BRPLUSA.Navisworks.csproj">
       <Project>{309cbca2-aa99-4e3d-87fe-98cdeda3ccfb}</Project>
