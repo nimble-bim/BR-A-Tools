@@ -11,8 +11,8 @@ namespace BRPLUSA.Revit.Client.Updaters
 {
     public abstract class BaseDatabaseWrapper<T> : IDisposable where T : IEntity
     {
-        protected IMongoDatabase _db;
-        protected IMongoClient _client;
+        public IMongoDatabase Database { get; set; }
+        public IMongoClient Client { get; set; }
         private readonly string _dbName;
         private readonly string _dbLocalLocation;
         private readonly string _dbServerLocation;
@@ -30,16 +30,16 @@ namespace BRPLUSA.Revit.Client.Updaters
 
         private void Initialize()
         {
-            if (_client == null)
+            if (Client == null)
             {
-                _client = _dbServerLocation == null
+                Client = _dbServerLocation == null
                     ? new MongoClient("mongodb://localhost:27017")
                     : new MongoClient(_dbServerLocation);
             }
 
-            _db = _dbName == null 
-                ? _client.GetDatabase("brplusa") 
-                : _client.GetDatabase(_dbName);
+            Database = _dbName == null 
+                ? Client.GetDatabase("brplusa") 
+                : Client.GetDatabase(_dbName);
         }
 
         public Expression<Func<T, bool>> IsElement(T elem)
@@ -53,7 +53,7 @@ namespace BRPLUSA.Revit.Client.Updaters
 
             try
             {
-                var table = _db.GetCollection<T>(tableName);
+                var table = Database.GetCollection<T>(tableName);
                 var doc = await table.FindAsync(e => element.InternalId == e.InternalId);
                 dbElem = (T)doc;
             }
@@ -71,7 +71,7 @@ namespace BRPLUSA.Revit.Client.Updaters
         {
             try
             {
-                var table = _db.GetCollection<T>(tableName);
+                var table = Database.GetCollection<T>(tableName);
                 await table.InsertOneAsync(element);
             }
 
@@ -91,7 +91,7 @@ namespace BRPLUSA.Revit.Client.Updaters
 
             try
             {
-                var table = _db.GetCollection<T>(tableName);
+                var table = Database.GetCollection<T>(tableName);
                 result = await table.DeleteOneAsync(e => element.InternalId == e.InternalId);
             }
 
@@ -106,7 +106,8 @@ namespace BRPLUSA.Revit.Client.Updaters
 
         public void Dispose()
         {
-            throw new NotImplementedException();
+            if (Client != null)
+                Client = null;
         }
     }
 }

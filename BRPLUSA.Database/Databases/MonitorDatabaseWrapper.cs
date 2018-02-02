@@ -16,7 +16,7 @@ namespace BRPLUSA.Database.Databases
 
         public WMTableWrapper(string modelName) : base()
         {
-            _table = _db.GetCollection<WorksharingEvent>(modelName);
+            _table = Database.GetCollection<WorksharingEvent>(modelName);
 
         }
 

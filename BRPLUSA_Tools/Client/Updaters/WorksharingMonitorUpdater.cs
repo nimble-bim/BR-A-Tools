@@ -18,7 +18,7 @@ namespace BRPLUSA.Revit.Client.Updaters
 
         public WorksharingMonitorUpdater()
         {
-            _state = _db.GetCurrentState();
+            //_state = _db.GetCurrentState();
         }
 
         public void NotifyModelOpen(object sender, DocumentOpenedEventArgs args)

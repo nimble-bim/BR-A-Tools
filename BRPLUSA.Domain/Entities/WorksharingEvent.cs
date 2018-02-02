@@ -17,7 +17,7 @@ namespace BRPLUSA.Domain.Entities
 
         public WorksharingEvent()
         {
-            TimeCreated = DateTime.Now.ToShortDateString() + DateTime.Now.ToShortTimeString(),
+            TimeCreated = DateTime.Now.ToShortDateString() + DateTime.Now.ToShortTimeString();
         }
 
         public WorksharingEvent(WorksharingEvent other)
