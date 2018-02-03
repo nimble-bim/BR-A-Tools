@@ -10,26 +10,24 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace BRPLUSA.Domain.Entities
 {
-    public class WorksharingEvent : Entity
+    public abstract class WorksharingEvent : Entity
     {
         [BsonId]
         public ObjectId Id { get; set; }
-        public string[] UsersSyncing { get; set; }
-        public string[] UsersCurrentlyInModel { get; set; }
+        public User User { get; set; }
         public WorksharingEventType EventType { get; set; }
         public string ModelName { get; set; }
         public string TimeCreated { get; set; }
 
         public WorksharingEvent()
         {
-            TimeCreated = DateTime.Now.ToShortDateString() + DateTime.Now.ToShortTimeString();
+            TimeCreated = DateTime.Now.ToShortDateString() + DateTime.Now.ToLongTimeString();
         }
 
         public WorksharingEvent(WorksharingEvent other)
         {
-            UsersSyncing = other.UsersSyncing;
-            UsersCurrentlyInModel = other.UsersCurrentlyInModel;
             ModelName = other.ModelName;
+            User = other.User;
         }
     }
 }

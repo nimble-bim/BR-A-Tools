@@ -48,21 +48,31 @@ namespace BRPLUSA.Database.Tests
         {
             _table = new WorksharingMonitorTable(_tableName);
 
-            // check if table has any data
-            var elements = _table.Table.Count(_ => true);
+            var eventState = new WorksharingEvent
+            {
+                EventType = WorksharingEventType.Unknown
+            };
 
-            Assert.IsTrue(elements > 0);
+            _table.Table.InsertOne(eventState);
+
+            // check if table has any data
+            var elem = _table.GetLastInserted();
+            var datesAreEqual = elem.TimeCreated == eventState.TimeCreated;
+
+            Assert.IsTrue(datesAreEqual);
         }
 
         [Test]
         public void ShouldAddNewModelOpenedEvent()
         {
             _table = new WorksharingMonitorTable(_tableName);
+            var user = new User {Name = "psmith@brplusa.com"};
+            _table.AddModelOpenedEvent(user);
 
             // check if table has any data
-            var elements = _table.Table.Count(_ => true);
+            var elem = _table.GetLastInserted();
 
-            Assert.IsTrue(elements > 0);
+            Assert.AreEqual(WorksharingEventType.ModelOpen, elem.EventType);
         }
     }
 }

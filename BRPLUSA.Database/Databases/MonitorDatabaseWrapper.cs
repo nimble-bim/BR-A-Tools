@@ -57,7 +57,13 @@ namespace BRPLUSA.Database.Databases
                                 .Descending("$natural"))
                                 .Limit(1).ToList().ToArray();
 
-            return lastItem[lastItem.Length - 1];
+            var lastInserted = Table.Find(all)
+                                .Sort(new SortDefinitionBuilder<WorksharingEvent>()
+                                .Descending(ws => ws.TimeCreated))
+                                .Limit(1).ToList().ToArray();
+
+            //return lastItem[lastItem.Length - 1];
+            return lastInserted[lastInserted.Length - 1];
         }
 
         private WorksharingEvent CreateDefaultState()
@@ -67,9 +73,12 @@ namespace BRPLUSA.Database.Databases
             return state;
         }
 
-        //public Task<bool> AddModelOpenedEvent(User user, string modelName)
-        //{
-
-        //}
+        public async void AddModelOpenedEvent(User user)
+        {
+            await Table.InsertOneAsync(new WorksharingEvent
+            {
+                EventType = WorksharingEventType.ModelOpen
+            });
+        }
     }
 }

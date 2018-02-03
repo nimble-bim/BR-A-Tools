@@ -46,8 +46,13 @@
   <ItemGroup>
     <Compile Include="Base\Entity.cs" />
     <Compile Include="Entities\User.cs" />
+    <Compile Include="Entities\UserClosedModelEvent.cs" />
+    <Compile Include="Entities\UserOpenedModelEvent.cs" />
+    <Compile Include="Entities\UserSyncedModelEvent.cs" />
+    <Compile Include="Entities\UserSyncingModelEvent.cs" />
     <Compile Include="Entities\WorksharingEvent.cs" />
     <Compile Include="Entities\WorksharingEventType.cs" />
+    <Compile Include="Entities\WorksharingState.cs" />
     <Compile Include="Interfaces\IEntity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
