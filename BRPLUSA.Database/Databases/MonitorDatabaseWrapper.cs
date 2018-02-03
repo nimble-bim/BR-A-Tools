@@ -68,17 +68,14 @@ namespace BRPLUSA.Database.Databases
 
         private WorksharingEvent CreateDefaultState()
         {
-            var state = new WorksharingEvent{ EventType = WorksharingEventType.DefaultState };
+            var state = new DefaultWorksharingEvent();
             Table.InsertOne(state);
             return state;
         }
 
         public async void AddModelOpenedEvent(User user)
         {
-            await Table.InsertOneAsync(new WorksharingEvent
-            {
-                EventType = WorksharingEventType.ModelOpen
-            });
+            await Table.InsertOneAsync(new UserOpenedModelEvent(user));
         }
     }
 }

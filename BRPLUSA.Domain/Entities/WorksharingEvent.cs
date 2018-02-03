@@ -1,6 +1,7 @@
 ﻿using BRPLUSA.Domain.Base;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
@@ -10,7 +11,7 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace BRPLUSA.Domain.Entities
 {
-    public abstract class WorksharingEvent : Entity
+    public class WorksharingEvent : Entity
     {
         [BsonId]
         public ObjectId Id { get; set; }
@@ -21,13 +22,21 @@ namespace BRPLUSA.Domain.Entities
 
         public WorksharingEvent()
         {
-            TimeCreated = DateTime.Now.ToShortDateString() + DateTime.Now.ToLongTimeString();
+            TimeCreated = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture);
         }
 
         public WorksharingEvent(WorksharingEvent other)
         {
             ModelName = other.ModelName;
             User = other.User;
+        }
+    }
+
+    public class DefaultWorksharingEvent : WorksharingEvent
+    {
+        public DefaultWorksharingEvent()
+        {
+            EventType = WorksharingEventType.DefaultState;
         }
     }
 }

@@ -12,6 +12,7 @@ namespace BRPLUSA.Database.Tests
     public class WMTableWrapperTests
     {
         private const string _tableName = "MODEL_A1_HVAC";
+        private readonly User _user = new User {Name = "psmith@brplusa.com"};
         private WorksharingMonitorTable _table;
 
         [SetUp]
@@ -47,11 +48,7 @@ namespace BRPLUSA.Database.Tests
         public void ShouldHaveGetLastInserted()
         {
             _table = new WorksharingMonitorTable(_tableName);
-
-            var eventState = new WorksharingEvent
-            {
-                EventType = WorksharingEventType.Unknown
-            };
+            var eventState = new UserClosedModelEvent(_user);
 
             _table.Table.InsertOne(eventState);
 
@@ -66,8 +63,7 @@ namespace BRPLUSA.Database.Tests
         public void ShouldAddNewModelOpenedEvent()
         {
             _table = new WorksharingMonitorTable(_tableName);
-            var user = new User {Name = "psmith@brplusa.com"};
-            _table.AddModelOpenedEvent(user);
+            _table.AddModelOpenedEvent(_user);
 
             // check if table has any data
             var elem = _table.GetLastInserted();
