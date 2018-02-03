@@ -13,7 +13,7 @@ namespace BRPLUSA.Revit.Client.Updaters
 {
     public class WorksharingMonitorUpdater : IRegisterableUpdater
     {
-        private static WMTableWrapper _db;
+        private static WorksharingMonitorTable _db;
         private static WorksharingEvent _state;
 
         public WorksharingMonitorUpdater()

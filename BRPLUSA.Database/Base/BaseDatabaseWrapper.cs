@@ -1,30 +1,31 @@
-﻿using BRPLUSA.Domain.Entities;
-using BRPLUSA.Domain.Interfaces;
-using MongoDB.Driver;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using BRPLUSA.Database.Databases;
+using BRPLUSA.Domain.Interfaces;
+using MongoDB.Bson;
+using MongoDB.Driver;
 
-namespace BRPLUSA.Revit.Client.Updaters
+namespace BRPLUSA.Database.Base
 {
     public abstract class BaseDatabaseWrapper<T> : IDisposable where T : IEntity
     {
-        public IMongoDatabase Database { get; set; }
-        public IMongoClient Client { get; set; }
         private readonly string _dbName;
         private readonly string _dbLocalLocation;
         private readonly string _dbServerLocation;
+        public IMongoDatabase Database { get; set; }
+        public IMongoClient Client { get; set; }
 
         public BaseDatabaseWrapper()
         {
+            var type = typeof(T);
+            _dbName = type.Name.ToLower() + "db";
             Initialize();
         }
 
         public BaseDatabaseWrapper(string dbLocation)
         {
-            _dbName = typeof(T).ToString();
             _dbLocalLocation = dbLocation;
         }
 
@@ -40,6 +41,28 @@ namespace BRPLUSA.Revit.Client.Updaters
             Database = _dbName == null 
                 ? Client.GetDatabase("brplusa") 
                 : Client.GetDatabase(_dbName);
+        }
+
+        public IMongoCollection<T> CreateTableIfNotExists(string tableName)
+        {
+            return CreateTableIfNotExists<T>(tableName);
+        }
+
+        public IMongoCollection<T1> CreateTableIfNotExists<T1>(string tableName)
+        {
+            if (!TableExists(tableName))
+                Database.CreateCollection(tableName);
+
+            return Database.GetCollection<T1>(tableName);
+        }
+
+        public bool TableExists(string tableName)
+        {
+            var filter = new BsonDocument("name", tableName);
+
+            var dbs = Database.ListCollections(new ListCollectionsOptions { Filter = filter });
+
+            return dbs.Any();
         }
 
         public Expression<Func<T, bool>> IsElement(T elem)

@@ -8,8 +8,9 @@ namespace BRPLUSA.Domain.Entities
 {
     public enum WorksharingEventType
     {
-        Unknown = -1,
-        None = 0,
+        Unknown = -2,
+        None = -1,
+        DefaultState = 0,
         ModelOpen = 1,
         ModelSyncing = 2,
         ModelSynced = 3,

@@ -9,6 +9,6 @@ namespace BRPLUSA.Domain.Base
 {
     public class Entity : IEntity
     {
-        public string InternalId { get;  set; }
+        public virtual string InternalId { get;  set; }
     }
 }
