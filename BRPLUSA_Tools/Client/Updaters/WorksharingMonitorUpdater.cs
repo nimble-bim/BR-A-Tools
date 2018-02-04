@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BRPLUSA.Domain;
 
 namespace BRPLUSA.Revit.Client.Updaters
 {
@@ -23,8 +24,9 @@ namespace BRPLUSA.Revit.Client.Updaters
 
         public void NotifyModelOpen(object sender, DocumentOpenedEventArgs args)
         {
-            // send notification to db
-            //SubscribeToUpdates();
+            // send notification to server
+            var state = new UserOpenedModelEvent(args.Document.Title);
+            WorksharingMonitorService.PostModelOpenedEvent(state);
         }
 
         public void NotifyModelSyncing(object sender, DocumentSynchronizingWithCentralEventArgs args)

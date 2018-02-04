@@ -2,10 +2,11 @@
 {
     public class UserSyncedModelEvent : WorksharingEvent
     {
-        public UserSyncedModelEvent(User user)
+        public UserSyncedModelEvent(User user) : base(user) { }
+
+        protected override void Initialize()
         {
             EventType = WorksharingEventType.ModelSynced;
-            User = user;
         }
     }
 }

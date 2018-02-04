@@ -9,6 +9,11 @@ namespace BRPLUSA.Domain.Base
 {
     public class Entity : IEntity
     {
-        public virtual string InternalId { get;  set; }
+        public string InternalId { get;  set; }
+
+        public Entity()
+        {
+            InternalId = new Guid().ToString();
+        }
     }
 }

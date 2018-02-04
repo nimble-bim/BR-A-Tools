@@ -73,9 +73,9 @@ namespace BRPLUSA.Database.Databases
             return state;
         }
 
-        public async void AddModelOpenedEvent(User user)
+        public async void AddModelOpenedEvent(string modelName)
         {
-            await Table.InsertOneAsync(new UserOpenedModelEvent(user));
+            await Table.InsertOneAsync(new UserOpenedModelEvent(modelName));
         }
     }
 }

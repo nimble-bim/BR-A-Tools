@@ -11,23 +11,25 @@ namespace BRPLUSA.Database.Tests
     [TestFixture]
     public class WMTableWrapperTests
     {
-        private const string _tableName = "MODEL_A1_HVAC";
-        private readonly User _user = new User {Name = "psmith@brplusa.com"};
+        private const string _modelName = "MODEL_A1_HVAC";
+        private const string _fakeName = "psmith@brplusa.com";
+        private readonly User _user = new User(_fakeName);
+        private readonly CurrentUser _currentUser = new CurrentUser();
         private WorksharingMonitorTable _table;
 
         [SetUp]
         public void ResetTable()
         {
-            _table = new WorksharingMonitorTable(_tableName);
-            _table.Database.Database.DropCollection(_tableName);
+            _table = new WorksharingMonitorTable(_modelName);
+            _table.Database.Database.DropCollection(_modelName);
         }
 
         [Test]
         public void ShouldCreateNewTableForNewlyAddedModelOnInstantiation()
         {
-            _table = new WorksharingMonitorTable(_tableName);
+            _table = new WorksharingMonitorTable(_modelName);
 
-            var filter = new BsonDocument("name", _tableName);
+            var filter = new BsonDocument("name", _modelName);
             var dbs = _table.Database.Database.ListCollections(new ListCollectionsOptions{ Filter = filter});
 
             Assert.IsTrue(dbs.Any());
@@ -36,7 +38,7 @@ namespace BRPLUSA.Database.Tests
         [Test]
         public void ShouldHaveDefaultStateOnCreation()
         {
-            _table = new WorksharingMonitorTable(_tableName);
+            _table = new WorksharingMonitorTable(_modelName);
 
             // check if table has any data
             var elements = _table.Table.Count(_ => true);
@@ -47,7 +49,7 @@ namespace BRPLUSA.Database.Tests
         [Test]
         public void ShouldHaveGetLastInserted()
         {
-            _table = new WorksharingMonitorTable(_tableName);
+            _table = new WorksharingMonitorTable(_modelName);
             var eventState = new UserClosedModelEvent(_user);
 
             _table.Table.InsertOne(eventState);
@@ -62,8 +64,8 @@ namespace BRPLUSA.Database.Tests
         [Test]
         public void ShouldAddNewModelOpenedEvent()
         {
-            _table = new WorksharingMonitorTable(_tableName);
-            _table.AddModelOpenedEvent(_user);
+            _table = new WorksharingMonitorTable(_modelName);
+            _table.AddModelOpenedEvent(_modelName);
 
             // check if table has any data
             var elem = _table.GetLastInserted();

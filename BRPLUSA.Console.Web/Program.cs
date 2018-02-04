@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using BRPLUSA.Domain;
+using BRPLUSA.Domain.Entities;
 
 namespace BRPLUSA.Console.Web
 {
@@ -19,7 +20,8 @@ namespace BRPLUSA.Console.Web
 
         static async Task SendData()
         {
-            var response = await WorksharingMonitorService.PostModelOpenedEvent();
+            var state = new UserOpenedModelEvent("TestMODEL");
+            var response = await WorksharingMonitorService.PostModelOpenedEvent(state);
             System.Console.WriteLine(response);
             System.Console.Read();
         }

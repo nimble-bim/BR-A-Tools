@@ -21,6 +21,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BRPLUSA.Database.Tests", "B
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BRPLUSA.Console.Web", "BRPLUSA.Console.Web\BRPLUSA.Console.Web.csproj", "{94493F2E-0282-4C57-B9D0-CAC04930B7CE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BRPLUSA.Domain.Tests", "BRPLUSA.Domain.Tests\BRPLUSA.Domain.Tests.csproj", "{89D32D74-65DA-4FE1-8E7F-55768C6BA580}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -63,6 +65,10 @@ Global
 		{94493F2E-0282-4C57-B9D0-CAC04930B7CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{94493F2E-0282-4C57-B9D0-CAC04930B7CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{94493F2E-0282-4C57-B9D0-CAC04930B7CE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{89D32D74-65DA-4FE1-8E7F-55768C6BA580}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{89D32D74-65DA-4FE1-8E7F-55768C6BA580}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{89D32D74-65DA-4FE1-8E7F-55768C6BA580}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{89D32D74-65DA-4FE1-8E7F-55768C6BA580}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
