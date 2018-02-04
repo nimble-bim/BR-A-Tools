@@ -48,11 +48,6 @@ namespace BRPLUSA.Domain.Entities
 
     public class DefaultWorksharingEvent : WorksharingEvent
     {
-
-        //public DefaultWorksharingEvent()
-        //{
-            
-        //}
         protected override void Initialize()
         {
             EventType = WorksharingEventType.DefaultState;
