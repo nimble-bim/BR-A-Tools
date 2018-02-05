@@ -14,9 +14,6 @@ namespace BRPLUSA.Revit.Client.Updaters
 {
     public class WorksharingMonitorUpdater : IRegisterableUpdater
     {
-        private static WorksharingMonitorTable _db;
-        private static WorksharingEvent _state;
-
         public WorksharingMonitorUpdater()
         {
             //_state = _db.GetCurrentState();
@@ -43,17 +40,6 @@ namespace BRPLUSA.Revit.Client.Updaters
         {
             // send notification to db
             //UnsubscribeToUpdates();
-        }
-
-        // necessary? updates will appear in browser, no?
-        public void SubscribeToUpdates()
-        {
-
-        }
-
-        public void UnsubscribeToUpdates()
-        {
-
         }
 
         public void Deregister()

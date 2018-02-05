@@ -18,7 +18,7 @@ namespace BRPLUSA.Database.Databases
     public class WorksharingMonitorTable
     {
         private readonly string _tableName; 
-        public BaseDatabaseWrapper<WorksharingEvent> Database { get; private set; }
+        public WorksharingMonitorDb Database { get; private set; }
         public IMongoCollection<WorksharingEvent> Table { get; private set; }
         public WorksharingEvent CurrentState { get; private set; }
 

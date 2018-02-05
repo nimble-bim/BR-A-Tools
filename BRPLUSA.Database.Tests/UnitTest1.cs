@@ -18,24 +18,22 @@ namespace BRPLUSA.Database.Tests
             _cmd = StartCMD();
             _cmd.Start();
 
-            await _cmd.StandardInput.WriteLineAsync("heroku local web");
+            //await _cmd.StandardInput.WriteLineAsync("heroku local web");
+            _cmd.StandardInput.WriteLine("heroku local web");
             _cmd.StandardInput.Flush();
-            _cmd.Close();
+            //_cmd.Close();
+            var content = _cmd.StandardOutput.ReadToEnd();
 
-            while (!_cmd.StandardOutput.EndOfStream)
-            {
-                
-            }
-
-            Console.WriteLine(_cmd.StandardOutput.ReadToEnd());
+            Console.WriteLine(content);
         }
 
         [OneTimeTearDown]
         public void CloseDownLocalServer()
         {
-            _cmd.StandardInput.Flush();
-            _cmd.StandardInput.Close();
-            _cmd.WaitForExit();
+            _cmd.Close();
+            //_cmd.StandardInput.Flush();
+            //_cmd.StandardInput.Close();
+            //_cmd.WaitForExit();
         }
 
         public Process StartCMD()
