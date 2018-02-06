@@ -15,5 +15,6 @@ const wmSchema =
 // specify its db
 const wsModel = mongoose.model('WorksharingEvents', wmSchema);
 
+// adding a little test
 // export the model
 module.exports = wsModel;
