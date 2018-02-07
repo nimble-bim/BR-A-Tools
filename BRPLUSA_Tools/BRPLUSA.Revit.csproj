@@ -5,6 +5,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{19A8E334-7B4F-47AE-9B8B-FB8F8278F418}</ProjectGuid>
+    <DebugEngines>{351668CC-8477-4fbf-BFE3-5F1006E4DB1F}</DebugEngines>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>BRPLUSA.Revit</RootNamespace>
@@ -80,6 +81,7 @@
     <Compile Include="Client\Commands\SelectByName.cs" />
     <Compile Include="Client\Commands\SelectPanelFromSchedule.cs" />
     <Compile Include="Client\Commands\UnlinkSpaces.cs" />
+    <Compile Include="Client\Updaters\ModelBackupUpdater.cs" />
     <Compile Include="Client\Updaters\WorksharingMonitorUpdater.cs" />
     <Compile Include="Client\Views\SearchSelectionBox.cs">
       <SubType>Form</SubType>

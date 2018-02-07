@@ -7,6 +7,9 @@ using BRPLUSA.Revit.Services;
 
 namespace BRPLUSA.Revit.Client.Applications
 {
+    // if this doesn't debug - check this link:
+    // https://blogs.msdn.microsoft.com/devops/2013/10/16/switching-to-managed-compatibility-mode-in-visual-studio-2013/
+
     public class RevitApplicationEnhancements : IExternalApplication
     {
         public Result OnStartup(UIControlledApplication app)
@@ -25,7 +28,10 @@ namespace BRPLUSA.Revit.Client.Applications
             {
                 CreateRibbon(app);
                 
-                UpdaterRegistrationService.AddRegisterableServices(new SpatialPropertyUpdater(app));
+                UpdaterRegistrationService.AddRegisterableServices(
+                    new SpatialPropertyUpdater(app),
+                    new ModelBackupUpdater()
+                    );
 
                 app.ControlledApplication.DocumentOpened += UpdaterRegistrationService.RegisterServices;
                 app.ControlledApplication.DocumentClosed += UpdaterRegistrationService.DeregisterServices;

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,12 +12,9 @@ namespace BRPLUSA.Console.Web
 {
     public class Program
     {
-
         static void Main(string[] args)
         {
-            RunHerokuLocal();
-            //SendData();
-            System.Console.Read();
+            OpenLocalModel();
         }
 
         static async Task SendData()
@@ -49,6 +47,26 @@ namespace BRPLUSA.Console.Web
             cmd.StandardInput.Close();
             cmd.WaitForExit();
             System.Console.WriteLine(cmd.StandardOutput.ReadToEnd());
+        }
+
+        static void OpenLocalModel()
+        {
+            var fileName = @"ELEC - 181 Mercer - v2017_PSmith.rvt";
+            var file = $@"C:\Users\psmith\Documents\{fileName}";
+            var dest = $@"C:\Users\psmith\Desktop\resaved\{fileName}";
+            var destFolder = Directory.GetParent(dest).FullName;
+
+            if (!File.Exists(file))
+            {
+                System.Console.WriteLine("Idiot");
+                return;
+            }
+
+            if (!Directory.Exists(destFolder))
+                Directory.CreateDirectory(destFolder);
+
+            //Process.Start(file);
+            File.Copy(file, dest);
         }
     }
 }
