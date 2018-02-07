@@ -3,6 +3,7 @@ using Autodesk.Revit.DB.Events;
 using BRPLUSA.Revit.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -47,18 +48,45 @@ namespace BRPLUSA.Revit.Client.Updaters
 
         public void RequestModelBackup(object sender, DocumentSynchronizedWithCentralEventArgs args)
         {
-            var info = new ThreadStart(BackupModelLocally);
-            var backupThread = new Thread(info);
-            //backupThread.IsBackground = true;
-            backupThread.Start();
+            if (args.Document.PathName != _doc.PathName)
+                return;
+
+            BackupModelLocallyUsingRevit(args.Document);
+
+            //var info = new ThreadStart(BackupModelLocally);
+            //var backupThread = new Thread(info);
+            ////backupThread.IsBackground = true;
+            //backupThread.Start();
         }
+
+        public void BackupModelLocallyUsingRevit(Document doc)
+        {
+            var desktop = Environment.GetFolderPath(Environment.SpecialFolder.CommonDesktopDirectory);
+            var fileName = Path.GetFileNameWithoutExtension(_modelPath);
+            var cult = new CultureInfo("nl-NL");
+            var now = DateTime.UtcNow.ToShortDateString().ToString(cult) + "_" + DateTime.UtcNow.ToLongTimeString().ToString(cult);
+            var backupFilePath = $@"{desktop}\_bim360backups\{fileName}_{now}.rvt";
+            var backupFolder = Directory.GetParent(backupFilePath).FullName;
+
+            if (!Directory.Exists(backupFolder))
+                Directory.CreateDirectory(backupFolder);
+
+            doc.Application.CopyModel(doc.GetWorksharingCentralModelPath(), backupFolder, true);
+        }
+
 
         public void BackupModelLocally()
         {
             var desktop = Environment.GetFolderPath(Environment.SpecialFolder.CommonDesktopDirectory);
             var fileName = Path.GetFileNameWithoutExtension(_modelPath);
-            var now = DateTime.UtcNow.ToShortDateString() + DateTime.UtcNow.ToLongTimeString();
-            var backupPath = $@"{desktop}\_bim360backups\{fileName}_{now}.rvt";
+            var now = DateTime.UtcNow.ToShortDateString() +"_" + DateTime.UtcNow.ToLongTimeString();
+            var backupFilePath = $@"{desktop}\_bim360backups\{fileName}_{now}.rvt";
+            var backupFolder = Directory.GetParent(backupFilePath).FullName;
+
+            if (!Directory.Exists(backupFolder))
+                Directory.CreateDirectory(backupFolder);
+
+            //File.Copy(_localModelPath, backupFilePath);
         }
     }
 }
