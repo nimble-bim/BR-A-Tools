@@ -12,6 +12,7 @@ namespace BRPLUSA.Domain
     public class WorksharingMonitorService
     {
         private static readonly HttpClient client = new HttpClient();
+        //private static readonly string _url = "http://localhost:5000/api/worksharing";
         private static readonly string _url = "http://localhost:7855/api/worksharing";
         //private static readonly string _url = "https://worksharing-server.herokuapp.com/api/worksharing";
 
@@ -22,7 +23,8 @@ namespace BRPLUSA.Domain
             var serialized = JsonConvert.SerializeObject(state);
 
             var content = new StringContent(serialized, Encoding.UTF8, "application/json");
-            return await client.PostAsync(_url, content);
+            var response = await client.PostAsync(_url, content);
+            return response;
         }
 
         public void PostModelClosedEvent()

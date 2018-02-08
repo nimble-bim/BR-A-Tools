@@ -14,7 +14,8 @@ namespace BRPLUSA.Console.Web
     {
         static void Main(string[] args)
         {
-            OpenLocalModel();
+            //OpenLocalModel();
+            SendData();
         }
 
         static async Task SendData()
