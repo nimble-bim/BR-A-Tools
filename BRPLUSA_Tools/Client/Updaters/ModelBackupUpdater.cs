@@ -64,7 +64,8 @@ namespace BRPLUSA.Revit.Client.Updaters
             var desktop = Environment.GetFolderPath(Environment.SpecialFolder.CommonDesktopDirectory);
             var fileName = Path.GetFileNameWithoutExtension(_modelPath);
             var cult = new CultureInfo("nl-NL");
-            var now = DateTime.UtcNow.ToShortDateString().ToString(cult) + "_" + DateTime.UtcNow.ToLongTimeString().ToString(cult);
+            Thread.CurrentThread.CurrentCulture = cult;
+            var now = DateTime.UtcNow.ToShortDateString() + "_" + DateTime.UtcNow.ToLongTimeString();
             var backupFilePath = $@"{desktop}\_bim360backups\{fileName}_{now}.rvt";
             var backupFolder = Directory.GetParent(backupFilePath).FullName;
 

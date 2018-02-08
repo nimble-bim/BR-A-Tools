@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Globalization;
+using System.IO;
+using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace BRPLUSA.Core.Tests
@@ -46,6 +49,22 @@ namespace BRPLUSA.Core.Tests
 
             // assert
             Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
+        public void ShouldCreateCorrectBackupFolderString()
+        {
+            //var _modelPath = "A360://ELEC - GICC_17640.rvt";
+
+            //var desktop = Environment.GetFolderPath(Environment.SpecialFolder.CommonDesktopDirectory);
+            //var fileName = Path.GetFileNameWithoutExtension(_modelPath);
+            var cult = new CultureInfo("nl-NL");
+            Thread.CurrentThread.CurrentCulture = cult;
+            var now = DateTime.UtcNow.ToShortDateString().ToString(cult) + "_" + DateTime.UtcNow.ToLongTimeString().ToString(cult);
+            //var backupFilePath = $@"{desktop}\_bim360backups\{fileName}_{now}.rvt";
+            //var backupFolder = Directory.GetParent(backupFilePath).FullName;
+
+            Assert.IsFalse(now.Contains("/") || now.Contains(@"\"));
         }
     }
 }
