@@ -19,11 +19,7 @@ namespace BRPLUSA.Revit.Client.Updaters
 
         public void Register(Document doc)
         {
-            var mPath = doc.GetWorksharingCentralModelPath();
-            var central = ModelPathUtils.ConvertModelPathToUserVisiblePath(mPath);
-
-            if (IsFromBIM360(central))
-                RegisterBIM360Backup(doc);
+            RegisterBIM360Backup(doc);
         }
 
         public void Deregister()
@@ -48,15 +44,13 @@ namespace BRPLUSA.Revit.Client.Updaters
 
         public void RequestModelBackup(object sender, DocumentSynchronizedWithCentralEventArgs args)
         {
-            if (args.Document.PathName != _doc.PathName)
+            var mPath = args.Document.GetWorksharingCentralModelPath();
+            var central = ModelPathUtils.ConvertModelPathToUserVisiblePath(mPath);
+
+            if (!IsFromBIM360(central))
                 return;
 
             BackupModelLocallyUsingRevit(args.Document);
-
-            //var info = new ThreadStart(BackupModelLocally);
-            //var backupThread = new Thread(info);
-            ////backupThread.IsBackground = true;
-            //backupThread.Start();
         }
 
         public void BackupModelLocallyUsingRevit(Document doc)
@@ -66,7 +60,7 @@ namespace BRPLUSA.Revit.Client.Updaters
             var cult = new CultureInfo("nl-NL");
             Thread.CurrentThread.CurrentCulture = cult;
             var now = DateTime.UtcNow.ToShortDateString() + "_" + DateTime.UtcNow.ToLongTimeString();
-            var backupFilePath = $@"{desktop}\_bim360backups\{fileName}_{now}.rvt";
+            var backupFilePath = $@"{desktop}\_bim360backups\{now}\{fileName}.rvt";
             var backupFolder = Directory.GetParent(backupFilePath).FullName;
 
             if (!Directory.Exists(backupFolder))
