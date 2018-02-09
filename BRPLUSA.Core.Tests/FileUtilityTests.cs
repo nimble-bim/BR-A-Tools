@@ -61,10 +61,11 @@ namespace BRPLUSA.Core.Tests
             var cult = new CultureInfo("nl-NL");
             Thread.CurrentThread.CurrentCulture = cult;
             var now = DateTime.UtcNow.ToShortDateString().ToString(cult) + "_" + DateTime.UtcNow.ToLongTimeString().ToString(cult);
+            now = now.Replace(":", String.Empty);
             //var backupFilePath = $@"{desktop}\_bim360backups\{fileName}_{now}.rvt";
             //var backupFolder = Directory.GetParent(backupFilePath).FullName;
 
-            Assert.IsFalse(now.Contains("/") || now.Contains(@"\"));
+            Assert.IsFalse(now.Contains("/") || now.Contains(@"\") || now.Contains(":"));
         }
     }
 }
