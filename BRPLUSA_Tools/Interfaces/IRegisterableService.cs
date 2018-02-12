@@ -1,8 +1,8 @@
 ﻿using Autodesk.Revit.DB;
 
-namespace BRPLUSA.Interfaces
+namespace BRPLUSA.Revit.Interfaces
 {
-    public interface IRegisterableService
+    public interface IRegisterableUpdater
     {
         void Register(Document doc);
         void Deregister();

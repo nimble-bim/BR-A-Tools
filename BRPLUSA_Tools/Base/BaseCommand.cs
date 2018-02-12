@@ -3,8 +3,9 @@ using System.Diagnostics;
 using Autodesk.Revit.Attributes;
 using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
+using BRPLUSA.Revit.Exceptions;
 
-namespace BRPLUSA.Base
+namespace BRPLUSA.Revit.Base
 {
     [Transaction(TransactionMode.Manual)]
     [Regeneration(RegenerationOption.Manual)]
@@ -27,11 +28,11 @@ namespace BRPLUSA.Base
             ExternalCommandData = excmd;
             ElementSet = elemset;
 
+            Result result;
+
             using (var tr = new Transaction(CurrentDocument))
             {
                 tr.Start("Regenerating...");
-
-                Result result;
 
                 try
                 {
@@ -50,8 +51,9 @@ namespace BRPLUSA.Base
                 }
 
                 tr.Commit();
-                return result;
             }
+
+            return result;
         }
 
         // Internal method that allows this class to use this private fields it contains
@@ -64,11 +66,13 @@ namespace BRPLUSA.Base
                 return Work();
             }
 
+            catch (CancellableException e)
+            {
+                return Result.Cancelled;
+            }
+
             catch(Exception e)
             {
-                if (e.Message.Contains("The user aborted the pick operation."))
-                    return Result.Cancelled;
-
                 Debug.WriteLine("Command failed because of an unknown exception");
                 TaskDialog.Show("Command Failed",
                     "There was an error behind the scenes that caused the command to fail horribly and die.");

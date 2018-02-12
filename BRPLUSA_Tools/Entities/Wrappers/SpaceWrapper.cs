@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Autodesk.Revit.DB.Mechanical;
 
-namespace BRPLUSA.Entities.Wrappers
+namespace BRPLUSA.Revit.Entities.Wrappers
 {
     public class SpaceWrapper
     {

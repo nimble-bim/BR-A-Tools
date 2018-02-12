@@ -4,11 +4,11 @@ using System.Linq;
 using Autodesk.Revit.DB;
 using Autodesk.Revit.DB.Mechanical;
 using Autodesk.Revit.UI;
-using BRPLUSA.Base;
-using BRPLUSA.Data;
-using BRPLUSA.Entities.Wrappers;
+using BRPLUSA.Revit.Base;
+using BRPLUSA.Revit.Data;
+using BRPLUSA.Revit.Entities.Wrappers;
 
-namespace BRPLUSA.Client.Updaters
+namespace BRPLUSA.Revit.Client.Updaters
 {
     public class SpatialPropertyUpdater : BaseRegisterableUpdater
     {

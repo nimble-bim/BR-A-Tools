@@ -1,0 +1,141 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{19A8E334-7B4F-47AE-9B8B-FB8F8278F418}</ProjectGuid>
+    <DebugEngines>{351668CC-8477-4fbf-BFE3-5F1006E4DB1F}</DebugEngines>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>BRPLUSA.Revit</RootNamespace>
+    <AssemblyName>BRPLUSA.Revit</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>BRPLUSA.addin</ApplicationManifest>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="AdWindows">
+      <HintPath>..\References\Revit\2017\AdWindows.dll</HintPath>
+    </Reference>
+    <Reference Include="Autodesk.Navisworks.Api, Version=13.0.1240.52, Culture=neutral, PublicKeyToken=d85e58fa5af9b484, processorArchitecture=AMD64">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\References\Navisworks\2017\Autodesk.Navisworks.Api.dll</HintPath>
+    </Reference>
+    <Reference Include="Autodesk.Navisworks.Automation, Version=13.0.1240.52, Culture=neutral, PublicKeyToken=d85e58fa5af9b484, processorArchitecture=AMD64">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\References\Navisworks\2017\Autodesk.Navisworks.Automation.dll</HintPath>
+    </Reference>
+    <Reference Include="Autodesk.Navisworks.Clash, Version=13.0.1240.52, Culture=neutral, PublicKeyToken=d85e58fa5af9b484, processorArchitecture=AMD64">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\References\Navisworks\2017\Autodesk.Navisworks.Clash.dll</HintPath>
+    </Reference>
+    <Reference Include="Autodesk.Navisworks.Controls, Version=13.0.1240.52, Culture=neutral, PublicKeyToken=d85e58fa5af9b484, processorArchitecture=AMD64">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\References\Navisworks\2017\Autodesk.Navisworks.Controls.dll</HintPath>
+    </Reference>
+    <Reference Include="LiteDB, Version=3.1.4.0, Culture=neutral, PublicKeyToken=4ee40123013c9f27, processorArchitecture=MSIL">
+      <HintPath>..\packages\LiteDB.3.1.4\lib\net35\LiteDB.dll</HintPath>
+    </Reference>
+    <Reference Include="RevitAPI">
+      <HintPath>..\References\Revit\2017\RevitAPI.dll</HintPath>
+    </Reference>
+    <Reference Include="RevitAPIUI">
+      <HintPath>..\References\Revit\2017\RevitAPIUI.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Base\BaseCommand.cs" />
+    <Compile Include="Base\RevitSelectionFilter.cs" />
+    <Compile Include="Client\Commands\ExportAreaToNavis.cs" />
+    <Compile Include="Client\Commands\SelectByName.cs" />
+    <Compile Include="Client\Commands\SelectPanelFromSchedule.cs" />
+    <Compile Include="Client\Commands\UnlinkSpaces.cs" />
+    <Compile Include="Client\Updaters\ModelBackupUpdater.cs" />
+    <Compile Include="Client\Updaters\WorksharingMonitorUpdater.cs" />
+    <Compile Include="Client\Views\SearchSelectionBox.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Client\Views\SearchSelectionBox.Designer.cs">
+      <DependentUpon>SearchSelectionBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Exceptions\CancellableException.cs" />
+    <Compile Include="Interfaces\IRegisterableService.cs" />
+    <Compile Include="Base\BaseRegisterableService.cs" />
+    <Compile Include="Base\BaseRegisterableUpdater.cs" />
+    <Compile Include="Services\ElementFinder.cs" />
+    <Compile Include="Services\ElementPresenter.cs" />
+    <Compile Include="Services\NavisworksExporter.cs" />
+    <Compile Include="Services\UpdaterRegistrationService.cs" />
+    <Compile Include="Client\Applications\RevitApplicationEnhancements.cs" />
+    <Compile Include="Entities\Wrappers\SpaceWrapper.cs" />
+    <Compile Include="Data\SpatialDatabaseWrapper.cs" />
+    <Compile Include="Client\Updaters\SpatialPropertyUpdater.cs" />
+    <Compile Include="Client\Commands\LinkSpaces.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="BRPLUSA.addin">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Client\Views\SearchSelectionBox.resx">
+      <DependentUpon>SearchSelectionBox.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BRPLUSA.Core\BRPLUSA.Core.csproj">
+      <Project>{ec0e8d93-3d21-482a-9f97-e7e5d2f8a192}</Project>
+      <Name>BRPLUSA.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BRPLUSA.Database\BRPLUSA.Database.csproj">
+      <Project>{B56FEBB5-8F1A-4B67-AD47-9201F7BE49AA}</Project>
+      <Name>BRPLUSA.Database</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BRPLUSA.Domain\BRPLUSA.Domain.csproj">
+      <Project>{123711a9-c92e-4f15-8bd0-b1222a2d5f0b}</Project>
+      <Name>BRPLUSA.Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BRPLUSA.Navisworks\BRPLUSA.Navisworks.csproj">
+      <Project>{309cbca2-aa99-4e3d-87fe-98cdeda3ccfb}</Project>
+      <Name>BRPLUSA.Navisworks</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>xcopy "$(TargetDir)*" /E  /Y /D "C:\ProgramData\Autodesk\Revit\Addins\2017\"</PostBuildEvent>
+  </PropertyGroup>
+</Project>

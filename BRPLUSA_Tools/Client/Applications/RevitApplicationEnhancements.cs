@@ -1,16 +1,17 @@
 ﻿using System;
 using System.Diagnostics;
 using Autodesk.Revit.UI;
-using BRPLUSA.Client.Commands;
-using BRPLUSA.Client.Updaters;
-using BRPLUSA.Services;
+using BRPLUSA.Revit.Client.Commands;
+using BRPLUSA.Revit.Client.Updaters;
+using BRPLUSA.Revit.Services;
 
-namespace BRPLUSA.Client.Applications
+namespace BRPLUSA.Revit.Client.Applications
 {
+    // if this doesn't debug - check this link:
+    // https://blogs.msdn.microsoft.com/devops/2013/10/16/switching-to-managed-compatibility-mode-in-visual-studio-2013/
+
     public class RevitApplicationEnhancements : IExternalApplication
     {
-        private RegistrationService _registerServ;
-
         public Result OnStartup(UIControlledApplication app)
         {
             return Initialize(app);
@@ -26,8 +27,15 @@ namespace BRPLUSA.Client.Applications
             try
             {
                 CreateRibbon(app);
-                _registerServ = new RegistrationService(app);
-                _registerServ.RegisterServices(new SpatialPropertyUpdater(app));
+                
+                UpdaterRegistrationService.AddRegisterableServices(
+                    new SpatialPropertyUpdater(app),
+                    new ModelBackupUpdater()
+                    );
+
+                app.ControlledApplication.DocumentOpened += UpdaterRegistrationService.RegisterServices;
+                app.ControlledApplication.DocumentClosed += UpdaterRegistrationService.DeregisterServices;
+
                 return Result.Succeeded;
             }
             catch (Exception e)
@@ -41,6 +49,8 @@ namespace BRPLUSA.Client.Applications
         {
             try
             {
+                app.ControlledApplication.DocumentOpened -= UpdaterRegistrationService.RegisterServices;
+                app.ControlledApplication.DocumentClosed -= UpdaterRegistrationService.DeregisterServices;
                 return Result.Succeeded;
             }
             catch (Exception e)
@@ -57,10 +67,14 @@ namespace BRPLUSA.Client.Applications
             var brpa = app.CreateRibbonPanel("BR+A", "Utilities");
             
             var spaceSync = new PushButtonData("Link Spaces", "Link Spaces", typeof(LinkSpaces).Assembly.Location, typeof(LinkSpaces).FullName);
-            var spaceDeSync = new PushButtonData("Unlink Spaces", "Unlink Spaces", typeof(UnlinkSpaces).Assembly.Location, typeof(UnlinkSpaces).FullName);
+            var exportAreaToNavis = new PushButtonData("Export Area To Navisworks", "Clash Area", typeof(ExportAreaToNavis).Assembly.Location, typeof(ExportAreaToNavis).FullName);
+            var findElement = new PushButtonData("Find Element By Name", "Find Element", typeof(SelectByName).Assembly.Location, typeof(SelectByName).FullName);
+            var findPanel = new PushButtonData("Find Panel By Name", "Find Panel", typeof(SelectPanelFromSchedule).Assembly.Location, typeof(SelectPanelFromSchedule).FullName);
 
             brpa.AddItem(spaceSync);
-            brpa.AddItem(spaceDeSync);
+            brpa.AddItem(exportAreaToNavis);
+            brpa.AddItem(findElement);
+            brpa.AddItem(findPanel);
         }
     }
 }
