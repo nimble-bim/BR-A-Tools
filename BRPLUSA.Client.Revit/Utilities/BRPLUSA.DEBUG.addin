@@ -2,7 +2,7 @@
 <RevitAddIns>
   <AddIn Type="Application">
     <Name>BR+A BIM Suite</Name>
-    <Assembly>%TEMP%\BR+A Revit Suite 2017\BRPLUSA.Revit.dll</Assembly>
+    <Assembly>%TEMP%\BRPLUSA\BR+A Revit Suite 2017\BRPLUSA.Revit.dll</Assembly>
     <FullClassName>BRPLUSA.Revit.Client.Applications.RevitApplicationEnhancements</FullClassName>
     <ClientId>646D2997-B33A-4C21-8CD1-81B13A59C477</ClientId>
     <VendorId>5</VendorId>

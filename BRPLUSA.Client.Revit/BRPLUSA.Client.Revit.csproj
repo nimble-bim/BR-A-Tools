@@ -167,7 +167,7 @@
 del /f "%25appdata%25\Autodesk\Revit\Addins\2017\BRPLUSA.addin" 
 rmdir /s /q "%25temp%25\BRPLUSA"
 powershell -NoProfile -ExecutionPolicy RemoteSigned -file $(TargetDir)\Utilities\processAddin.ps1
-xcopy "$(TargetDir)*" /E /Y /D "%25temp%25\BRPLUSA\"
+xcopy "$(TargetDir)*" /E /Y /D "%25temp%25\BRPLUSA\BR+A Revit Suite 2017\"
 xcopy "$(TargetDir)\Utilities\BRPLUSA.DEBUG.addin" /E  /Y /D "%25appdata%25\Autodesk\Revit\Addins\2017\")</PostBuildEvent>
   </PropertyGroup>
 </Project>
