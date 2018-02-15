@@ -32,7 +32,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationManifest>BRPLUSA.addin</ApplicationManifest>
+    <ApplicationManifest>Utilities\BRPLUSA.addin</ApplicationManifest>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Installer|AnyCPU'">
     <OutputPath>bin\Installer_Revit\</OutputPath>
@@ -127,11 +127,16 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="BRPLUSA.DEBUG.addin">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    <None Include="Utilities\BRPLUSA.DEBUG.addin">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="BRPLUSA.addin" />
+    <None Include="Utilities\BRPLUSA.addin">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="packages.config" />
+    <None Include="Utilities\processAddin.ps1">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Client\Views\SearchSelectionBox.resx">
@@ -158,6 +163,11 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>xcopy "$(TargetDir)*" /E  /Y /D "C:\ProgramData\Autodesk\Revit\Addins\2017\"</PostBuildEvent>
+    <PostBuildEvent>if $(ConfigurationName) == Debug (
+del /f "%25appdata%25\Autodesk\Revit\Addins\2017\BRPLUSA.addin" 
+rmdir /s /q "%25temp%25\BRPLUSA"
+powershell -NoProfile -ExecutionPolicy RemoteSigned -file $(TargetDir)\Utilities\processAddin.ps1
+xcopy "$(TargetDir)*" /E /Y /D "%25temp%25\BRPLUSA\"
+xcopy "$(TargetDir)\Utilities\BRPLUSA.DEBUG.addin" /E  /Y /D "%25appdata%25\Autodesk\Revit\Addins\2017\")</PostBuildEvent>
   </PropertyGroup>
 </Project>
