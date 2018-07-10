@@ -15,6 +15,64 @@ namespace BRPLUSA.Revit.Services
             throw new NotImplementedException();
         }
 
+        public static Element FindTextInView(Document doc, View view, string searchValue)
+        {
+            var filter = CreateTextFilter(view);
+
+            var textItems = new FilteredElementCollector(doc, view.Id).WherePasses(filter).ToElements();
+
+            return FilterText(textItems, searchValue);
+        }
+
+        public static Element FindElementByName(Document doc, string value, string field = "mark")
+        {
+            //return field == "mark" 
+            //    ? FindByMark(doc, value) 
+            //    : SearchElementParametersByHash(doc, field, value).Element;
+
+            return field == "mark"
+                ? FindByMark(doc, value)
+                : SearchElementSimply(doc, field, value).Element;
+        }
+
+        public static Element FindByMark(Document doc, string value)
+        {
+            var filter = CreateFilter("mark");
+
+            // query the document for an element with a value like name
+            var items = new FilteredElementCollector(doc)
+                .WherePasses(filter)
+                .ToElements();
+
+            return FilterElements(items, value);
+        }
+
+        public static Element FindPanelSchedule(Document doc, string fieldName, string value)
+        {
+            var rule = ParameterFilterRuleFactory.CreateContainsRule(new ElementId(BuiltInParameter.PANEL_SCHEDULE_NAME), value, false);
+            var filter = new ElementParameterFilter(rule);
+
+
+            var items = new FilteredElementCollector(doc)
+                .OfCategory(BuiltInCategory.OST_ElectricalEquipment)
+                .ToElements()
+                .Where(e => e.Name.ToLower().Equals(value.ToLower()))
+                .ToArray();
+
+            //foreach (var e in items)
+            //{
+            //    var name = e.LookupParameter("Panel Schedule Name");
+            //    var panelNameParameter = e.GetOrderedParameters().FirstOrDefault(p => p.Definition.Name.Equals("Panel Schedule Name"));
+            //}
+
+            //var items = new FilteredElementCollector(doc)
+            //    .OfCategory(BuiltInCategory.OST_ElectricalEquipment)
+            //    .WherePasses(filter)
+            //    .ToElements();
+
+            return FilterElements(items, value, fieldName);
+        }
+
         /// <summary>
         /// Runtime is about O(n) * O(1): O(n)
         /// </summary>
@@ -230,55 +288,6 @@ namespace BRPLUSA.Revit.Services
             return list.ToArray();
         }
 
-        public static Element FindElementByName(Document doc, string value, string field = "mark")
-        {
-            //return field == "mark" 
-            //    ? FindByMark(doc, value) 
-            //    : SearchElementParametersByHash(doc, field, value).Element;
-
-            return field == "mark"
-                ? FindByMark(doc, value)
-                : SearchElementSimply(doc, field, value).Element;
-        }
-
-        public static Element FindByMark(Document doc, string value)
-        {
-            var filter = CreateFilter("mark");
-
-            // query the document for an element with a value like name
-            var items = new FilteredElementCollector(doc)
-                .WherePasses(filter)
-                .ToElements();
-
-            return FilterElements(items, value);
-        }
-
-        public static Element FindPanelSchedule(Document doc, string fieldName, string value)
-        {
-            var rule = ParameterFilterRuleFactory.CreateContainsRule(new ElementId(BuiltInParameter.PANEL_SCHEDULE_NAME), value, false);
-            var filter = new ElementParameterFilter(rule);
-
-
-            var items = new FilteredElementCollector(doc)
-                .OfCategory(BuiltInCategory.OST_ElectricalEquipment)
-                .ToElements()
-                .Where(e => e.Name.ToLower().Equals(value.ToLower()))
-                .ToArray();
-
-            //foreach (var e in items)
-            //{
-            //    var name = e.LookupParameter("Panel Schedule Name");
-            //    var panelNameParameter = e.GetOrderedParameters().FirstOrDefault(p => p.Definition.Name.Equals("Panel Schedule Name"));
-            //}
-
-            //var items = new FilteredElementCollector(doc)
-            //    .OfCategory(BuiltInCategory.OST_ElectricalEquipment)
-            //    .WherePasses(filter)
-            //    .ToElements();
-
-            return FilterElements(items, value, fieldName);
-        }
-
         private static Element FilterElements(ICollection<Element> items, string value, string fieldName = "mark")
         {
             if (items.Count < 1)
@@ -291,6 +300,23 @@ namespace BRPLUSA.Revit.Services
                 "There are multiple elements matching the criteria provided - we'll present them to you with an option for selection");
 
             return HandleFoundElements(new Stack<Element>(items));
+        }
+
+        public static Element FilterText(ICollection<Element> items, string textValue)
+        {
+            var text = items.Cast<TextNote>();
+            var possible = text.Where(n => n.Text.Equals(textValue)).ToArray();
+
+            if (possible.Length < 1)
+                return HandleElementNotFound();
+
+            if (possible.Length == 1)
+                return HandleFoundElement(items.First());
+
+            TaskDialog.Show("Multiple Elements",
+                "There are multiple elements matching the criteria provided - we'll present them to you with an option for selection");
+
+            return HandleFoundElements(new Stack<Element>(possible));
         }
 
         private static Element HandleFoundElements(Stack<Element> elements)
@@ -343,6 +369,13 @@ namespace BRPLUSA.Revit.Services
             FilterRule filterRule = new FilterStringRule(paramValue, new FilterStringContains(), field, false);
 
             ElementFilter filter = new ElementParameterFilter(filterRule);
+
+            return filter;
+        }
+
+        private static ElementFilter CreateTextFilter(View view)
+        {
+            var filter = new ElementOwnerViewFilter(view.Id);
 
             return filter;
         }
