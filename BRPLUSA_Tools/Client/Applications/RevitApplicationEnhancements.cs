@@ -69,12 +69,14 @@ namespace BRPLUSA.Revit.Client.Applications
             var spaceSync = new PushButtonData("Link Spaces", "Link Spaces", typeof(LinkSpaces).Assembly.Location, typeof(LinkSpaces).FullName);
             var exportAreaToNavis = new PushButtonData("Export Area To Navisworks", "Clash Area", typeof(ExportAreaToNavis).Assembly.Location, typeof(ExportAreaToNavis).FullName);
             var findElement = new PushButtonData("Find Element By Name", "Find Element", typeof(SelectByName).Assembly.Location, typeof(SelectByName).FullName);
-            var findPanel = new PushButtonData("Find Panel By Name", "Find Panel", typeof(SelectPanelFromSchedule).Assembly.Location, typeof(SelectPanelFromSchedule).FullName);
+            //var findPanel = new PushButtonData("Find Panel By Name", "Find Panel", typeof(SelectPanelFromSchedule).Assembly.Location, typeof(SelectPanelFromSchedule).FullName);
+            var switchType = new PushButtonData("Switch Element Type", "Switch Element Type", typeof(ForceTypeSwap).Assembly.Location, typeof(ForceTypeSwap).FullName);
 
             brpa.AddItem(spaceSync);
             brpa.AddItem(exportAreaToNavis);
             brpa.AddItem(findElement);
-            brpa.AddItem(findPanel);
+            //brpa.AddItem(findPanel);
+            brpa.AddItem(switchType);
         }
     }
 }

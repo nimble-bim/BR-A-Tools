@@ -3,6 +3,7 @@ using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
 using Autodesk.Revit.UI.Selection;
 using BRPLUSA.Revit.Base;
+using BRPLUSA.Revit.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -118,11 +119,11 @@ namespace BRPLUSA.Revit.Client.Commands
             if(elemType != null)
                 return false;
 
-            using(var tr = new Transaction(CurrentDocument))
-            {
-                var oInst = (FamilyInstance)oElem;
-                var nInst = (FamilyInstance)nElem;
+            var oInst = (FamilyInstance)oElem;
+            var nInst = (FamilyInstance)nElem;
 
+            using (var tr = new Transaction(CurrentDocument))
+            {
                 oInst.Symbol = nInst.Symbol;
 
                 tr.Commit();
@@ -144,7 +145,5 @@ namespace BRPLUSA.Revit.Client.Commands
 
             return linkedSymbol;
         }
-
-
     }
 }

@@ -35,8 +35,9 @@ namespace BRPLUSA.Domain.Services
                 columns = range.Columns;
                 cellData = range.Cells;
 
-                var data = CreateSheetDataWrapper(cellData);
-                return data;
+                //var data = CreateSheetDataWrapper(cellData);
+                //return data;
+                throw new Exception();
             }
 
             catch(Exception e)
