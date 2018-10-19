@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>BRPLUSA.Revit.Client</RootNamespace>
     <AssemblyName>BRPLUSA.Revit.Client</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -56,8 +56,9 @@
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AdWindows">
-      <HintPath>..\References\Revit\2017\AdWindows.dll</HintPath>
+    <Reference Include="AdWindows, Version=2015.11.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\References\Revit\2018\AdWindows.dll</HintPath>
     </Reference>
     <Reference Include="Autodesk.Navisworks.Api, Version=13.0.1240.52, Culture=neutral, PublicKeyToken=d85e58fa5af9b484, processorArchitecture=AMD64">
       <SpecificVersion>False</SpecificVersion>
@@ -78,22 +79,28 @@
     <Reference Include="LiteDB, Version=3.1.4.0, Culture=neutral, PublicKeyToken=4ee40123013c9f27, processorArchitecture=MSIL">
       <HintPath>..\packages\LiteDB.3.1.4\lib\net35\LiteDB.dll</HintPath>
     </Reference>
-    <Reference Include="RevitAPI">
-      <HintPath>..\References\Revit\2017\RevitAPI.dll</HintPath>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="RevitAPI, Version=17.0.0.0, Culture=neutral, processorArchitecture=AMD64">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\References\Revit\2018\RevitAPI.dll</HintPath>
     </Reference>
-    <Reference Include="RevitAPIUI">
-      <HintPath>..\References\Revit\2017\RevitAPIUI.dll</HintPath>
+    <Reference Include="RevitAPIUI, Version=17.0.0.0, Culture=neutral, processorArchitecture=AMD64">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\References\Revit\2018\RevitAPIUI.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Base\BaseCommand.cs" />
@@ -103,30 +110,14 @@
     <Compile Include="EndUser\Commands\ForceTypeSwap.cs" />
     <Compile Include="EndUser\Commands\SelectByName.cs" />
     <Compile Include="EndUser\Commands\SelectPanelFromSchedule.cs" />
+    <Compile Include="EndUser\Commands\ShowSidebar.cs" />
     <Compile Include="EndUser\Commands\UnlinkSpaces.cs" />
-    <Compile Include="EndUser\Updaters\ModelBackupUpdater.cs" />
-    <Compile Include="EndUser\Updaters\WorksharingMonitorUpdater.cs" />
-    <Compile Include="EndUser\Views\SearchSelectionBox.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="EndUser\Views\SearchSelectionBox.Designer.cs">
-      <DependentUpon>SearchSelectionBox.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Exceptions\CancellableException.cs" />
-    <Compile Include="Interfaces\IRegisterableUpdater.cs" />
-    <Compile Include="Base\BaseRegisterableService.cs" />
+    <Compile Include="EndUser\Services\AutoModelBackupServices.cs" />
+    <Compile Include="EndUser\Services\ManualModelBackupServices.cs" />
+    <Compile Include="EndUser\Services\WorksharingMonitorUpdater.cs" />
     <Compile Include="Base\BaseRegisterableUpdater.cs" />
-    <Compile Include="Services\ElementFinder.cs" />
-    <Compile Include="Services\ElementPresenter.cs" />
-    <Compile Include="Services\NavisworksExporter.cs" />
-    <Compile Include="Services\QuickElementData.cs" />
-    <Compile Include="Services\RevitElementLocationServices.cs" />
-    <Compile Include="Services\RevitXYZUtils.cs" />
-    <Compile Include="Services\UpdaterRegistrationService.cs" />
     <Compile Include="EndUser\Applications\RevitApplicationEnhancements.cs" />
-    <Compile Include="Entities\Wrappers\SpaceWrapper.cs" />
-    <Compile Include="Data\SpatialDatabaseWrapper.cs" />
-    <Compile Include="EndUser\Updaters\SpatialPropertyUpdater.cs" />
+    <Compile Include="EndUser\Services\SpatialPropertyUpdater.cs" />
     <Compile Include="EndUser\Commands\LinkSpaces.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -142,11 +133,6 @@
     <None Include="Utilities\processAddin.ps1">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="EndUser\Views\SearchSelectionBox.resx">
-      <DependentUpon>SearchSelectionBox.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BRPLUSA.Navisworks.Client\BRPLUSA.Navisworks.Client.csproj">
@@ -165,7 +151,20 @@
       <Project>{123711a9-c92e-4f15-8bd0-b1222a2d5f0b}</Project>
       <Name>BRPLUSA.Domain</Name>
     </ProjectReference>
+    <ProjectReference Include="..\BRPLUSA.Revit.Client.UI\BRPLUSA.Revit.Client.UI.csproj">
+      <Project>{977957b1-037f-4eb9-ba45-4c48f805c3c5}</Project>
+      <Name>BRPLUSA.Revit.Client.UI</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BRPLUSA.Revit.Entities\BRPLUSA.Revit.Entities.csproj">
+      <Project>{e46b68f5-f133-4e41-8ca6-975b6b854357}</Project>
+      <Name>BRPLUSA.Revit.Entities</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BRPLUSA.Revit.Services\BRPLUSA.Revit.Services.csproj">
+      <Project>{ad967b1c-df2e-4690-8b0e-958596ff3c4e}</Project>
+      <Name>BRPLUSA.Revit.Services</Name>
+    </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>if $(ConfigurationName) == Debug (

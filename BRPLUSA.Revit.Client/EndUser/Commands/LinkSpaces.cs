@@ -5,8 +5,8 @@ using Autodesk.Revit.DB.Mechanical;
 using Autodesk.Revit.UI;
 using Autodesk.Revit.UI.Selection;
 using BRPLUSA.Revit.Client.Base;
-using BRPLUSA.Revit.Client.Data;
-using BRPLUSA.Revit.Client.Exceptions;
+using BRPLUSA.Revit.Entities.Data;
+using BRPLUSA.Revit.Entities.Exceptions;
 
 namespace BRPLUSA.Revit.Client.EndUser.Commands
 {

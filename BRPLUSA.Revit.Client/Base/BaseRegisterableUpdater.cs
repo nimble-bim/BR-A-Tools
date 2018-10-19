@@ -1,4 +1,5 @@
 ﻿using Autodesk.Revit.DB;
+using BRPLUSA.Revit.Entities.Base;
 
 namespace BRPLUSA.Revit.Client.Base
 {
