@@ -1,6 +1,6 @@
 ﻿using Autodesk.Revit.DB;
 
-namespace BRPLUSA.Revit.Interfaces
+namespace BRPLUSA.Client.Revit.Interfaces
 {
     public interface IRegisterableUpdater
     {

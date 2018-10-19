@@ -1,11 +1,8 @@
 ﻿using System.Collections.Generic;
-using Autodesk.Revit.DB;
 using Autodesk.Revit.DB.Events;
-using Autodesk.Revit.UI;
-using BRPLUSA.Revit.Client.Updaters;
-using BRPLUSA.Revit.Interfaces;
+using BRPLUSA.Client.Revit.Interfaces;
 
-namespace BRPLUSA.Revit.Services
+namespace BRPLUSA.Client.Revit.Services
 {
     public static class UpdaterRegistrationService
     {

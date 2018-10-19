@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Diagnostics;
 using Autodesk.Revit.UI;
-using BRPLUSA.Revit.Client.Commands;
-using BRPLUSA.Revit.Client.Updaters;
-using BRPLUSA.Revit.Services;
+using BRPLUSA.Client.Revit.Client.Commands;
+using BRPLUSA.Client.Revit.Client.Updaters;
+using BRPLUSA.Client.Revit.Services;
 
-namespace BRPLUSA.Revit.Client.Applications
+namespace BRPLUSA.Client.Revit.Client.Applications
 {
     // if this doesn't debug - check this link:
     // https://blogs.msdn.microsoft.com/devops/2013/10/16/switching-to-managed-compatibility-mode-in-visual-studio-2013/

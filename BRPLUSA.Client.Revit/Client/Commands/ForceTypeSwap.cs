@@ -1,16 +1,13 @@
-﻿using Autodesk.Revit.Attributes;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Autodesk.Revit.Attributes;
 using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
 using Autodesk.Revit.UI.Selection;
-using BRPLUSA.Revit.Base;
-using BRPLUSA.Revit.Services;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using BRPLUSA.Client.Revit.Base;
+using BRPLUSA.Client.Revit.Services;
 
-namespace BRPLUSA.Revit.Client.Commands
+namespace BRPLUSA.Client.Revit.Client.Commands
 {
     [Transaction(TransactionMode.Manual)]
     [Regeneration(RegenerationOption.Manual)]

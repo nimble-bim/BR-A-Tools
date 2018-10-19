@@ -1,7 +1,7 @@
 ﻿using Autodesk.Revit.DB;
 using Autodesk.Revit.UI.Selection;
 
-namespace BRPLUSA.Revit.Base
+namespace BRPLUSA.Client.Revit.Base
 {
 
     public class RevitSelectionFilter<T> : ISelectionFilter where T : Element

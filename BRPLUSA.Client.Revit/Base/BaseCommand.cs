@@ -3,9 +3,9 @@ using System.Diagnostics;
 using Autodesk.Revit.Attributes;
 using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
-using BRPLUSA.Revit.Exceptions;
+using BRPLUSA.Client.Revit.Exceptions;
 
-namespace BRPLUSA.Revit.Base
+namespace BRPLUSA.Client.Revit.Base
 {
     [Transaction(TransactionMode.Manual)]
     [Regeneration(RegenerationOption.Manual)]

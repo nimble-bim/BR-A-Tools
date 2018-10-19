@@ -1,8 +1,8 @@
 ﻿using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
-using BRPLUSA.Revit.Interfaces;
+using BRPLUSA.Client.Revit.Interfaces;
 
-namespace BRPLUSA.Revit.Base
+namespace BRPLUSA.Client.Revit.Base
 {
     public abstract class BaseRegisterableService : IRegisterableUpdater
     {

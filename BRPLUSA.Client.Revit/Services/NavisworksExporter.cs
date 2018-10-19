@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Autodesk.Revit.DB;
 using Autodesk.Revit.DB.ExternalService;
 
-namespace BRPLUSA.Revit.Services
+namespace BRPLUSA.Client.Revit.Services
 {
     public class NavisworksExporter : INavisworksExporter
     {

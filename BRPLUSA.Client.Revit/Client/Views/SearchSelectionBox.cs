@@ -1,15 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using BRPLUSA.Revit.Services;
 
-namespace BRPLUSA.Revit.Client.Views
+namespace BRPLUSA.Client.Revit.Client.Views
 {
     public partial class SearchSelectionBox : Form
     {

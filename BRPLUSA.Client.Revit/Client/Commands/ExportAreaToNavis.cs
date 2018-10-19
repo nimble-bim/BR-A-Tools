@@ -1,25 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
-using System.Windows.Forms.VisualStyles;
-using Autodesk.Revit.ApplicationServices;
 using Autodesk.Revit.Attributes;
-using Autodesk.Revit.Creation;
 using Autodesk.Revit.DB;
-using Autodesk.Revit.DB.ExternalService;
 using Autodesk.Revit.UI;
 using Autodesk.Revit.UI.Selection;
+using BRPLUSA.Client.Revit.Exceptions;
 using BRPLUSA.Core;
-using BRPLUSA.Navisworks;
-using BRPLUSA.Revit.Base;
-using BRPLUSA.Revit.Exceptions;
 using Document = Autodesk.Revit.DB.Document;
 
-namespace BRPLUSA.Revit.Client.Commands
+namespace BRPLUSA.Client.Revit.Client.Commands
 {
     [Transaction(TransactionMode.Manual)]
     [Regeneration(RegenerationOption.Manual)]

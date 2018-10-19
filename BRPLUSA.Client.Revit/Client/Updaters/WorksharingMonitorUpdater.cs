@@ -1,16 +1,11 @@
-﻿using Autodesk.Revit.DB;
+﻿using System;
+using Autodesk.Revit.DB;
 using Autodesk.Revit.DB.Events;
-using BRPLUSA.Database.Databases;
-using BRPLUSA.Domain.Entities;
-using BRPLUSA.Revit.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using BRPLUSA.Client.Revit.Interfaces;
 using BRPLUSA.Domain;
+using BRPLUSA.Domain.Entities;
 
-namespace BRPLUSA.Revit.Client.Updaters
+namespace BRPLUSA.Client.Revit.Client.Updaters
 {
     public class WorksharingMonitorUpdater : IRegisterableUpdater
     {

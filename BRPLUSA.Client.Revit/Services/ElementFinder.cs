@@ -6,7 +6,7 @@ using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
 using BRPLUSA.Core.Extensions;
 
-namespace BRPLUSA.Revit.Services
+namespace BRPLUSA.Client.Revit.Services
 {
     public static class ElementFinder
     {

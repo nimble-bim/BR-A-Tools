@@ -1,17 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using Autodesk.Revit.DB;
 using Autodesk.Revit.DB.Electrical;
 using Autodesk.Revit.UI;
 using Autodesk.Revit.UI.Events;
-using BRPLUSA.Revit.Client.Views;
+using BRPLUSA.Client.Revit.Client.Views;
 using View = Autodesk.Revit.DB.View;
 
-namespace BRPLUSA.Revit.Services
+namespace BRPLUSA.Client.Revit.Services
 {
     public static class ElementPresenter
     {

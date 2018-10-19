@@ -4,10 +4,10 @@ using Autodesk.Revit.Attributes;
 using Autodesk.Revit.DB.Mechanical;
 using Autodesk.Revit.UI;
 using Autodesk.Revit.UI.Selection;
-using BRPLUSA.Revit.Base;
-using BRPLUSA.Revit.Data;
+using BRPLUSA.Client.Revit.Base;
+using BRPLUSA.Client.Revit.Data;
 
-namespace BRPLUSA.Revit.Client.Commands
+namespace BRPLUSA.Client.Revit.Client.Commands
 {
     [Transaction(TransactionMode.Manual)]
     [Regeneration(RegenerationOption.Manual)]

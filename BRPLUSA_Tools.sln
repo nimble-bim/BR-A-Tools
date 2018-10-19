@@ -87,7 +87,6 @@ Global
 		{1D58705D-521F-4FAF-8DEC-41E1DB5E915C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1D58705D-521F-4FAF-8DEC-41E1DB5E915C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{1D58705D-521F-4FAF-8DEC-41E1DB5E915C}.Revit_Installer|Any CPU.ActiveCfg = Revit_Installer|Any CPU
-		{1D58705D-521F-4FAF-8DEC-41E1DB5E915C}.Revit_Installer|Any CPU.Build.0 = Revit_Installer|Any CPU
 		{309CBCA2-AA99-4E3D-87FE-98CDEDA3CCFB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{309CBCA2-AA99-4E3D-87FE-98CDEDA3CCFB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{309CBCA2-AA99-4E3D-87FE-98CDEDA3CCFB}.Installer|Any CPU.ActiveCfg = Installer|Any CPU
@@ -95,7 +94,6 @@ Global
 		{309CBCA2-AA99-4E3D-87FE-98CDEDA3CCFB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{309CBCA2-AA99-4E3D-87FE-98CDEDA3CCFB}.Release|Any CPU.Build.0 = Release|Any CPU
 		{309CBCA2-AA99-4E3D-87FE-98CDEDA3CCFB}.Revit_Installer|Any CPU.ActiveCfg = Revit_Installer|Any CPU
-		{309CBCA2-AA99-4E3D-87FE-98CDEDA3CCFB}.Revit_Installer|Any CPU.Build.0 = Revit_Installer|Any CPU
 		{C20B4E78-7102-4754-A989-0719CD9CC586}.Debug|Any CPU.ActiveCfg = Debug
 		{C20B4E78-7102-4754-A989-0719CD9CC586}.Debug|Any CPU.Build.0 = Debug
 		{C20B4E78-7102-4754-A989-0719CD9CC586}.Installer|Any CPU.ActiveCfg = Revit_Installer

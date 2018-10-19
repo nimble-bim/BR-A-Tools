@@ -1,4 +1,4 @@
-﻿namespace BRPLUSA.Revit.Client.Views
+﻿namespace BRPLUSA.Client.Revit.Client.Views
 {
     partial class SearchSelectionBox
     {
