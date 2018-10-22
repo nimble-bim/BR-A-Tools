@@ -33,8 +33,8 @@ namespace BRPLUSA.Revit.Client.EndUser.Applications
             try
             {
                 ResolveBrowserBinaries();
-                CreateRibbon(app);
                 RegisterSideBar(app);
+                CreateRibbon(app);
 
                 var backupAuto = new AutoModelBackupService();
                 var backupManual = new ManualModelBackupService();

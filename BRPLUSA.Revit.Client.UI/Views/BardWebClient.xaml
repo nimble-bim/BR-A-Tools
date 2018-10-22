@@ -9,7 +9,6 @@
       d:DesignWidth="800"
 >
     <Grid x:Name="Grid">
-        <!--<cefSharp:ChromiumWebBrowser Grid.Row="0" Address="https://github.com/cefsharp/CefSharp/wiki/Frequently-asked-questions" />-->
-        <cefSharp:ChromiumWebBrowser Name="Browser" Grid.Row="0" Address="http://localhost:4422" />
+        <cefSharp:ChromiumWebBrowser Name="Browser" Grid.Row="0" />
     </Grid>
 </Page>

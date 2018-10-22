@@ -177,7 +177,7 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>if $(ConfigurationName) == Debug (
-del /f "%25appdata%25\Autodesk\Revit\Addins\2017\BRPLUSA.addin" 
+del /f "%25appdata%25\Autodesk\Revit\Addins\2018\BRPLUSA.addin" 
 rmdir /s /q "%25temp%25\BRPLUSA"
 powershell -NoProfile -ExecutionPolicy RemoteSigned -file $(TargetDir)\Utilities\processAddin.ps1
 xcopy "$(TargetDir)*" /E /Y /D "%25temp%25\BRPLUSA\BR+A Revit Suite 2018\"

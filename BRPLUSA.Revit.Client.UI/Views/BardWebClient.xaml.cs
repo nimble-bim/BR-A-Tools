@@ -22,17 +22,11 @@ namespace BRPLUSA.Revit.Client.UI.Views
         public BardWebClient()
         {
             InitializeComponent();
-            InitializeWebComponents();
         }
 
         public BardWebClient(SocketService service) : this()
         {
             Socket = service;
-        }
-
-        private void InitializeWebComponents()
-        {
-            NavigateTo("http://www.brplusa.com");
         }
 
         public void NavigateTo(string url)
@@ -42,8 +36,9 @@ namespace BRPLUSA.Revit.Client.UI.Views
 
         public void JoinRevitSession(object sender, DocumentOpenedEventArgs args)
         {
+            NavigateTo("https://www.google.com");
             //NavigateTo($@"http://localhost:4001/?room={Socket.Id}");
-            NavigateTo(Socket.Location);
+            //NavigateTo(Socket.Location);
         }
 
         public void SetupDockablePane(DockablePaneProviderData data)
@@ -51,7 +46,6 @@ namespace BRPLUSA.Revit.Client.UI.Views
             data.FrameworkElement = this;
             data.InitialState = new DockablePaneState
             {
-                //DockPosition = DockPosition.Right,
                 DockPosition = DockPosition.Tabbed,
                 TabBehind = DockablePanes.BuiltInDockablePanes.PropertiesPalette
             };
@@ -69,7 +63,6 @@ namespace BRPLUSA.Revit.Client.UI.Views
             App = app;
             App.ControlledApplication.DocumentOpened += ShowSidebar;
             App.ControlledApplication.DocumentOpened += JoinRevitSession;
-            //App.ControlledApplication.DocumentOpened += JoinRevitSession;
         }
 
         [MethodImpl(MethodImplOptions.NoInlining)]
