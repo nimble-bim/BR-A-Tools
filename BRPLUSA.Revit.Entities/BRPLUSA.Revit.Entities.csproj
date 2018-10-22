@@ -57,14 +57,22 @@
     <Compile Include="Base\BaseRegisterableService.cs" />
     <Compile Include="Data\SpatialDatabaseWrapper.cs" />
     <Compile Include="Exceptions\CancellableException.cs" />
+    <Compile Include="Extensions\ElementExtensions.cs" />
+    <Compile Include="Extensions\ModelExtensions.cs" />
+    <Compile Include="Extensions\ViewScheduleExtensions.cs" />
     <Compile Include="Interfaces\IRegisterableUpdater.cs" />
     <Compile Include="Interfaces\ISocketConsumptionService.cs" />
     <Compile Include="Interfaces\ISocketService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Wrappers\SpaceWrapper.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BRPLUSA.Domain\BRPLUSA.Domain.csproj">
+      <Project>{123711A9-C92E-4F15-8BD0-B1222A2D5F0B}</Project>
+      <Name>BRPLUSA.Domain</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

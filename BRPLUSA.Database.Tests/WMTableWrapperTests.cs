@@ -1,5 +1,6 @@
 ﻿using BRPLUSA.Database.Databases;
 using BRPLUSA.Domain.Entities;
+using BRPLUSA.Domain.Entities.Events;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using NUnit;

@@ -5,7 +5,6 @@ using System.IO;
 using System.Linq;
 using Autodesk.Revit.DB;
 using Autodesk.Revit.DB.Mechanical;
-using BRPLUSA.Revit.Entities.Wrappers;
 using LiteDB;
 
 namespace BRPLUSA.Revit.Entities.Data

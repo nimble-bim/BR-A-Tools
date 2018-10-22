@@ -15,12 +15,9 @@ namespace BRPLUSA.Revit.Client.UI.Views
     /// </summary>
     public partial class BardWebClient : IDockablePaneProvider
     {
-        //private string _id = "{F791F35B-91E2-493B-8C9B-DDC0437C1C9D}";
-        //private static string _id = new Guid().ToString();
         public static DockablePaneId Id => new DockablePaneId(new Guid());
         private static UIControlledApplication App { get; set; }
         private SocketService Socket { get; set; }
-        //BrowserView 
 
         public BardWebClient()
         {
@@ -35,22 +32,18 @@ namespace BRPLUSA.Revit.Client.UI.Views
 
         private void InitializeWebComponents()
         {
-            //View.Navigate(new Uri("http://www.google.com"));
+            NavigateTo("http://www.brplusa.com");
         }
 
         public void NavigateTo(string url)
         {
-            //WebBrowser1.Browser.LoadURL(url);
+            Browser.Load(url);
         }
 
         public void JoinRevitSession(object sender, DocumentOpenedEventArgs args)
         {
-            NavigateTo($@"http://localhost:4001/?room={Socket.Id}");
-        }
-
-        public void Browse(object sender, DocumentOpenedEventArgs args)
-        {
-            //View.Navigate(new Uri("http://www.google.com"));
+            //NavigateTo($@"http://localhost:4001/?room={Socket.Id}");
+            NavigateTo(Socket.Location);
         }
 
         public void SetupDockablePane(DockablePaneProviderData data)
@@ -75,7 +68,7 @@ namespace BRPLUSA.Revit.Client.UI.Views
         {
             App = app;
             App.ControlledApplication.DocumentOpened += ShowSidebar;
-            App.ControlledApplication.DocumentOpened += Browse;
+            App.ControlledApplication.DocumentOpened += JoinRevitSession;
             //App.ControlledApplication.DocumentOpened += JoinRevitSession;
         }
 

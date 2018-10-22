@@ -67,18 +67,39 @@
   <ItemGroup>
     <Compile Include="Base\Entity.cs" />
     <Compile Include="Entities\User.cs" />
-    <Compile Include="Entities\UserClosedModelEvent.cs" />
-    <Compile Include="Entities\UserOpenedModelEvent.cs" />
-    <Compile Include="Entities\UserSyncedModelEvent.cs" />
-    <Compile Include="Entities\UserSyncingModelEvent.cs" />
-    <Compile Include="Entities\WorksharingEvent.cs" />
-    <Compile Include="Entities\WorksharingEventType.cs" />
+    <Compile Include="Entities\Events\UserClosedModelEvent.cs" />
+    <Compile Include="Entities\Events\UserOpenedModelEvent.cs" />
+    <Compile Include="Entities\Events\UserSyncedModelEvent.cs" />
+    <Compile Include="Entities\Events\UserSyncingModelEvent.cs" />
+    <Compile Include="Entities\Ventilation\IP.cs" />
+    <Compile Include="Entities\Ventilation\LightingEquipmentLoad.cs" />
+    <Compile Include="Entities\Ventilation\MechanicalCode_2013.cs" />
+    <Compile Include="Entities\Ventilation\MechanicalCode_2014.cs" />
+    <Compile Include="Entities\Ventilation\MechanicalCode_ASHRAE_170.cs" />
+    <Compile Include="Entities\Ventilation\OccupancyLookup.cs" />
+    <Compile Include="Entities\Ventilation\PressureRelationship.cs" />
+    <Compile Include="Entities\Ventilation\SI.cs" />
+    <Compile Include="Entities\Events\WorksharingEvent.cs" />
+    <Compile Include="Entities\Events\WorksharingEventType.cs" />
     <Compile Include="Entities\WorksharingState.cs" />
     <Compile Include="ExcelWrappers\CellWrapper.cs" />
     <Compile Include="Interfaces\IEntity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\ExcelServices.cs" />
+    <Compile Include="Services\Factories\BaseConversionFactory.cs" />
+    <Compile Include="Services\Factories\BaseFactory.cs" />
+    <Compile Include="Services\Factories\IConversionFactory.cs" />
+    <Compile Include="Services\Factories\IFactory.cs" />
+    <Compile Include="Services\Ventilation\BaseVentilationCalculationService.cs" />
+    <Compile Include="Services\Ventilation\CalculationService_2014MC.cs" />
+    <Compile Include="Services\Ventilation\CalculationService_ASHRAE_170.cs" />
+    <Compile Include="Services\Ventilation\CalculationService_ASHRAE_621.cs" />
+    <Compile Include="Services\Ventilation\ILookupService.cs" />
+    <Compile Include="Services\Ventilation\OccupancyCategoryFactory.cs" />
+    <Compile Include="Services\Ventilation\VentilationCalculationService.cs" />
+    <Compile Include="Services\Ventilation\VentilationLookupService.cs" />
     <Compile Include="WorksharingMonitorService.cs" />
+    <Compile Include="Wrappers\Space.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

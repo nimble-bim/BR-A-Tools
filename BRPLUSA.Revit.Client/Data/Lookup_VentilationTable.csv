@@ -1,0 +1,192 @@
+1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19
+,Standard 62.1-2013 Outdoor Air Rates ,,,,,,,2014 NYC Mechanical Code,,,,ASHRAE 170 (Table 7-1),,,,,Lighting & Equipment Load,
+,IP,,SI,,Default Occupant Density,Exhaust Requirements,,Outdoor Air,Max. Occupant Density,Exhaust Requirement,,Ventilation Air Changes per Hour,Supply Air Changes per Hour,Pressure Relationship,All Room Air exhausted,,Equipment Loads,Lighting Load
+Occupancy Category,Rp (cfm/per),Ra (cfm/ft2),"Rp
+(L/s-per)",Ra (L/s-m2),#/1000 ft2 (#/100 m2),(cfm/ft2),,(cfm/per person or cfm/sf),(#/1000 ft),(cfm/sf or cfm/fixture),,(ACH),(ACH),"""+"" / ""NR"" / ""-""",YES / NO,,(w/sf),(w/sf)
+AII - Isolation Anteroom,0,0,0,0,0,0.00,,0,0,1,,0,10,-,YES,,0.0,1.0
+AII Room,,,,,,,,,,,,2,12,-,YES,,3.0,1.0
+Arena,,,,,,0.50,,,,,,,,-,NO,,0.0,1.0
+Art classroom,10,0.18,5,0.9,20,0.70,,10,20,0,,0,0,-,NO,,0.5,1.0
+Auditorium seating area,5,0.06,2.5,0.3,150,,,5,150,0,,,,-,NO,,1.5,1.0
+Automotive Motor Fuel Dispensing,,,,,,,,,,1.5,,,,-,NO,,0.0,1.0
+Auto repair Rooms,,,,,,1.50,,,,,,,,-,NO,,0.0,1.0
+Autopsy Rooms,,,,,,,,0,0,0.5,,2,12,-,YES,,0.0,1.0
+Bank vaults/safe deposit,5,0.06,2.5,0.3,5,,,5,5,0,,,,NR,NO,,0.0,1.0
+Banks or bank lobbies,7.5,0.06,3.8,0.3,15,,,,,,,,,NR,NO,,0.0,1.0
+Barbershop,7.5,0.06,3.8,0.3,25,0.50,,7.5,25,0,,,,NR,NO,,0.0,1.0
+Barracks sleeping areas,5,0.06,2.5,0.3,20,,,,,,,,,NR,NO,,0.0,1.0
+"Bars, cocktail lounges",7.5,0.18,3.8,0.9,100,,,7.5,100,0,,,,NR,NO,,0.0,1.0
+Bathing room,,,,,,,,,,,,0,10,-,YES,,0.0,1.0
+Bath Room,,,,,,,,,,,,0,10,-,YES,,0.0,1.0
+Beauty and nail salons,20,0.12,10,0.6,25,0.60,,20,25,0.6,,,,NR,NO,,0.0,1.0
+Bedpan Room,,,,,,,,,,,,0,10,-,YES,,0.0,1.0
+Bedroom/living room,5,0.06,2.5,0.3,10,,,5,10,,,,,NR,NO,,0.5,1.0
+Booking/waiting,7.5,0.06,3.8,0.3,50,,,7.5,50,,,,,NR,NO,,0.0,1.0
+Bowling alley (seating),10,0.12,5,0.6,40,,,10,40,0,,,,NR,NO,,0.0,1.0
+Break rooms,5,0.12,2.5,0.6,50,,,,,,,,,NR,NO,,3.0,1.0
+"Bronchoscopy, sputum collection & pentamidin",,,,,,,,,,,,2,12,-,YES,,0.0,1.0
+Cafeteria/fast-food dining,7.5,0.18,3.8,0.9,100,,,7.5,100,0,,,,NR,NO,,3.0,1.0
+Cell,5,0.12,2.5,0.6,25,1.00,,5,25,0,,,,NR,NO,,0.0,1.0
+Classrooms (age 9 plus),10,0.12,5,0.6,35,,,10,35,0,,,,NR,NO,,4.5,1.0
+Classrooms (ages 5–8),10,0.12,5,0.6,25,,,10,25,,,,,NR,NO,,0.0,1.0
+Clean linen storage,,,,,,,,,,,,0,2,+,NO,,0.5,1.0
+Clean Workroom or Holding,,,,,,,,,,,,2,4,+,NO,,0.5,1.0
+Coffee stations,5,0.06,2.5,0.3,20,,,,,,,,,NR,NO,,3.0,1.0
+Coin-operated laundries/dry cleaners,7.5,0.12,3.8,0.6,20,,,15,20,0,,,,NR,NO,,0.5,1.0
+Commericial dry cleaner,,,,,,,,30,30,0,,,,NR,NO,,0.0,1.0
+Commerical laundry,,,,,,,,25,10,0,,,,NR,NO,,0.5,1.0
+Common corridors,0,0.06,0,0.3,,,,,,,,,,NR,NO,,0.5,1.0
+Computer (not printing),5,0.06,2.5,0.3,4,,,5,4,,,,,NR,NO,,4.0,1.0
+Computer lab,10,0.12,5,0.6,25,,,10,25,,,,,NR,NO,,4.0,1.0
+Conference/meeting,5,0.06,2.5,0.3,50,,,5,50,0,,,,NR,NO,,4.0,1.0
+"Copy, Printing Rooms",,,,,,0.50,,5,4,0.5,,,,NR,NO,,3.0,1.0
+Corridors,0,0.06,0,0.3,0,,,0.06,0,0,cfm/sf,0,2,NR,NO,,0.5,1.0
+Courtrooms,5,0.06,2.5,0.3,70,,,5,70,,,,,NR,NO,,0.0,1.0
+Critical & Intensive Care,,,,,,,,,,,,2,6,+,NO,,3.0,1.0
+Darkroom,,,,,,1.00,,,,1,,2,10,-,YES,,0.0,1.0
+Daycare (through age 4),10,0.18,5,0.9,25,,,10,25,,,,,NR,NO,,3.0,1.0
+Daycare sickroom,10,0.18,5,0.9,25,,,,,,,,,NR,NO,,0.0,1.0
+Dayroom,5,0.06,2.5,0.3,30,,,5,30,,,,,NR,NO,,0.0,1.0
+Delivery Room (Caesarean),,,,,,,,,,,,4,20,+,NO,,0.0,1.0
+Dietary Storage,,,,,,,,,,,,0,2,NR,NO,,0.0,1.0
+Dining Hall - Correction Facility,,,,,,,,7.5,100,0,,,,NR,NO,,0.0,1.0
+Dining Rooms,,,,,,,,7.5,70,0,,,,NR,NO,,3.0,1.0
+Disco/dance floors,20,0.06,10,0.3,100,,,20,100,,,,,NR,NO,,0.0,1.0
+Dormitory Sleep Areas,,,,,,,,5,20,0,,,,NR,NO,,0.0,1.0
+Dressing Rooms - Retail,,,,,,,,,,0.25,,,,NR,NO,,0.0,1.0
+Dwelling unit,5,0.06,2.5,0.3,2,,,,,,,,,NR,NO,,0.0,1.0
+Elec/mech equipment rooms,0,0.2,0,0,0,,"Unoccupied, per addendum d",,,,,,,NR,NO,,0.0,1.0
+Electrical Room (Custom),0,0,0,0,0,,"Unoccupied, per addendum d",,,,,0,10,-,YES,,0.0,1.0
+Elevator machine rooms,0,0,0,0,0,,"Unoccupied, per addendum d",,,,,,,NR,NO,,0.0,1.0
+Embalming room,,,,,,,,,,2,,,,,,,,
+Endoscope Cleaning,,,,,,,,,,,,2,10,-,YES,,0.0,1.0
+Endoscopy,,,,,,,,,,,,2,15,+,NO,,0.0,1.0
+ER Decontamination,,,,,,,,,,,,2,12,-,YES,,0.0,1.0
+ER Waiting,,,,,,,,,,,,2,12,-,YES,,1.0,1.0
+Examination Room,,,,,,,,,,,,2,6,NR,NO,,3.0,1.5
+Food Preparation Center,,,,,,,,,,,,2,10,NR,NO,,0.0,1.0
+Freezer and refrigerated spaces(<50F),10,0,5,0,0,,,,,,,,,,,,,
+Gambling casinos,7.5,0.18,3.8,0.9,120,,,7.5,120,0,,,,NR,NO,,0.0,1.0
+Game arcades,7.5,0.18,3.8,0.9,20,,,7.5,20,0,,,,NR,NO,,0.0,1.0
+General manufacturing (excludes heavy industrial and processes using chemicals),10,0.18,5,0.9,7,,,,,,,,,NR,NO,,0.0,1.0
+Guard stations,5,0.06,2.5,0.3,15,,,5,15,,,,,NR,NO,,1.5,1.0
+"Gym, sports arena (play area)",20,0.18,10,0.9,7,,,0.3,,0,cfm/sf,,,NR,NO,,1.0,1.0
+"Hardware, Drugs & Fabrics",,,,,,,,15,8,0,,,,NR,NO,,0.0,1.0
+Hazardous Material Storage,,,,,,,,,,,,2,10,-,YES,,0.0,1.0
+Health club/aerobics room,20,0.06,10,0.3,40,,,20,40,,,,,NR,NO,,0.0,1.0
+Health club/weight rooms,20,0.06,10,0.3,10,,,20,10,,,,,NR,NO,,0.0,1.0
+Hydrotherapy,,,,,,,,,,,,2,6,-,NO,,1.5,1.0
+Ice Arenas without combustion engines,,,,,,,,0.3,,0.5,cfm/sf,,,NR,NO,,0.0,1.0
+Janitor's Closet/EVS/Trash room,,,,,,1.00,,,,,,0,10,-,YES,,0.5,1.0
+Kitchen (cooking),7.5,0.12,3.8,0.6,20,0.70,,0,0,0.7,,,,NR,NO,,3.0,1.0
+Kitchenettes,,,,,,0.30,,,,,,,,NR,NO,,3.0,1.0
+Labor/Delivery/Recovery,,,,,,,,,,,,2,6,-,NO,,5.0,1.0
+Laboratory - Bacteriology,,,,,,,,,,,,2,6,-,YES,,8.0,1.0
+Laboratory - Biochemistry,,,,,,,,,,,,2,6,-,YES,,8.0,1.0
+Laboratory - Cytology,,,,,,,,,,,,2,6,-,YES,,8.0,1.0
+Laboratory - General,,,,,,,,,,,,2,6,-,YES,,8.0,1.0
+Laboratory - Glasswashing,,,,,,,,,,,,2,10,-,YES,,8.0,1.0
+Laboratory - Histology,,,,,,,,,,,,2,6,-,YES,,8.0,1.0
+Laboratory - Media Transfer,,,,,,,,,,,,2,4,+,NO,,8.0,1.0
+Laboratory - Microbiology,,,,,,,,,,,,2,6,-,YES,,8.0,1.0
+Laboratory - Nuclear Medicine,,,,,,,,,,,,2,6,-,YES,,8.0,1.0
+Laboratory - Pathology,,,,,,,,,,,,2,6,-,YES,,8.0,1.0
+Laboratory - Serology,,,,,,,,,,,,2,6,-,YES,,8.0,1.0
+Laboratory - Sterilizing,,,,,,,,,,,,2,10,-,YES,,8.0,1.0
+Laboratory - Biological,,,,,,,,1,,1,cfm/sf,,,,,,,
+Laboratory - Industrial and nonteaching,,,,,,,,1,,1,cfm/sf,,,,,,,
+Laboratory - Chemical,,,,,,,,1,,1,cfm/sf,,,,,,,
+Laboratory - Non-production chemical labs,,,,,,,,1,,1,cfm/sf,,,,,,5.0,1.0
+Laser Eye Room,,,,,,,,,,,,3,15,+,NO,,5.0,1.0
+Laundry rooms within dwelling units,5,0.12,2.5,0.6,10,,,,,,,,,NR,NO,,0.5,1.0
+"Laundry rooms, central",5,0.12,2.5,0.6,10,see shedule,,,,,,2,10,-,YES,,0.5,1.0
+Lecture classroom,7.5,0.06,3.8,0.3,65,,,7.5,65,,,,,NR,NO,,4.6,1.0
+Lecture hall (fixed seats),7.5,0.06,3.8,0.3,150,,,7.5,150,,,,,NR,NO,,4.0,1.0
+Legislative chambers,5,0.06,2.5,0.3,50,,,5,50,,,,,NR,NO,,0.0,1.0
+Libraries,5,0.12,2.5,0.6,10,,,5,10,0,,,,NR,NO,,2.0,1.0
+Linen & Trash Chute Room,,,,,,,,,,,,0,10,-,YES,,0.0,1.0
+Lobbies,,,,,,,,5,150,0,,,,NR,NO,,1.0,1.0
+Locker Rooms,5,0.06,,,25,0.50,,,,0.5,,,,-,YES,,1.0,1.0
+Locker/Dressing Rooms,5,0.06,,,25,0.25,,,,0.25,,,,NR,NO,,1.0,1.0
+Lobbies/prefunction,7.5,0.06,3.8,0.3,30,,,7.5,30,0,,,,NR,NO,,0.5,1.0
+Main entry lobbies,5,0.06,2.5,0.3,10,,,5,10,,,,,NR,NO,,0.5,1.0
+Mall common areas,7.5,0.06,3.8,0.3,40,,,7.5,40,,,,,NR,NO,,0.0,1.0
+Meat Processing,,,,,,,,15,10,0,,,,NR,NO,,0.0,1.0
+Media center,10,0.12,5,0.6,25,,,10,25,,,,,NR,NO,,3.0,1.0
+Medical/Anesthesia Gas Storage,,,,,,,,,,,,0,8,-,YES,,0.0,1.0
+Medical procedure,,,,,,,,15,20,0,,,,NR,NO,,5.0,1.0
+Medication Room,,,,,,,,,,,,2,4,+,NO,,1.0,1.0
+Multipurpose assembly,5,0.06,2.5,0.3,120,,,5,120,,,,,NR,NO,,0.0,1.0
+Multi-use assembly,7.5,0.06,3.8,0.3,100,,,7.5,100,,,,,NR,NO,,0.0,1.0
+Museums (children’s),7.5,0.12,3.8,0.6,40,,,7.5,40,,,,,NR,NO,,0.0,1.0
+Museums/galleries,7.5,0.06,3.8,0.3,40,,,7.5,40,,,,,NR,NO,,0.0,1.0
+Music/theater/dance,10,0.06,5,0.3,35,,,10,35,0,,,,NR,NO,,4.5,1.0
+Nail Salon,,,,,,,,20,25,0.6,,,,NR,NO,,0.0,1.0
+Newborn Intensive Care,,,,,,,,,,,,2,6,+,NO,,0.0,1.0
+Newborn Nursery Suite,,,,,,,,,,,,2,6,-,NO,,0.0,1.0
+Nonrefrigerated Bodyholding Room,,,,,,,,,,,,0,10,-,YES,,0.0,1.0
+Occupantional Therapy,,,,,,,,,,,,2,6,NR,NO,,0.0,1.0
+Occupiable storage rooms for liquids or gels,5,0.12,2.5,0.6,2,,,,,,,,,NR,NO,,0.0,1.0
+Occupiable storage rooms for dry materials,5,0.06,2.5,0.3,2,,,,,,,,,NR,NO,,1.5,1.0
+Office space,5,0.06,2.5,0.3,5,,,5,5,0,,,,NR,NO,,1.5,1.2
+Operating Rooms,,,,,,,,30,20,0,,4,20,+,NO,,10.0,5.0
+Operating/Surgical Cystoscopic Rooms,,,,,,,,,,,,4,20,+,NO,,10.0,5.0
+Parking Garages,,,,,,0.75,,,,0.75,,,,NR,NO,,0.0,1.0
+Patient Rooms,,,,,,,,25,10,0,,2,6,NR,NO,,1.5,1.0
+Pet shops (animal areas),7.5,0.18,3.8,0.9,10,0.90,,7.5,10,0.9,,,,NR,NO,,0.0,1.0
+Pharmacy (prep. area),5,0.18,2.5,0.9,10,,,5,10,0,,2,4,+,NO,,0.0,1.0
+Photo studios,5,0.12,2.5,0.6,10,,,5,10,0,,,,,NO,,0.0,1.0
+Physical Therapy,,,,,,,,15,20,0,,2,6,NR,NO,,0.0,1.0
+Places of religious worship,5,0.06,2.5,0.3,120,,,5,120,,,,,NR,NO,,0.0,1.0
+Platform - Transportation,,,,,,,,7.5,100,0,,,,NR,NO,,0.0,1.0
+Procedure Room,,,,,,,,,,,,3,15,+,NO,,3.0,5.0
+Protective Environment Room,,,,,,,,,,,,2,12,+,NO,,3.0,1.0
+Radiology Waiting Room,,,,,,,,,,,,2,12,NR,NO,,3.0,1.0
+Radiology Waiting Room - Respiratory Disease,,,,,,,,,,,,2,12,-,YES,,3.0,1.0
+Reception areas,5,0.06,2.5,0.3,30,,,5,30,0,,,,NR,NO,,3.0,1.0
+Recovery and ICU,,,,,,,,15,20,0,,2,6,NR,NO,,2.0,1.0
+Repair Garages & Enclosed Parking,,,,,,,,,,0.75,,,,NR,NO,,0.0,1.0
+Resident Gathering/Activity/Dining,,,,,,,,,,,,4,4,NR,NO,,0.0,1.0
+Resident Room,,,,,,,,,,,,2,2,NR,NO,,0.0,1.0
+Restaurant dining rooms,7.5,0.18,3.8,0.9,70,,,,,,,,,NR,NO,,3.0,1.0
+Sales,7.5,0.12,3.8,0.6,15,,,7.5,15,,,,,NR,NO,,2.0,1.0
+Science laboratories,10,0.18,5,0.9,25,1.00,,10,25,,,,,NR,NO,,8.0,1.0
+Shipping/receiving,10,0.12,5,0.6,2,,,0.12,,,cfm/sf,,,NR,NO,,1.0,1.0
+Shower Room,,,,,,,,,,50,,,,NR,NO,,0.0,1.0
+Smoking Lounge - Educational,,,,,,,,60,70,0,,,,NR,NO,,0.0,1.0
+Soiled Linen Sorting & Storage,,,,,,1.00,,,,,,0,10,-,YES,,0.5,1.0
+Soiled or Decontamination Room,,,,,,1.00,,,,,,2,6,-,YES,,0.5,1.0
+Soiled Workroom or Soiled Holding,,,,,,1.00,,,,,,2,10,-,YES,,0.5,1.0
+Sterile Storage,,,,,,,,,,,,2,4,+,NO,,0.5,1.0
+Sterilizer Equipment Room,,,,,,,,,,,,0,10,-,YES,,10.0,1.0
+"Sorting, packing, light assembly",7.5,0.12,3.8,0.6,7,,,,,,,,,NR,NO,,0.0,1.0
+Spectator areas,7.5,0.06,3.8,0.3,150,,,7.5,150,0,,,,NR,NO,,1.0,1.0
+"Stages, studios",10,0.06,5,0.3,70,,,10,70,0,,,,NR,NO,,4.5,1.0
+Storage rooms,0,0,0,0,0,,"Unoccupied, per addendum d",0.12,,,cfm/sf,,,NR,NO,,0.5,1.0
+Storage Room - Chemical,,,,,,1.50,,,,,,,,NR,NO,,0.5,1.0
+Storage/Pickup - Commerical Laundry,,,,,,,,7.5,30,0,,,,NR,NO,,0.5,1.0
+Substerile Service Area,,,,,,,,,,,,2,6,NR,NO,,1.0,1.0
+Supermarket,7.5,0.06,3.8,0.3,8,,,7.5,8,0,,,,NR,NO,,0.0,1.0
+Swimming (pool & deck),0,0.48,0,2.4,0,,,0.48,7.5,,cfm/sf,,,NR,NO,,0.0,1.0
+Telecommunication center & Data Centers,,,,,,,,20,60,0,,,,NR,NO,,0.0,1.0
+Telephone closets,0,0,0,0,0,,,,,,,,,NR,NO,,0.0,1.0
+Telephone/data entry,5,0.06,2.5,0.3,60,,,5,60,,,,,NR,NO,,0.0,1.0
+Ticket Booths,,,,,,,,5,60,0,,,,NR,NO,,0.0,1.0
+Toilet Room,,,,,,70.00,per fixture,,,,,0,10,-,YES,,0.0,1.0
+Training Shops - Educational,,,,,,,,20,30,0,,,,NR,NO,,0.0,1.0
+Transportation waiting,7.5,0.06,3.8,0.3,100,,,,,,,,,NR,NO,,0.0,1.0
+Trauma Room,,,,,,,,,,,,3,15,+,NO,,5.0,3.0
+Treatment Room,,,,,,,,,,,,2,6,NR,NO,,3.0,3.0
+Triage,,,,,,,,,,,,2,12,-,YES,,3.0,3.0
+University/college laboratories,10,0.18,5,0.9,25,,,,,,,,,NR,NO,,8.0,1.0
+Waiting Rooms - Transportation,,,,,,,,7.5,100,0,,,,NR,NO,,3.0,1.0
+Waiting Room,,,,,,,,15,40,,,2,12,NR,NO,,1.0,1.0
+Warehouses,10,0.06,5,0.3,0,,,0.06,,,cfm/sf,,,NR,NO,,0.0,1.0
+Warewashing,,,,,,,,,,,,0,10,-,YES,,0.0,1.0
+Wood/metal shop,10,0.18,5,0.9,20,0.50,,10,20,,,,,NR,NO,,3.0,1.0
+Wound Intensive Care (Burn Unit),,,,,,,,,,,,2,6,+,NO,,0.0,1.0
+X-Ray Diagnostic & Treatment,,,,,,,,,,,,2,6,NR,NO,,0.0,1.0
+X-Ray (Surgery/Critical Care & Catherterizing),,,,,,,,,,,,3,15,+,NO,,0.0,1.0
+Stair,0,0,0,0,0,0.00,,0,0,0,,0,0,NR,NO,,0.0,0.0
+Mechanical Space,0,0,0,0,0,0.00,,0.25,0,0,,0,0,NR,NO,,0.0,0.0
+Elevator,0,0,0,0,0,0.00,,0,0,0,,0,0,NR,No,,0.0,0.0

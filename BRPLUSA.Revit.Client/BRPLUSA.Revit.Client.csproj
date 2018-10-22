@@ -108,6 +108,8 @@
     <Compile Include="EndUser\Commands\CreateScheduleFromExcel.cs" />
     <Compile Include="EndUser\Commands\ExportAreaToNavis.cs" />
     <Compile Include="EndUser\Commands\ForceTypeSwap.cs" />
+    <Compile Include="EndUser\Commands\Mechanical\CompareModelAndCodeVentilationCommand.cs" />
+    <Compile Include="EndUser\Commands\Mechanical\CreateVentilationRequirementsScheduleCommand.cs" />
     <Compile Include="EndUser\Commands\SelectByName.cs" />
     <Compile Include="EndUser\Commands\SelectPanelFromSchedule.cs" />
     <Compile Include="EndUser\Commands\ShowSidebar.cs" />
@@ -123,6 +125,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <None Include="Data\Lookup_VentilationTable.csv" />
+    <None Include="Models\HIVE.Revit.Model.rvt" />
     <None Include="Utilities\BRPLUSA.DEBUG.addin">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -164,7 +168,12 @@
       <Name>BRPLUSA.Revit.Services</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Data\VentParameters.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Parameters\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>if $(ConfigurationName) == Debug (

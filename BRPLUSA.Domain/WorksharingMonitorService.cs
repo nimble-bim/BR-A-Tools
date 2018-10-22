@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using BRPLUSA.Domain.Entities;
+using BRPLUSA.Domain.Entities.Events;
 using Newtonsoft.Json;
 
 namespace BRPLUSA.Domain

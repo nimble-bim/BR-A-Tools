@@ -10,6 +10,7 @@ namespace BRPLUSA.Revit.Services.Web
         private IO.Options Options { get; set; }
         private Socket Socket { get; set; }
         public string Id { get; private set; }
+        public string Location { get; private set; }
 
         public SocketService()
         {

@@ -4,9 +4,7 @@ using Autodesk.Revit.UI;
 using BRPLUSA.Revit.Client.EndUser.Commands;
 using BRPLUSA.Revit.Client.EndUser.Services;
 using BRPLUSA.Revit.Client.UI.Views;
-using BRPLUSA.Revit.Services;
 using BRPLUSA.Revit.Services.Registration;
-using BRPLUSA.Revit.Services.Updates;
 using BRPLUSA.Revit.Services.Web;
 
 namespace BRPLUSA.Revit.Client.EndUser.Applications

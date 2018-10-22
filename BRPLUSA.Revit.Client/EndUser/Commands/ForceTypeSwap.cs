@@ -105,7 +105,7 @@ namespace BRPLUSA.Revit.Client.EndUser.Commands
                 likely.Add(e);
             }
 
-            return RevitElementLocationServices.GetClosest(likely, orig);
+            return ElementLocationServices.GetClosest(likely, orig);
         }
 
         public bool ReplaceElementType(Element oElem, Element nElem)

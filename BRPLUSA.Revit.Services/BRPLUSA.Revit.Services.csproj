@@ -127,14 +127,23 @@
   <ItemGroup>
     <Compile Include="Elements\ElementFinder.cs" />
     <Compile Include="Export\NavisworksExporter.cs" />
+    <Compile Include="Factories\RevitConversionFactory.cs" />
+    <Compile Include="Factories\RevitScheduleFactory.cs" />
+    <Compile Include="Factories\SpaceConversionFactory.cs" />
+    <Compile Include="Factories\VentilationParameterFactory.cs" />
+    <Compile Include="Factories\VentilationScheduleFactory.cs" />
     <Compile Include="Handlers\BackupHandler.cs" />
     <Compile Include="Handlers\TestingHandler.cs" />
+    <Compile Include="Parameters\RevitParameterUtility.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Elements\QuickElementData.cs" />
-    <Compile Include="Elements\RevitElementLocationServices.cs" />
+    <Compile Include="Elements\ElementLocationServices.cs" />
     <Compile Include="Registration\SocketRegistrationService.cs" />
+    <Compile Include="Spaces\SpacePropertyService.cs" />
+    <Compile Include="Spaces\SpaceVentilationService.cs" />
     <Compile Include="Updates\ModelBackupService.cs" />
     <Compile Include="Utilities\RevitXYZUtils.cs" />
+    <Compile Include="Utilities\VentilationParameterUtility.cs" />
     <Compile Include="Web\SocketService.cs" />
     <Compile Include="Registration\UpdaterRegistrationService.cs" />
   </ItemGroup>
@@ -145,6 +154,10 @@
     <ProjectReference Include="..\BRPLUSA.Core\BRPLUSA.Core.csproj">
       <Project>{EC0E8D93-3D21-482A-9F97-E7E5D2F8A192}</Project>
       <Name>BRPLUSA.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BRPLUSA.Domain\BRPLUSA.Domain.csproj">
+      <Project>{123711A9-C92E-4F15-8BD0-B1222A2D5F0B}</Project>
+      <Name>BRPLUSA.Domain</Name>
     </ProjectReference>
     <ProjectReference Include="..\BRPLUSA.Revit.Entities\BRPLUSA.Revit.Entities.csproj">
       <Project>{e46b68f5-f133-4e41-8ca6-975b6b854357}</Project>

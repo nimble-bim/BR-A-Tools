@@ -6,7 +6,6 @@ using Autodesk.Revit.DB.Mechanical;
 using Autodesk.Revit.UI;
 using BRPLUSA.Revit.Client.Base;
 using BRPLUSA.Revit.Entities.Data;
-using BRPLUSA.Revit.Entities.Wrappers;
 
 namespace BRPLUSA.Revit.Client.EndUser.Services
 {
