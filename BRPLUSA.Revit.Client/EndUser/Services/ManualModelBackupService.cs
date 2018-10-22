@@ -1,31 +1,28 @@
 ﻿using System;
 using Autodesk.Revit.DB;
 using BRPLUSA.Revit.Entities.Base;
+using BRPLUSA.Revit.Entities.Interfaces;
 using BRPLUSA.Revit.Services.Updates;
 using BRPLUSA.Revit.Services.Web;
 
 namespace BRPLUSA.Revit.Client.EndUser.Services
 {
-    public class ManualModelBackupService : BaseRegisterableService
+    public class ManualModelBackupService : ISocketConsumptionService
     {
         private ModelBackupService BackupService { get; set; }
 
-        public ManualModelBackupService(Document doc, SocketService serv)
+        private void Initialize(Document doc, ISocketService service)
         {
-            Initialize(doc, serv);
+            BackupService = new ModelBackupService(doc, service);
         }
 
-        private void Initialize(Document doc, SocketService serv)
+        public void Register(ISocketService service, Document doc)
         {
-            BackupService = new ModelBackupService(doc, serv);
-        }
-
-        public override void Register(Document doc)
-        {
+            Initialize(doc, service);
             BackupService.RegisterManualBackup(doc);
         }
 
-        public override void Deregister()
+        public void Deregister()
         {
             BackupService.DeregisterManualBackup();
         }

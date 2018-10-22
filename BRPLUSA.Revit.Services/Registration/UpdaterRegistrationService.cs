@@ -2,7 +2,7 @@
 using Autodesk.Revit.DB.Events;
 using BRPLUSA.Revit.Entities.Interfaces;
 
-namespace BRPLUSA.Revit.Services.Updates
+namespace BRPLUSA.Revit.Services.Registration
 {
     public static class UpdaterRegistrationService
     {

@@ -1,9 +1,10 @@
 ﻿using System;
+using BRPLUSA.Revit.Entities.Interfaces;
 using Quobject.SocketIoClientDotNet.Client;
 
 namespace BRPLUSA.Revit.Services.Web
 {
-    public class SocketService
+    public class SocketService : ISocketService
     {
         private readonly string url = "http://localhost:4422";
         private IO.Options Options { get; set; }

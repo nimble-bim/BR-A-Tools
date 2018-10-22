@@ -6,6 +6,7 @@ using System.Threading;
 using Autodesk.Revit.DB;
 using Autodesk.Revit.DB.Events;
 using Autodesk.Revit.UI;
+using BRPLUSA.Revit.Entities.Interfaces;
 using BRPLUSA.Revit.Services.Handlers;
 using BRPLUSA.Revit.Services.Web;
 
@@ -15,14 +16,14 @@ namespace BRPLUSA.Revit.Services.Updates
     {
         private static Document Document { get; set; }
         private static ExternalEvent BackupEvent { get; set; }
-        private static SocketService SocketService { get; set; }
+        private static ISocketService SocketService { get; set; }
 
         public ModelBackupService(Document doc)
         {
             Initialize(doc);
         }
 
-        public ModelBackupService(Document doc, SocketService service)
+        public ModelBackupService(Document doc, ISocketService service)
         {
             Initialize(doc, service);
         }
@@ -33,7 +34,7 @@ namespace BRPLUSA.Revit.Services.Updates
             RegisterBackupEventHandler();
         }
 
-        private void Initialize(Document doc, SocketService service)
+        private void Initialize(Document doc, ISocketService service)
         {
             SocketService = service;
             Initialize(doc);

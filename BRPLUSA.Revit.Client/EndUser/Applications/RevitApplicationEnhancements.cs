@@ -5,6 +5,7 @@ using BRPLUSA.Revit.Client.EndUser.Commands;
 using BRPLUSA.Revit.Client.EndUser.Services;
 using BRPLUSA.Revit.Client.UI.Views;
 using BRPLUSA.Revit.Services;
+using BRPLUSA.Revit.Services.Registration;
 using BRPLUSA.Revit.Services.Updates;
 using BRPLUSA.Revit.Services.Web;
 
@@ -16,8 +17,7 @@ namespace BRPLUSA.Revit.Client.EndUser.Applications
     public class RevitApplicationEnhancements : IExternalApplication
     {
         public BardWebClient Sidebar { get; set; }
-        private UIControlledApplication CurrentApplication { get; set; }
-        private SocketService SocketService { get; set; }
+        private static SocketService SocketService { get; set; }
 
         public Result OnStartup(UIControlledApplication app)
         {
@@ -33,21 +33,26 @@ namespace BRPLUSA.Revit.Client.EndUser.Applications
         {
             try
             {
-                CurrentApplication = app;
-
                 ResolveBrowserBinaries();
-                InitializeSocketService();
-                CreateRibbon();
-                RegisterSideBar();
+                CreateRibbon(app);
+                RegisterSideBar(app);
+
+                var backupAuto = new AutoModelBackupService();
+                var backupManual = new ManualModelBackupService();
 
                 UpdaterRegistrationService.AddRegisterableServices(
                     //new SpatialPropertyUpdater(app),
-                    new AutoModelBackupService(),
-                    new ManualModelBackupService(SocketService)
+                    backupAuto
+                    );
+
+                SocketRegistrationService.AddRegisterableServices(
+                    backupManual
                     );
 
                 app.ControlledApplication.DocumentOpened += UpdaterRegistrationService.RegisterServices;
+                app.ControlledApplication.DocumentOpened += SocketRegistrationService.RegisterServices;
                 app.ControlledApplication.DocumentClosed += UpdaterRegistrationService.DeregisterServices;
+                app.ControlledApplication.DocumentClosed += SocketRegistrationService.DeregisterServices;
 
                 return Result.Succeeded;
             }
@@ -63,7 +68,9 @@ namespace BRPLUSA.Revit.Client.EndUser.Applications
             try
             {
                 app.ControlledApplication.DocumentOpened -= UpdaterRegistrationService.RegisterServices;
+                app.ControlledApplication.DocumentOpened -= SocketRegistrationService.RegisterServices;
                 app.ControlledApplication.DocumentClosed -= UpdaterRegistrationService.DeregisterServices;
+                app.ControlledApplication.DocumentClosed -= SocketRegistrationService.DeregisterServices;
                 return Result.Succeeded;
             }
             catch (Exception e)
@@ -73,11 +80,11 @@ namespace BRPLUSA.Revit.Client.EndUser.Applications
             }
         }
 
-        public void CreateRibbon()
+        public void CreateRibbon(UIControlledApplication app)
         {
-            CurrentApplication.CreateRibbonTab("BR+A");
+            app.CreateRibbonTab("BR+A");
 
-            var brpa = CurrentApplication.CreateRibbonPanel("BR+A", "Utilities");
+            var brpa = app.CreateRibbonPanel("BR+A", "Utilities");
             
             //var spaceSync = new PushButtonData("Link Spaces", "Link Spaces", typeof(LinkSpaces).Assembly.Location, typeof(LinkSpaces).FullName);
             //var exportAreaToNavis = new PushButtonData("Export Area To Navisworks", "Clash Area", typeof(ExportAreaToNavis).Assembly.Location, typeof(ExportAreaToNavis).FullName);
@@ -90,13 +97,6 @@ namespace BRPLUSA.Revit.Client.EndUser.Applications
             brpa.AddItem(findElement);
             //brpa.AddItem(findPanel);
             brpa.AddItem(switchType);
-        }
-
-        public void InitializeSocketService(string url = "http://localhost:4422")
-        {
-            // TODO: upgrade to factory at some point
-            var serv = new SocketService();
-            SocketService = serv;
         }
 
         public void ResolveBrowserBinaries()
@@ -113,12 +113,12 @@ namespace BRPLUSA.Revit.Client.EndUser.Applications
             }
         }
 
-        private void RegisterSideBar()
+        private void RegisterSideBar(UIControlledApplication app)
         {
             Sidebar = new BardWebClient(SocketService);
-            Sidebar.RegisterEvents(CurrentApplication);
+            Sidebar.RegisterEvents(app);
 
-            CurrentApplication.RegisterDockablePane(BardWebClient.Id, "BR+A Revit Helper", Sidebar);
+            app.RegisterDockablePane(BardWebClient.Id, "BR+A Revit Helper", Sidebar);
         }
     }
 }
