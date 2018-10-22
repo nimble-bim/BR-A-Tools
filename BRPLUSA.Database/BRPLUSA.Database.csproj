@@ -86,13 +86,13 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\BRPLUSA.Domain\BRPLUSA.Domain.csproj">
-      <Project>{123711a9-c92e-4f15-8bd0-b1222a2d5f0b}</Project>
-      <Name>BRPLUSA.Domain</Name>
-    </ProjectReference>
+    <Folder Include="Interfaces\" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Interfaces\" />
+    <ProjectReference Include="..\BRPLUSA.Domain.Core\BRPLUSA.Domain.Core.csproj">
+      <Project>{123711A9-C92E-4F15-8BD0-B1222A2D5F0B}</Project>
+      <Name>BRPLUSA.Domain.Core</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

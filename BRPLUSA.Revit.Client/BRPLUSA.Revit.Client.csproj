@@ -151,17 +151,9 @@
       <Project>{B56FEBB5-8F1A-4B67-AD47-9201F7BE49AA}</Project>
       <Name>BRPLUSA.Database</Name>
     </ProjectReference>
-    <ProjectReference Include="..\BRPLUSA.Domain\BRPLUSA.Domain.csproj">
-      <Project>{123711a9-c92e-4f15-8bd0-b1222a2d5f0b}</Project>
-      <Name>BRPLUSA.Domain</Name>
-    </ProjectReference>
     <ProjectReference Include="..\BRPLUSA.Revit.Client.UI\BRPLUSA.Revit.Client.UI.csproj">
       <Project>{977957b1-037f-4eb9-ba45-4c48f805c3c5}</Project>
       <Name>BRPLUSA.Revit.Client.UI</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\BRPLUSA.Revit.Entities\BRPLUSA.Revit.Entities.csproj">
-      <Project>{e46b68f5-f133-4e41-8ca6-975b6b854357}</Project>
-      <Name>BRPLUSA.Revit.Entities</Name>
     </ProjectReference>
     <ProjectReference Include="..\BRPLUSA.Revit.Services\BRPLUSA.Revit.Services.csproj">
       <Project>{ad967b1c-df2e-4690-8b0e-958596ff3c4e}</Project>

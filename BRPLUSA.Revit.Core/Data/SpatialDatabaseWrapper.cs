@@ -12,7 +12,7 @@ namespace BRPLUSA.Revit.Entities.Data
     public class SpatialDatabaseWrapper : IDisposable
     {
         private readonly LiteDatabase _db;
-        private IEnumerable<SpaceWrapper> Spaces => _db.GetCollection<SpaceWrapper>().FindAll();
+        private IEnumerable<Space> Spaces => _db.GetCollection<Space>().FindAll();
         private readonly string _location;
 
         public SpatialDatabaseWrapper(Document doc)
@@ -46,13 +46,13 @@ namespace BRPLUSA.Revit.Entities.Data
             return exhaustNeedsUpdate || returnNeedsUpdate || supplyNeedsUpdate;
         }
 
-        public SpaceWrapper FindElement(string uniqueId)
+        public Space FindElement(string uniqueId)
         {
-            var spaces = _db.GetCollection<SpaceWrapper>();
+            var spaces = _db.GetCollection<Space>();
             return spaces.Find(s => s.Id == uniqueId).FirstOrDefault();
         }
 
-        public IEnumerable<SpaceWrapper> FindElementPeers(string uniqueId)
+        public IEnumerable<Space> FindElementPeers(string uniqueId)
         {
             var elem = FindElement(uniqueId);
 
@@ -61,9 +61,9 @@ namespace BRPLUSA.Revit.Entities.Data
             return peers;
         }
 
-        public IEnumerable<SpaceWrapper> GetAll(string uniqueId)
+        public IEnumerable<Space> GetAll(string uniqueId)
         {
-            var all = new List<SpaceWrapper>();
+            var all = new List<Space>();
 
             var primary = FindElement(uniqueId);
             var peers = FindElementPeers(uniqueId);
@@ -101,7 +101,7 @@ namespace BRPLUSA.Revit.Entities.Data
             if (!IsDatabaseCreated())
                 return false;
 
-            var elements = _db.GetCollection<SpaceWrapper>();
+            var elements = _db.GetCollection<Space>();
             var element = elements.FindOne(s => s.Id == uniqueId);
 
             var isInDb = element != null;
@@ -113,13 +113,13 @@ namespace BRPLUSA.Revit.Entities.Data
         {
             try
             {
-                var dbSpaces = _db.GetCollection<SpaceWrapper>();
+                var dbSpaces = _db.GetCollection<Space>();
 
                 // else, add the space and it's peers along with their respective properties
                 var ids = spaces.Select(s => s.UniqueId).ToArray();
 
                 var wrapped = MapEntities(spaces);
-                var newWrap = new List<SpaceWrapper>();
+                var newWrap = new List<Space>();
                 foreach (var w in wrapped)
                 {
                     w.ConnectPeers(ids);
@@ -160,7 +160,7 @@ namespace BRPLUSA.Revit.Entities.Data
         {
             try
             {
-                var dbSp = _db.GetCollection<SpaceWrapper>().FindOne(s => s.Id == space.UniqueId);
+                var dbSp = _db.GetCollection<Space>().FindOne(s => s.Id == space.UniqueId);
 
                 // remove the space 
                 RemoveSpace(space);
@@ -201,26 +201,26 @@ namespace BRPLUSA.Revit.Entities.Data
             UpdateElement(sp1);
         }
 
-        private void RemoveSpace(Space space)
+        private void RemoveSpace(RevitSpace space)
         {
             RemoveSpace(space.UniqueId);
         }
 
-        private void RemoveSpace(SpaceWrapper space)
+        private void RemoveSpace(Space space)
         {
             RemoveSpace(space.Id);
         }
 
         private void RemoveSpace(string revitId)
         {
-            var dbSp = _db.GetCollection<SpaceWrapper>();
+            var dbSp = _db.GetCollection<Space>();
 
             dbSp.Delete(s => s.Id == revitId);
         }
 
-        private IEnumerable<SpaceWrapper> MapEntities(IEnumerable<Space> revs)
+        private IEnumerable<Space> MapEntities(IEnumerable<Space> revs)
         {
-            return revs.Select(r => new SpaceWrapper(r));
+            return revs.Select(r => new Space(r));
         }
 
         //private void MapEntity(Space space)
@@ -240,7 +240,7 @@ namespace BRPLUSA.Revit.Entities.Data
 
         public void UpdateElement(Space space)
         {
-            var dbSpaces = _db.GetCollection<SpaceWrapper>();
+            var dbSpaces = _db.GetCollection<Space>();
             var dbSp = dbSpaces.FindOne(s => s.Id == space.UniqueId);
 
             dbSp.SpecifiedExhaustAirflow = space.DesignExhaustAirflow;
@@ -250,7 +250,7 @@ namespace BRPLUSA.Revit.Entities.Data
             dbSpaces.Update(dbSp);
         }
 
-        public void UpdateElement(SpaceWrapper wrap)
+        public void UpdateElement(Space wrap)
         {
             _db.GetCollection<SpaceWrapper>().Update(wrap);
         }

@@ -155,13 +155,9 @@
       <Project>{EC0E8D93-3D21-482A-9F97-E7E5D2F8A192}</Project>
       <Name>BRPLUSA.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\BRPLUSA.Domain\BRPLUSA.Domain.csproj">
-      <Project>{123711A9-C92E-4F15-8BD0-B1222A2D5F0B}</Project>
-      <Name>BRPLUSA.Domain</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\BRPLUSA.Revit.Entities\BRPLUSA.Revit.Entities.csproj">
-      <Project>{e46b68f5-f133-4e41-8ca6-975b6b854357}</Project>
-      <Name>BRPLUSA.Revit.Entities</Name>
+    <ProjectReference Include="..\BRPLUSA.Domain.Services\BRPLUSA.Domain.Services.csproj">
+      <Project>{ee87b4ad-570b-44e4-a2b6-3313d86234b7}</Project>
+      <Name>BRPLUSA.Domain.Services</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

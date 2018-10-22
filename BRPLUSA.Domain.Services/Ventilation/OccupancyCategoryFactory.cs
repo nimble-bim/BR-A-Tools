@@ -1,4 +1,5 @@
 ﻿using System;
+using BRPLUSA.Domain.Entities.Ventilation;
 
 namespace BRPLUSA.Domain.Services.Ventilation
 {

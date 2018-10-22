@@ -7,8 +7,8 @@
     <ProjectGuid>{E46B68F5-F133-4E41-8CA6-975B6B854357}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>BRPLUSA.Revit.Entities</RootNamespace>
-    <AssemblyName>BRPLUSA.Revit.Entities</AssemblyName>
+    <RootNamespace>BRPLUSA.Revit.Core</RootNamespace>
+    <AssemblyName>BRPLUSA.Revit.Core</AssemblyName>
     <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -67,12 +67,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\BRPLUSA.Domain\BRPLUSA.Domain.csproj">
-      <Project>{123711A9-C92E-4F15-8BD0-B1222A2D5F0B}</Project>
-      <Name>BRPLUSA.Domain</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

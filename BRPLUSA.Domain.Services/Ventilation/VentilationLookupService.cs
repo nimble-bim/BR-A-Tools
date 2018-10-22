@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using BRPLUSA.Domain.Entities.Ventilation;
+using CsvHelper;
 
 namespace BRPLUSA.Domain.Services.Ventilation
 {

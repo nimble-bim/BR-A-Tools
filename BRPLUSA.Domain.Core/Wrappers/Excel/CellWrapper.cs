@@ -1,7 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 
-namespace BRPLUSA.Domain.ExcelWrappers
+namespace BRPLUSA.Domain.Wrappers.Excel
 {
     public class CellWrapper
     {
