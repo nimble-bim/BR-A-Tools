@@ -6,7 +6,7 @@ using System.Threading;
 using Autodesk.Revit.DB;
 using Autodesk.Revit.DB.Events;
 using Autodesk.Revit.UI;
-using BRPLUSA.Revit.Entities.Interfaces;
+using BRPLUSA.Revit.Core.Interfaces;
 using BRPLUSA.Revit.Services.Handlers;
 using BRPLUSA.Revit.Services.Web;
 

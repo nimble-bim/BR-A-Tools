@@ -1,5 +1,5 @@
 ﻿using System;
-using BRPLUSA.Revit.Entities.Interfaces;
+using BRPLUSA.Revit.Core.Interfaces;
 using Quobject.SocketIoClientDotNet.Client;
 
 namespace BRPLUSA.Revit.Services.Web

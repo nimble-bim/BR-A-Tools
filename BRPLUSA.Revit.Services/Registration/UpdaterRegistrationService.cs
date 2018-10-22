@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using Autodesk.Revit.DB.Events;
-using BRPLUSA.Revit.Entities.Interfaces;
+using BRPLUSA.Revit.Core.Interfaces;
 
 namespace BRPLUSA.Revit.Services.Registration
 {
