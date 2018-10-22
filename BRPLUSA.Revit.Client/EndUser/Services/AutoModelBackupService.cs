@@ -4,12 +4,13 @@ using System.IO;
 using System.Threading;
 using Autodesk.Revit.DB;
 using Autodesk.Revit.DB.Events;
+using BRPLUSA.Revit.Entities.Base;
 using BRPLUSA.Revit.Entities.Interfaces;
 using BRPLUSA.Revit.Services.Updates;
 
 namespace BRPLUSA.Revit.Client.EndUser.Services
 {
-    public class AutoModelBackupService : IRegisterableUpdater
+    public class AutoModelBackupService : BaseRegisterableService
     {
         private ModelBackupService BackupService { get; set; }
 
@@ -18,12 +19,12 @@ namespace BRPLUSA.Revit.Client.EndUser.Services
             BackupService = new ModelBackupService(doc);
         }
 
-        public void Register(Document doc)
+        public override void Register(Document doc)
         {
             BackupService.RegisterAutoBackup();
         }
 
-        public void Deregister()
+        public override void Deregister()
         {
             BackupService.DeregisterAutoBackup();
         }
