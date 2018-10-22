@@ -1,6 +1,6 @@
 ﻿using Autodesk.Revit.DB;
 
-namespace BRPLUSA.Revit.Entities.Extensions
+namespace BRPLUSA.Revit.Core.Extensions
 {
     public static class ViewScheduleExtensions
     {

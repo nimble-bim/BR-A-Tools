@@ -1,6 +1,6 @@
 ﻿using Autodesk.Revit.DB;
 
-namespace BRPLUSA.Revit.Entities.Interfaces
+namespace BRPLUSA.Revit.Core.Interfaces
 {
     public interface ISocketConsumptionService
     {

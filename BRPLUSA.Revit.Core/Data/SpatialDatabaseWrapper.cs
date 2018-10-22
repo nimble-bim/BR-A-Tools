@@ -7,279 +7,279 @@ using Autodesk.Revit.DB;
 using Autodesk.Revit.DB.Mechanical;
 using LiteDB;
 
-namespace BRPLUSA.Revit.Entities.Data
+namespace BRPLUSA.Revit.Core.Data
 {
-    public class SpatialDatabaseWrapper : IDisposable
-    {
-        private readonly LiteDatabase _db;
-        private IEnumerable<Space> Spaces => _db.GetCollection<Space>().FindAll();
-        private readonly string _location;
+    //public class SpatialDatabaseWrapper : IDisposable
+    //{
+    //    private readonly LiteDatabase _db;
+    //    private IEnumerable<Space> Spaces => _db.GetCollection<Space>().FindAll();
+    //    private readonly string _location;
 
-        public SpatialDatabaseWrapper(Document doc)
-        {
-            var directory = Path.GetDirectoryName(doc.PathName);
-            _location = Path.Combine(directory, "SpatialData.db");
+    //    public SpatialDatabaseWrapper(Document doc)
+    //    {
+    //        var directory = Path.GetDirectoryName(doc.PathName);
+    //        _location = Path.Combine(directory, "SpatialData.db");
 
-            _db = new LiteDatabase(_location);
-        }
+    //        _db = new LiteDatabase(_location);
+    //    }
 
-        private bool IsDatabaseCreated()
-        {
-            return File.Exists(_location);
-        }
+    //    private bool IsDatabaseCreated()
+    //    {
+    //        return File.Exists(_location);
+    //    }
 
-        public bool IsCurrentlyTracked(Space space)
-        {
-            var x = FindElement(space.UniqueId);
+    //    public bool IsCurrentlyTracked(Space space)
+    //    {
+    //        var x = FindElement(space.UniqueId);
 
-            return x != null;
-        }
+    //        return x != null;
+    //    }
 
-        public bool NeedsUpdate(Space space)
-        {
-            var dbSpace = FindElement(space.UniqueId);
+    //    public bool NeedsUpdate(Space space)
+    //    {
+    //        var dbSpace = FindElement(space.UniqueId);
 
-            var exhaustNeedsUpdate = dbSpace.ExhaustNeedsUpdate(space);
-            var returnNeedsUpdate = dbSpace.ReturnNeedsUpate(space);
-            var supplyNeedsUpdate = dbSpace.SupplyNeedsUpdate(space);
+    //        var exhaustNeedsUpdate = dbSpace.ExhaustNeedsUpdate(space);
+    //        var returnNeedsUpdate = dbSpace.ReturnNeedsUpate(space);
+    //        var supplyNeedsUpdate = dbSpace.SupplyNeedsUpdate(space);
 
-            return exhaustNeedsUpdate || returnNeedsUpdate || supplyNeedsUpdate;
-        }
+    //        return exhaustNeedsUpdate || returnNeedsUpdate || supplyNeedsUpdate;
+    //    }
 
-        public Space FindElement(string uniqueId)
-        {
-            var spaces = _db.GetCollection<Space>();
-            return spaces.Find(s => s.Id == uniqueId).FirstOrDefault();
-        }
+    //    public Space FindElement(string uniqueId)
+    //    {
+    //        var spaces = _db.GetCollection<Space>();
+    //        return spaces.Find(s => s.Id == uniqueId).FirstOrDefault();
+    //    }
 
-        public IEnumerable<Space> FindElementPeers(string uniqueId)
-        {
-            var elem = FindElement(uniqueId);
+    //    public IEnumerable<Space> FindElementPeers(string uniqueId)
+    //    {
+    //        var elem = FindElement(uniqueId);
 
-            var peers = elem.ConnectedSpaces.Select(FindElement);
+    //        var peers = elem.ConnectedSpaces.Select(FindElement);
 
-            return peers;
-        }
+    //        return peers;
+    //    }
 
-        public IEnumerable<Space> GetAll(string uniqueId)
-        {
-            var all = new List<Space>();
+    //    public IEnumerable<Space> GetAll(string uniqueId)
+    //    {
+    //        var all = new List<Space>();
 
-            var primary = FindElement(uniqueId);
-            var peers = FindElementPeers(uniqueId);
+    //        var primary = FindElement(uniqueId);
+    //        var peers = FindElementPeers(uniqueId);
 
-            all.Add(primary);
-            all.AddRange(peers);
+    //        all.Add(primary);
+    //        all.AddRange(peers);
 
-            return all;
-        }
+    //        return all;
+    //    }
 
-        public bool CreateElementRelationship(IEnumerable<Space> spaces)
-        {
-            // check if any of the spaces already exist in the db
-            // if so, prompt the user and ask whether they want to connect
-            // all the spaces and it's peers together
-            var hasOldSpaces = spaces.Any(IsInDatabase);
+    //    public bool CreateElementRelationship(IEnumerable<Space> spaces)
+    //    {
+    //        // check if any of the spaces already exist in the db
+    //        // if so, prompt the user and ask whether they want to connect
+    //        // all the spaces and it's peers together
+    //        var hasOldSpaces = spaces.Any(IsInDatabase);
 
-            return hasOldSpaces
-                ? HandleNewAndOldSpaces(spaces) 
-                : HandleNewSpaces(spaces);
-        }
+    //        return hasOldSpaces
+    //            ? HandleNewAndOldSpaces(spaces) 
+    //            : HandleNewSpaces(spaces);
+    //    }
 
-        private bool HandleNewAndOldSpaces(IEnumerable<Space> spaces)
-        {
-            throw new NotImplementedException();
-        }
+    //    private bool HandleNewAndOldSpaces(IEnumerable<Space> spaces)
+    //    {
+    //        throw new NotImplementedException();
+    //    }
 
-        public bool IsInDatabase(Space space)
-        {
-            return IsInDatabase(space.UniqueId);
-        }
+    //    public bool IsInDatabase(Space space)
+    //    {
+    //        return IsInDatabase(space.UniqueId);
+    //    }
 
-        private bool IsInDatabase(string uniqueId)
-        {
-            if (!IsDatabaseCreated())
-                return false;
+    //    private bool IsInDatabase(string uniqueId)
+    //    {
+    //        if (!IsDatabaseCreated())
+    //            return false;
 
-            var elements = _db.GetCollection<Space>();
-            var element = elements.FindOne(s => s.Id == uniqueId);
+    //        var elements = _db.GetCollection<Space>();
+    //        var element = elements.FindOne(s => s.Id == uniqueId);
 
-            var isInDb = element != null;
+    //        var isInDb = element != null;
 
-            return isInDb;
-        }
+    //        return isInDb;
+    //    }
 
-        private bool HandleNewSpaces(IEnumerable<Space> spaces)
-        {
-            try
-            {
-                var dbSpaces = _db.GetCollection<Space>();
+    //    private bool HandleNewSpaces(IEnumerable<Space> spaces)
+    //    {
+    //        try
+    //        {
+    //            var dbSpaces = _db.GetCollection<Space>();
 
-                // else, add the space and it's peers along with their respective properties
-                var ids = spaces.Select(s => s.UniqueId).ToArray();
+    //            // else, add the space and it's peers along with their respective properties
+    //            var ids = spaces.Select(s => s.UniqueId).ToArray();
 
-                var wrapped = MapEntities(spaces);
-                var newWrap = new List<Space>();
-                foreach (var w in wrapped)
-                {
-                    w.ConnectPeers(ids);
-                    newWrap.Add(w);
-                }
+    //            var wrapped = MapEntities(spaces);
+    //            var newWrap = new List<Space>();
+    //            foreach (var w in wrapped)
+    //            {
+    //                w.ConnectPeers(ids);
+    //                newWrap.Add(w);
+    //            }
 
-                dbSpaces.Insert(newWrap);
-                dbSpaces.EnsureIndex(s => s.Id);
+    //            dbSpaces.Insert(newWrap);
+    //            dbSpaces.EnsureIndex(s => s.Id);
 
-                return true;
-            }
+    //            return true;
+    //        }
 
-            catch (Exception e)
-            {
-                return false;
-            }
-        }
+    //        catch (Exception e)
+    //        {
+    //            return false;
+    //        }
+    //    }
 
-        public bool BreakElementRelationship(IEnumerable<Space> spaces)
-        {
-            foreach (var s in spaces)
-            {
-                try
-                {
-                    BreakElementRelationship(s);
-                }
+    //    public bool BreakElementRelationship(IEnumerable<Space> spaces)
+    //    {
+    //        foreach (var s in spaces)
+    //        {
+    //            try
+    //            {
+    //                BreakElementRelationship(s);
+    //            }
 
-                catch
-                {
-                    return false;
-                }
-            }
+    //            catch
+    //            {
+    //                return false;
+    //            }
+    //        }
 
-            return true;
-        }
+    //        return true;
+    //    }
 
-        public bool BreakElementRelationship(Space space)
-        {
-            try
-            {
-                var dbSp = _db.GetCollection<Space>().FindOne(s => s.Id == space.UniqueId);
+    //    public bool BreakElementRelationship(Space space)
+    //    {
+    //        try
+    //        {
+    //            var dbSp = _db.GetCollection<Space>().FindOne(s => s.Id == space.UniqueId);
 
-                // remove the space 
-                RemoveSpace(space);
+    //            // remove the space 
+    //            RemoveSpace(space);
 
-                // then remove it's connection to whatever spaces
-                // it was previously connected to
-                var peers = dbSp.ConnectedSpaces;
+    //            // then remove it's connection to whatever spaces
+    //            // it was previously connected to
+    //            var peers = dbSp.ConnectedSpaces;
 
-                foreach (var p in peers)
-                {
-                    BreakConnection(p, space.UniqueId);
-                }
+    //            foreach (var p in peers)
+    //            {
+    //                BreakConnection(p, space.UniqueId);
+    //            }
 
-                return true;
-            }
+    //            return true;
+    //        }
 
-            catch (Exception e)
-            {
-                Debug.WriteLine($"Failure attempting to break element's relationship. { e.Message }");
-                return false;
-            }
-        }
+    //        catch (Exception e)
+    //        {
+    //            Debug.WriteLine($"Failure attempting to break element's relationship. { e.Message }");
+    //            return false;
+    //        }
+    //    }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="spaceConn">Space which should have the second space removed from it's list of connected spaces</param>
-        /// <param name="spaceDisconn">Space to be removed</param>
-        private void BreakConnection(string spaceConn, string spaceDisconn)
-        {
-            var sp1 = FindElement(spaceConn);
+    //    /// <summary>
+    //    /// 
+    //    /// </summary>
+    //    /// <param name="spaceConn">Space which should have the second space removed from it's list of connected spaces</param>
+    //    /// <param name="spaceDisconn">Space to be removed</param>
+    //    private void BreakConnection(string spaceConn, string spaceDisconn)
+    //    {
+    //        var sp1 = FindElement(spaceConn);
 
-            var newConns = sp1.ConnectedSpaces.ToList();
-            newConns.Remove(spaceDisconn);
+    //        var newConns = sp1.ConnectedSpaces.ToList();
+    //        newConns.Remove(spaceDisconn);
 
-            sp1.ConnectPeers(newConns);
+    //        sp1.ConnectPeers(newConns);
 
-            UpdateElement(sp1);
-        }
+    //        UpdateElement(sp1);
+    //    }
 
-        private void RemoveSpace(RevitSpace space)
-        {
-            RemoveSpace(space.UniqueId);
-        }
+    //    private void RemoveSpace(RevitSpace space)
+    //    {
+    //        RemoveSpace(space.UniqueId);
+    //    }
 
-        private void RemoveSpace(Space space)
-        {
-            RemoveSpace(space.Id);
-        }
+    //    private void RemoveSpace(Space space)
+    //    {
+    //        RemoveSpace(space.Id);
+    //    }
 
-        private void RemoveSpace(string revitId)
-        {
-            var dbSp = _db.GetCollection<Space>();
+    //    private void RemoveSpace(string revitId)
+    //    {
+    //        var dbSp = _db.GetCollection<Space>();
 
-            dbSp.Delete(s => s.Id == revitId);
-        }
+    //        dbSp.Delete(s => s.Id == revitId);
+    //    }
 
-        private IEnumerable<Space> MapEntities(IEnumerable<Space> revs)
-        {
-            return revs.Select(r => new Space(r));
-        }
+    //    private IEnumerable<Space> MapEntities(IEnumerable<Space> revs)
+    //    {
+    //        return revs.Select(r => new Space(r));
+    //    }
 
-        //private void MapEntity(Space space)
-        //{
-        //    var mapper = BsonMapper.Global;
+    //    //private void MapEntity(Space space)
+    //    //{
+    //    //    var mapper = BsonMapper.Global;
 
-        //    mapper.Entity<Space>()
-        //        .Index(r => r.UniqueId)
-        //        .Field(r => r.Name, "space_name")
-        //        .Field(r => r.Number, "space_number")
-        //        .Field(r => r.Room.Name, "room_name")
-        //        .Field(r => r.Room.Number, "room_number")
-        //        .Field(r => r.DesignSupplyAirflow, "specified_cfm_supply")
-        //        .Field(r => r.DesignExhaustAirflow, "specified_cfm_exhaust")
-        //        .Field(r => r.DesignReturnAirflow, "specified_cfm_return");
-        //}
+    //    //    mapper.Entity<Space>()
+    //    //        .Index(r => r.UniqueId)
+    //    //        .Field(r => r.Name, "space_name")
+    //    //        .Field(r => r.Number, "space_number")
+    //    //        .Field(r => r.Room.Name, "room_name")
+    //    //        .Field(r => r.Room.Number, "room_number")
+    //    //        .Field(r => r.DesignSupplyAirflow, "specified_cfm_supply")
+    //    //        .Field(r => r.DesignExhaustAirflow, "specified_cfm_exhaust")
+    //    //        .Field(r => r.DesignReturnAirflow, "specified_cfm_return");
+    //    //}
 
-        public void UpdateElement(Space space)
-        {
-            var dbSpaces = _db.GetCollection<Space>();
-            var dbSp = dbSpaces.FindOne(s => s.Id == space.UniqueId);
+    //    public void UpdateElement(Space space)
+    //    {
+    //        var dbSpaces = _db.GetCollection<Space>();
+    //        var dbSp = dbSpaces.FindOne(s => s.Id == space.UniqueId);
 
-            dbSp.SpecifiedExhaustAirflow = space.DesignExhaustAirflow;
-            dbSp.SpecifiedReturnAirflow = space.DesignReturnAirflow;
-            dbSp.SpecifiedSupplyAirflow = space.DesignSupplyAirflow;
+    //        dbSp.SpecifiedExhaustAirflow = space.DesignExhaustAirflow;
+    //        dbSp.SpecifiedReturnAirflow = space.DesignReturnAirflow;
+    //        dbSp.SpecifiedSupplyAirflow = space.DesignSupplyAirflow;
 
-            dbSpaces.Update(dbSp);
-        }
+    //        dbSpaces.Update(dbSp);
+    //    }
 
-        public void UpdateElement(Space wrap)
-        {
-            _db.GetCollection<SpaceWrapper>().Update(wrap);
-        }
+    //    public void UpdateElement(Space wrap)
+    //    {
+    //        _db.GetCollection<SpaceWrapper>().Update(wrap);
+    //    }
 
-        //private void UpdateElementPeers(Space parent)
-        //{
-        //    var dbSpaces = _db.GetCollection<SpaceWrapper>();
-        //    var dbSp = dbSpaces.FindOne(s => s.Id == parent.UniqueId);
-        //    var peerIds = dbSp.ConnectedSpaces;
-        //    var peers = peerIds.Select(FindElement).ToArray();
+    //    //private void UpdateElementPeers(Space parent)
+    //    //{
+    //    //    var dbSpaces = _db.GetCollection<SpaceWrapper>();
+    //    //    var dbSp = dbSpaces.FindOne(s => s.Id == parent.UniqueId);
+    //    //    var peerIds = dbSp.ConnectedSpaces;
+    //    //    var peers = peerIds.Select(FindElement).ToArray();
 
-        //    foreach (var peer in peers)
-        //    {
-        //        if(peer.ExhaustNeedsUpdate(parent))
-        //            peer.SpecifiedExhaustAirflow = parent.DesignExhaustAirflow;
+    //    //    foreach (var peer in peers)
+    //    //    {
+    //    //        if(peer.ExhaustNeedsUpdate(parent))
+    //    //            peer.SpecifiedExhaustAirflow = parent.DesignExhaustAirflow;
 
-        //        if(peer.ReturnNeedsUpate(parent))
-        //            peer.SpecifiedReturnAirflow = parent.DesignReturnAirflow;
+    //    //        if(peer.ReturnNeedsUpate(parent))
+    //    //            peer.SpecifiedReturnAirflow = parent.DesignReturnAirflow;
 
-        //        if(peer.SupplyNeedsUpdate(parent))
-        //            peer.SpecifiedSupplyAirflow = parent.DesignSupplyAirflow;
-        //    }
+    //    //        if(peer.SupplyNeedsUpdate(parent))
+    //    //            peer.SpecifiedSupplyAirflow = parent.DesignSupplyAirflow;
+    //    //    }
 
-        //    dbSpaces.Update(peers);
-        //}
+    //    //    dbSpaces.Update(peers);
+    //    //}
 
-        public void Dispose()
-        {
-            _db.Dispose();
-        }
-    }
+    //    public void Dispose()
+    //    {
+    //        _db.Dispose();
+    //    }
+    //}
 }

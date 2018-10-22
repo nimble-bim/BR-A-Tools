@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace BRPLUSA.Revit.Entities.Exceptions
+namespace BRPLUSA.Revit.Core.Exceptions
 {
     public class CancellableException : Exception
     {

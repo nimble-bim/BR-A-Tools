@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace BRPLUSA.Revit.Entities.Interfaces
+namespace BRPLUSA.Revit.Core.Interfaces
 {
     public interface ISocketService
     {
