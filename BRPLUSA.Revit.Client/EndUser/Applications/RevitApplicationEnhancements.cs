@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using Autodesk.Revit.UI;
 using BRPLUSA.Revit.Client.EndUser.Commands;
+using BRPLUSA.Revit.Client.EndUser.Commands.Mechanical;
 using BRPLUSA.Revit.Client.EndUser.Services;
 using BRPLUSA.Revit.Client.UI.Views;
 using BRPLUSA.Revit.Services.Registration;
@@ -83,18 +84,21 @@ namespace BRPLUSA.Revit.Client.EndUser.Applications
             app.CreateRibbonTab("BR+A");
 
             var brpa = app.CreateRibbonPanel("BR+A", "Utilities");
-            
+            var toggleSidebar = new PushButtonData("Toggle Sidebar", "Toggle Sidebar", typeof(ShowSidebar).Assembly.Location, typeof(ShowSidebar).FullName);
             //var spaceSync = new PushButtonData("Link Spaces", "Link Spaces", typeof(LinkSpaces).Assembly.Location, typeof(LinkSpaces).FullName);
             //var exportAreaToNavis = new PushButtonData("Export Area To Navisworks", "Clash Area", typeof(ExportAreaToNavis).Assembly.Location, typeof(ExportAreaToNavis).FullName);
             var findElement = new PushButtonData("Find Element By Name", "Find Element", typeof(SelectByName).Assembly.Location, typeof(SelectByName).FullName);
             //var findPanel = new PushButtonData("Find Panel By Name", "Find Panel", typeof(SelectPanelFromSchedule).Assembly.Location, typeof(SelectPanelFromSchedule).FullName);
             var switchType = new PushButtonData("Switch Element Type", "Switch Element Type", typeof(ForceTypeSwap).Assembly.Location, typeof(ForceTypeSwap).FullName);
+            var createVentSchedule = new PushButtonData("Create Vent Schedule", "Create Vent Schedule", typeof(CreateVentilationRequirementsScheduleCommand).Assembly.Location, typeof(CreateVentilationRequirementsScheduleCommand).FullName);
 
+            brpa.AddItem(toggleSidebar);
             //brpa.AddItem(spaceSync);
             //brpa.AddItem(exportAreaToNavis);
             brpa.AddItem(findElement);
             //brpa.AddItem(findPanel);
             brpa.AddItem(switchType);
+            brpa.AddItem(createVentSchedule);
         }
 
         public void ResolveBrowserBinaries()
