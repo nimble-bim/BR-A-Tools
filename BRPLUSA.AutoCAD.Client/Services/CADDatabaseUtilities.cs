@@ -5,6 +5,7 @@ using System.Linq;
 using Autodesk.AutoCAD.ApplicationServices;
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.Runtime;
+using BRPLUSA.Client.AutoCAD.Extensions;
 using BRPLUSA.Client.AutoCAD.Mappers;
 using BRPLUSA.Client.AutoCAD.Wrappers;
 using Exception = System.Exception;
