@@ -1,4 +1,5 @@
-﻿using BRPLUSA.Domain.Wrappers;
+﻿using BRPLUSA.Domain.Core.Wrappers;
+using BRPLUSA.Domain.Wrappers;
 using BRPLUSA.Revit.Services.Spaces;
 using RevitSpace = Autodesk.Revit.DB.Mechanical.Space;
 
@@ -10,6 +11,12 @@ namespace BRPLUSA.Revit.Services.Factories
         {
             var space = new Space
             {
+                Id = rSpace.UniqueId,
+                SpaceName = rSpace.Name,
+                SpaceNumber = rSpace.Number,
+                RoomName = rSpace.Room.Name,
+                RoomNumber = rSpace.Room.Number,
+
                 Area = rSpace.Area,
                 SpecifiedExhaustAirflow = rSpace.ActualExhaustAirflow,
                 SpecifiedSupplyAirflow = rSpace.ActualSupplyAirflow,

@@ -4,8 +4,10 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using Autodesk.Revit.DB;
-using Autodesk.Revit.DB.Mechanical;
+using BRPLUSA.Domain.Core.Wrappers;
+using RevitSpace = Autodesk.Revit.DB.Mechanical.Space;
 using LiteDB;
+using BRPLUSA.Domain.Wrappers;
 
 namespace BRPLUSA.Revit.Core.Data
 {
@@ -28,23 +30,23 @@ namespace BRPLUSA.Revit.Core.Data
     //        return File.Exists(_location);
     //    }
 
-    //    public bool IsCurrentlyTracked(Space space)
+    //    public bool IsCurrentlyTracked(RevitSpace space)
     //    {
     //        var x = FindElement(space.UniqueId);
 
     //        return x != null;
     //    }
 
-    //    public bool NeedsUpdate(Space space)
-    //    {
-    //        var dbSpace = FindElement(space.UniqueId);
+    //    //public bool NeedsUpdate(RevitSpace space)
+    //    //{
+    //    //    var dbSpace = FindElement(space.UniqueId);
 
-    //        var exhaustNeedsUpdate = dbSpace.ExhaustNeedsUpdate(space);
-    //        var returnNeedsUpdate = dbSpace.ReturnNeedsUpate(space);
-    //        var supplyNeedsUpdate = dbSpace.SupplyNeedsUpdate(space);
+    //    //    var exhaustNeedsUpdate = dbSpace.ExhaustNeedsUpdate(space);
+    //    //    var returnNeedsUpdate = dbSpace.ReturnNeedsUpate(space);
+    //    //    var supplyNeedsUpdate = dbSpace.SupplyNeedsUpdate(space);
 
-    //        return exhaustNeedsUpdate || returnNeedsUpdate || supplyNeedsUpdate;
-    //    }
+    //    //    return exhaustNeedsUpdate || returnNeedsUpdate || supplyNeedsUpdate;
+    //    //}
 
     //    public Space FindElement(string uniqueId)
     //    {
@@ -82,7 +84,7 @@ namespace BRPLUSA.Revit.Core.Data
     //        var hasOldSpaces = spaces.Any(IsInDatabase);
 
     //        return hasOldSpaces
-    //            ? HandleNewAndOldSpaces(spaces) 
+    //            ? HandleNewAndOldSpaces(spaces)
     //            : HandleNewSpaces(spaces);
     //    }
 
@@ -91,7 +93,7 @@ namespace BRPLUSA.Revit.Core.Data
     //        throw new NotImplementedException();
     //    }
 
-    //    public bool IsInDatabase(Space space)
+    //    public bool IsInDatabase(RevitSpace space)
     //    {
     //        return IsInDatabase(space.UniqueId);
     //    }
@@ -109,7 +111,7 @@ namespace BRPLUSA.Revit.Core.Data
     //        return isInDb;
     //    }
 
-    //    private bool HandleNewSpaces(IEnumerable<Space> spaces)
+    //    private bool HandleNewSpaces(IEnumerable<RevitSpace> spaces)
     //    {
     //        try
     //        {
@@ -122,7 +124,7 @@ namespace BRPLUSA.Revit.Core.Data
     //            var newWrap = new List<Space>();
     //            foreach (var w in wrapped)
     //            {
-    //                w.ConnectPeers(ids);
+    //                //w.ConnectPeers(ids);
     //                newWrap.Add(w);
     //            }
 
@@ -156,23 +158,23 @@ namespace BRPLUSA.Revit.Core.Data
     //        return true;
     //    }
 
-    //    public bool BreakElementRelationship(Space space)
+    //    public bool BreakElementRelationship(RevitSpace space)
     //    {
     //        try
     //        {
-    //            var dbSp = _db.GetCollection<Space>().FindOne(s => s.Id == space.UniqueId);
+    //            //var dbSp = _db.GetCollection<Space>().FindOne(s => s.Id == space.UniqueId);
 
-    //            // remove the space 
-    //            RemoveSpace(space);
+    //            //// remove the space 
+    //            //RemoveSpace(space);
 
-    //            // then remove it's connection to whatever spaces
-    //            // it was previously connected to
-    //            var peers = dbSp.ConnectedSpaces;
+    //            //// then remove it's connection to whatever spaces
+    //            //// it was previously connected to
+    //            //var peers = dbSp.ConnectedSpaces;
 
-    //            foreach (var p in peers)
-    //            {
-    //                BreakConnection(p, space.UniqueId);
-    //            }
+    //            //foreach (var p in peers)
+    //            //{
+    //            //    BreakConnection(p, space.UniqueId);
+    //            //}
 
     //            return true;
     //        }
@@ -191,14 +193,14 @@ namespace BRPLUSA.Revit.Core.Data
     //    /// <param name="spaceDisconn">Space to be removed</param>
     //    private void BreakConnection(string spaceConn, string spaceDisconn)
     //    {
-    //        var sp1 = FindElement(spaceConn);
+    //        //var sp1 = FindElement(spaceConn);
 
-    //        var newConns = sp1.ConnectedSpaces.ToList();
-    //        newConns.Remove(spaceDisconn);
+    //        //var newConns = sp1.ConnectedSpaces.ToList();
+    //        //newConns.Remove(spaceDisconn);
 
-    //        sp1.ConnectPeers(newConns);
+    //        //sp1.ConnectPeers(newConns);
 
-    //        UpdateElement(sp1);
+    //        //UpdateElement(sp1);
     //    }
 
     //    private void RemoveSpace(RevitSpace space)
@@ -218,42 +220,42 @@ namespace BRPLUSA.Revit.Core.Data
     //        dbSp.Delete(s => s.Id == revitId);
     //    }
 
-    //    private IEnumerable<Space> MapEntities(IEnumerable<Space> revs)
+    //    private IEnumerable<Space> MapEntities(IEnumerable<RevitSpace> revs)
     //    {
     //        return revs.Select(r => new Space(r));
     //    }
 
-    //    //private void MapEntity(Space space)
-    //    //{
-    //    //    var mapper = BsonMapper.Global;
+    //    ////private void MapEntity(Space space)
+    //    ////{
+    //    ////    var mapper = BsonMapper.Global;
 
-    //    //    mapper.Entity<Space>()
-    //    //        .Index(r => r.UniqueId)
-    //    //        .Field(r => r.Name, "space_name")
-    //    //        .Field(r => r.Number, "space_number")
-    //    //        .Field(r => r.Room.Name, "room_name")
-    //    //        .Field(r => r.Room.Number, "room_number")
-    //    //        .Field(r => r.DesignSupplyAirflow, "specified_cfm_supply")
-    //    //        .Field(r => r.DesignExhaustAirflow, "specified_cfm_exhaust")
-    //    //        .Field(r => r.DesignReturnAirflow, "specified_cfm_return");
+    //    ////    mapper.Entity<Space>()
+    //    ////        .Index(r => r.UniqueId)
+    //    ////        .Field(r => r.Name, "space_name")
+    //    ////        .Field(r => r.Number, "space_number")
+    //    ////        .Field(r => r.Room.Name, "room_name")
+    //    ////        .Field(r => r.Room.Number, "room_number")
+    //    ////        .Field(r => r.DesignSupplyAirflow, "specified_cfm_supply")
+    //    ////        .Field(r => r.DesignExhaustAirflow, "specified_cfm_exhaust")
+    //    ////        .Field(r => r.DesignReturnAirflow, "specified_cfm_return");
+    //    ////}
+
+    //    //public void UpdateElement(Space space)
+    //    //{
+    //    //    var dbSpaces = _db.GetCollection<Space>();
+    //    //    var dbSp = dbSpaces.FindOne(s => s.Id == space.UniqueId);
+
+    //    //    dbSp.SpecifiedExhaustAirflow = space.DesignExhaustAirflow;
+    //    //    dbSp.SpecifiedReturnAirflow = space.DesignReturnAirflow;
+    //    //    dbSp.SpecifiedSupplyAirflow = space.DesignSupplyAirflow;
+
+    //    //    dbSpaces.Update(dbSp);
     //    //}
 
-    //    public void UpdateElement(Space space)
-    //    {
-    //        var dbSpaces = _db.GetCollection<Space>();
-    //        var dbSp = dbSpaces.FindOne(s => s.Id == space.UniqueId);
-
-    //        dbSp.SpecifiedExhaustAirflow = space.DesignExhaustAirflow;
-    //        dbSp.SpecifiedReturnAirflow = space.DesignReturnAirflow;
-    //        dbSp.SpecifiedSupplyAirflow = space.DesignSupplyAirflow;
-
-    //        dbSpaces.Update(dbSp);
-    //    }
-
-    //    public void UpdateElement(Space wrap)
-    //    {
-    //        _db.GetCollection<SpaceWrapper>().Update(wrap);
-    //    }
+    //    //public void UpdateElement(Space wrap)
+    //    //{
+    //    //    _db.GetCollection<SpaceWrapper>().Update(wrap);
+    //    //}
 
     //    //private void UpdateElementPeers(Space parent)
     //    //{

@@ -1,6 +1,6 @@
 ﻿using BRPLUSA.Domain.Base;
 
-namespace BRPLUSA.Domain.Wrappers
+namespace BRPLUSA.Domain.Core.Wrappers
 {
     public class Space : Entity
     {

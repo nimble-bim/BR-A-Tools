@@ -3,7 +3,7 @@ using System.Diagnostics;
 using Autodesk.Revit.Attributes;
 using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
-using BRPLUSA.Revit.Entities.Exceptions;
+using BRPLUSA.Revit.Core.Exceptions;
 
 namespace BRPLUSA.Revit.Client.Base
 {

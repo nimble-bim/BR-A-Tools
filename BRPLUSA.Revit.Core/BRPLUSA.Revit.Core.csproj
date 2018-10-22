@@ -68,5 +68,11 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BRPLUSA.Domain.Core\BRPLUSA.Domain.Core.csproj">
+      <Project>{123711A9-C92E-4F15-8BD0-B1222A2D5F0B}</Project>
+      <Name>BRPLUSA.Domain.Core</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -9,7 +9,7 @@ using Autodesk.Revit.UI.Selection;
 using BRPLUSA.Core;
 using BRPLUSA.Core.Utilities;
 using BRPLUSA.Navisworks.Client;
-using BRPLUSA.Revit.Entities.Exceptions;
+using BRPLUSA.Revit.Core.Exceptions;
 using Document = Autodesk.Revit.DB.Document;
 
 namespace BRPLUSA.Revit.Client.EndUser.Commands

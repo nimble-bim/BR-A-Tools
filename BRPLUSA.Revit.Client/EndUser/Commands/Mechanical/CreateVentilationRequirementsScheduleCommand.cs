@@ -2,7 +2,7 @@
 using Autodesk.Revit.Attributes;
 using Autodesk.Revit.UI;
 using BRPLUSA.Revit.Client.Base;
-using BRPLUSA.Revit.Entities.Exceptions;
+using BRPLUSA.Revit.Core.Exceptions;
 using BRPLUSA.Revit.Services.Spaces;
 
 namespace BRPLUSA.Revit.Client.EndUser.Commands.Mechanical

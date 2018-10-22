@@ -1,9 +1,6 @@
-﻿using System;
-using Autodesk.Revit.DB;
-using BRPLUSA.Revit.Entities.Base;
-using BRPLUSA.Revit.Entities.Interfaces;
+﻿using Autodesk.Revit.DB;
+using BRPLUSA.Revit.Core.Interfaces;
 using BRPLUSA.Revit.Services.Updates;
-using BRPLUSA.Revit.Services.Web;
 
 namespace BRPLUSA.Revit.Client.EndUser.Services
 {

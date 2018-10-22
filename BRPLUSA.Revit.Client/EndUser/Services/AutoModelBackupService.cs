@@ -1,11 +1,5 @@
-﻿using System;
-using System.Globalization;
-using System.IO;
-using System.Threading;
-using Autodesk.Revit.DB;
-using Autodesk.Revit.DB.Events;
-using BRPLUSA.Revit.Entities.Base;
-using BRPLUSA.Revit.Entities.Interfaces;
+﻿using Autodesk.Revit.DB;
+using BRPLUSA.Revit.Core.Base;
 using BRPLUSA.Revit.Services.Updates;
 
 namespace BRPLUSA.Revit.Client.EndUser.Services

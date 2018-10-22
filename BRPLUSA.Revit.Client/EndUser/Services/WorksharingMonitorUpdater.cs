@@ -4,7 +4,7 @@ using Autodesk.Revit.DB.Events;
 using BRPLUSA.Domain;
 using BRPLUSA.Domain.Entities;
 using BRPLUSA.Domain.Entities.Events;
-using BRPLUSA.Revit.Entities.Interfaces;
+using BRPLUSA.Revit.Core.Interfaces;
 
 namespace BRPLUSA.Revit.Client.EndUser.Services
 {
