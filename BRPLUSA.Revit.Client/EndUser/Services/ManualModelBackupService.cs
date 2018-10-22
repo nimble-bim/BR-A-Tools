@@ -10,24 +10,24 @@ namespace BRPLUSA.Revit.Client.EndUser.Services
     {
         private ModelBackupService BackupService { get; set; }
 
-        public ManualModelBackupService(SocketService serv)
+        public ManualModelBackupService(Document doc, SocketService serv)
         {
-            Initialize(serv);
+            Initialize(doc, serv);
         }
 
-        private void Initialize(SocketService serv)
+        private void Initialize(Document doc, SocketService serv)
         {
-            BackupService = new ModelBackupService(serv);
+            BackupService = new ModelBackupService(doc, serv);
         }
 
         public override void Register(Document doc)
         {
-            BackupService.Register(doc);
+            BackupService.RegisterManualBackup(doc);
         }
 
         public override void Deregister()
         {
-            BackupService.Deregister();
+            BackupService.DeregisterManualBackup();
         }
     }
 }

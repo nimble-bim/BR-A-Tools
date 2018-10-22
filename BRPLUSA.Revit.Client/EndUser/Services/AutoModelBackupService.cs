@@ -13,9 +13,9 @@ namespace BRPLUSA.Revit.Client.EndUser.Services
     {
         private ModelBackupService BackupService { get; set; }
 
-        public AutoModelBackupService()
+        public AutoModelBackupService(Document doc)
         {
-            BackupService = new ModelBackupService();
+            BackupService = new ModelBackupService(doc);
         }
 
         public void Register(Document doc)

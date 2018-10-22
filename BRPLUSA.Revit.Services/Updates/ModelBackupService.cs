@@ -13,37 +13,54 @@ namespace BRPLUSA.Revit.Services.Updates
 {
     public class ModelBackupService
     {
-        private string _modelPath;
-        private Document Document { get; set; }
+        private static Document Document { get; set; }
         private static ExternalEvent BackupEvent { get; set; }
-        private SocketService SocketService { get; set; }
+        private static SocketService SocketService { get; set; }
 
-        public ModelBackupService()
+        public ModelBackupService(Document doc)
         {
-
+            Initialize(doc);
         }
 
-        public ModelBackupService(SocketService service)
+        public ModelBackupService(Document doc, SocketService service)
         {
-            SocketService = service;
+            Initialize(doc, service);
         }
 
         private void Initialize(Document doc)
         {
-            _modelPath = Document.PathName;
             Document = doc;
-        }
-        public void Register(Document doc)
-        {
-            Initialize(doc);
             RegisterBackupEventHandler();
-            RegisterAutoBackup();
+        }
+
+        private void Initialize(Document doc, SocketService service)
+        {
+            SocketService = service;
+            Initialize(doc);
+        }
+
+        public void RegisterManualBackup(Document doc)
+        {
             RegisterSocketService();
         }
 
-        public void Deregister()
+        public void DeregisterManualBackup()
         {
             DeregisterAutoBackup();
+        }
+
+        public void RegisterAutoBackup()
+        {
+            var mPath = Document.GetWorksharingCentralModelPath();
+            var central = ModelPathUtils.ConvertModelPathToUserVisiblePath(mPath);
+
+            if (IsFromBIM360(central))
+                Document.Application.DocumentSynchronizedWithCentral += RequestModelBackup;
+        }
+
+        public void DeregisterAutoBackup()
+        {
+            Document.Application.DocumentSynchronizedWithCentral -= RequestModelBackup;
         }
 
         private void RegisterSocketService()
@@ -54,16 +71,6 @@ namespace BRPLUSA.Revit.Services.Updates
         public static void RegisterBackupEventHandler()
         {
             BackupEvent = ExternalEvent.Create(new BackupHandler());
-        }
-
-        public void RegisterAutoBackup()
-        {
-            Document.Application.DocumentSynchronizedWithCentral += RequestModelBackup;
-        }
-
-        public void DeregisterAutoBackup()
-        {
-            Document.Application.DocumentSynchronizedWithCentral -= RequestModelBackup;
         }
 
         public static void HandleBackupRequest()
@@ -81,12 +88,6 @@ namespace BRPLUSA.Revit.Services.Updates
 
         public void RequestModelBackup(object sender, DocumentSynchronizedWithCentralEventArgs args)
         {
-            var mPath = args.Document.GetWorksharingCentralModelPath();
-            var central = ModelPathUtils.ConvertModelPathToUserVisiblePath(mPath);
-
-            if (!IsFromBIM360(central))
-                return;
-
             BackupModelLocallyUsingRevit(args.Document);
         }
 
