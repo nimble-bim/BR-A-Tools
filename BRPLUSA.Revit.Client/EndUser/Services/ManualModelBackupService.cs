@@ -6,11 +6,11 @@ using BRPLUSA.Revit.Services.Web;
 
 namespace BRPLUSA.Revit.Client.EndUser.Services
 {
-    public class ManualModelBackupServices : BaseRegisterableService
+    public class ManualModelBackupService : BaseRegisterableService
     {
         private ModelBackupService BackupService { get; set; }
 
-        public ManualModelBackupServices(SocketService serv)
+        public ManualModelBackupService(SocketService serv)
         {
             Initialize(serv);
         }
@@ -18,17 +18,16 @@ namespace BRPLUSA.Revit.Client.EndUser.Services
         private void Initialize(SocketService serv)
         {
             BackupService = new ModelBackupService(serv);
-
         }
 
         public override void Register(Document doc)
         {
-            throw new NotImplementedException();
+            BackupService.Register(doc);
         }
 
         public override void Deregister()
         {
-            throw new NotImplementedException();
+            BackupService.Deregister();
         }
     }
 }

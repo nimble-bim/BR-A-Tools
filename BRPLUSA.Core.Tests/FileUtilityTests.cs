@@ -2,6 +2,7 @@
 using System.Globalization;
 using System.IO;
 using System.Threading;
+using BRPLUSA.Core.Utilities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace BRPLUSA.Core.Tests

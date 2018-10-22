@@ -42,8 +42,8 @@ namespace BRPLUSA.Revit.Client.EndUser.Applications
 
                 UpdaterRegistrationService.AddRegisterableServices(
                     //new SpatialPropertyUpdater(app),
-                    new AutoModelBackupServices(),
-                    new ManualModelBackupServices(SocketService)
+                    new AutoModelBackupService(),
+                    new ManualModelBackupService(SocketService)
                     );
 
                 app.ControlledApplication.DocumentOpened += UpdaterRegistrationService.RegisterServices;

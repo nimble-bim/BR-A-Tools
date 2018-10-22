@@ -112,8 +112,8 @@
     <Compile Include="EndUser\Commands\SelectPanelFromSchedule.cs" />
     <Compile Include="EndUser\Commands\ShowSidebar.cs" />
     <Compile Include="EndUser\Commands\UnlinkSpaces.cs" />
-    <Compile Include="EndUser\Services\AutoModelBackupServices.cs" />
-    <Compile Include="EndUser\Services\ManualModelBackupServices.cs" />
+    <Compile Include="EndUser\Services\AutoModelBackupService.cs" />
+    <Compile Include="EndUser\Services\ManualModelBackupService.cs" />
     <Compile Include="EndUser\Services\WorksharingMonitorUpdater.cs" />
     <Compile Include="Base\BaseRegisterableUpdater.cs" />
     <Compile Include="EndUser\Applications\RevitApplicationEnhancements.cs" />

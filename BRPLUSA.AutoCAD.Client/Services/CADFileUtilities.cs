@@ -2,6 +2,7 @@
 using System.IO;
 using Autodesk.AutoCAD.DatabaseServices;
 using BRPLUSA.Core;
+using BRPLUSA.Core.Utilities;
 
 namespace BRPLUSA.Client.AutoCAD.Services
 {

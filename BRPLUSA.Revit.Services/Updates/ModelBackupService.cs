@@ -1,15 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
-using System.Linq;
-using System.Text;
+using System.Runtime.InteropServices;
 using System.Threading;
-using System.Threading.Tasks;
 using Autodesk.Revit.DB;
 using Autodesk.Revit.DB.Events;
 using Autodesk.Revit.UI;
-using BRPLUSA.Revit.Entities.Interfaces;
 using BRPLUSA.Revit.Services.Handlers;
 using BRPLUSA.Revit.Services.Web;
 
@@ -22,17 +18,32 @@ namespace BRPLUSA.Revit.Services.Updates
         private static ExternalEvent BackupEvent { get; set; }
         private SocketService SocketService { get; set; }
 
+        public ModelBackupService()
+        {
+
+        }
+
         public ModelBackupService(SocketService service)
         {
             SocketService = service;
         }
 
+        private void Initialize(Document doc)
+        {
+            _modelPath = Document.PathName;
+            Document = doc;
+        }
         public void Register(Document doc)
         {
-            Document = doc;
+            Initialize(doc);
             RegisterBackupEventHandler();
-            RegisterBIM360Backup();
+            RegisterAutoBackup();
             RegisterSocketService();
+        }
+
+        public void Deregister()
+        {
+            DeregisterAutoBackup();
         }
 
         private void RegisterSocketService()
@@ -42,13 +53,17 @@ namespace BRPLUSA.Revit.Services.Updates
 
         public static void RegisterBackupEventHandler()
         {
-            BackupEvent = ExternalEvent.Create(new TestingHandler());
+            BackupEvent = ExternalEvent.Create(new BackupHandler());
         }
 
-        public void RegisterBIM360Backup()
+        public void RegisterAutoBackup()
         {
-            _modelPath = Document.PathName;
             Document.Application.DocumentSynchronizedWithCentral += RequestModelBackup;
+        }
+
+        public void DeregisterAutoBackup()
+        {
+            Document.Application.DocumentSynchronizedWithCentral -= RequestModelBackup;
         }
 
         public static void HandleBackupRequest()
@@ -77,33 +92,8 @@ namespace BRPLUSA.Revit.Services.Updates
 
         public void BackupModelLocallyUsingRevit(Document doc)
         {
-            var desktop = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
-            var fileName = Path.GetFileNameWithoutExtension(_modelPath);
-            var cult = new CultureInfo("nl-NL");
-            Thread.CurrentThread.CurrentCulture = cult;
-            var now = DateTime.UtcNow.ToShortDateString() + "_" + DateTime.UtcNow.ToLongTimeString();
-            now = now.Replace(":", String.Empty);
-            var backupFilePath = $@"{desktop}\_bim360backups\{now}\{fileName}.rvt";
-            var backupFolder = Directory.GetParent(backupFilePath).FullName;
-
-            if (!Directory.Exists(backupFolder))
-                Directory.CreateDirectory(backupFolder);
-
-            doc.Application.CopyModel(doc.GetWorksharingCentralModelPath(), backupFilePath, true);
-        }
-
-        public void BackupModelLocally()
-        {
-            var desktop = Environment.GetFolderPath(Environment.SpecialFolder.CommonDesktopDirectory);
-            var fileName = Path.GetFileNameWithoutExtension(_modelPath);
-            var now = DateTime.UtcNow.ToShortDateString() + "_" + DateTime.UtcNow.ToLongTimeString();
-            var backupFilePath = $@"{desktop}\_bim360backups\{fileName}_{now}.rvt";
-            var backupFolder = Directory.GetParent(backupFilePath).FullName;
-
-            if (!Directory.Exists(backupFolder))
-                Directory.CreateDirectory(backupFolder);
-
-            //File.Copy(_localModelPath, backupFilePath);
+            var handler = new BackupHandler();
+            handler.BackupModelLocallyUsingRevit(doc);
         }
     }
 }
