@@ -25,6 +25,14 @@ namespace BRPLUSA.Revit.Client.EndUser.Commands.Mechanical
                 SpaceVentilationService.SetVentilationParameters(CurrentDocument);
             }
 
+            catch (SpaceCreationException e)
+            {
+                TaskDialog.Show("Unable to complete", 
+                    "This command cannot be used until there are spaces in the model. " +
+                    "Please create some spaces and then run this command again");
+                return Result.Cancelled;
+            }
+
             catch (CancellableException e)
             {
                 TaskDialog.Show("Cancelled", "The command was cancelled");
