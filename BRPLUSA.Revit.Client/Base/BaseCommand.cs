@@ -28,29 +28,22 @@ namespace BRPLUSA.Revit.Client.Base
             ExternalCommandData = excmd;
             ElementSet = elemset;
 
-            Result result;
+            Result result = Result.Failed;
 
-            using (var tr = new Transaction(CurrentDocument))
+            try
             {
-                tr.Start("Regenerating...");
+                result = InternalExecute();
+            }
 
-                try
-                {
-                    result = InternalExecute();
-                }
+            catch (Exception e)
+            {
+                TaskDialog.Show("Unhandled Failure", $"The command failed due to an unhandled error ");
+            }
 
-                catch (Exception e)
-                {
-                    result = Result.Failed;
-                }
-
-                finally
-                {
-                    UiDocument.Selection.Dispose();
-                    CurrentDocument.Regenerate();
-                }
-
-                tr.Commit();
+            finally
+            {
+                UiDocument.Selection?.Dispose();
+                //CurrentDocument.Regenerate();
             }
 
             return result;
@@ -75,7 +68,7 @@ namespace BRPLUSA.Revit.Client.Base
             {
                 Debug.WriteLine("Command failed because of an unknown exception");
                 TaskDialog.Show("Command Failed",
-                    "There was an error behind the scenes that caused the command to fail horribly and die.");
+                    $"There was an error behind the scenes that caused the command to fail horribly and die. {e.Message}");
             }
 
             return Result.Failed;
