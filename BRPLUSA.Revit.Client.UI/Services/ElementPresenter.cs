@@ -16,7 +16,7 @@ namespace BRPLUSA.Revit.Client.UI.Services
     public static class ElementPresenter
     {
         private static Element Element { get; set; }
-        private static Stack<Autodesk.Revit.DB.View> Views { get; set; }
+        private static Stack<View> Views { get; set; }
         private static UIApplication Application { get; set; }
 
         public static QuickElementData RequestElementData()

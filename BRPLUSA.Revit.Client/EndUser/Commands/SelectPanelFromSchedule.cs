@@ -3,6 +3,7 @@ using Autodesk.Revit.Attributes;
 using Autodesk.Revit.UI;
 using BRPLUSA.Revit.Client.Base;
 using BRPLUSA.Revit.Client.UI.Services;
+using BRPLUSA.Revit.Core.Exceptions;
 using BRPLUSA.Revit.Services.Elements;
 
 namespace BRPLUSA.Revit.Client.EndUser.Commands
@@ -26,14 +27,18 @@ namespace BRPLUSA.Revit.Client.EndUser.Commands
                 return Result.Succeeded;
             }
 
+            catch (CancellableException e)
+            {
+                //TaskDialog.Show("Cancelled", "User cancelled operation");
+                return Result.Cancelled;
+            }
+
             catch (Exception e)
             {
                 if (e.Message.Equals("Not in Panel Schedule View"))
                     TaskDialog.Show("Error", "This command can only be used from a Panel Schedule. Please open a Panel Schedule and try again.");
 
-                return e.Message.Equals("User cancelled operation") 
-                    ? Result.Cancelled 
-                    : Result.Failed;
+                return Result.Failed;
             }
         }
     }
