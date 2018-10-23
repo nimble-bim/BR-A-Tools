@@ -14,8 +14,8 @@ namespace BRPLUSA.Revit.Services.Factories
                 Id = rSpace.UniqueId,
                 SpaceName = rSpace.Name,
                 SpaceNumber = rSpace.Number,
-                RoomName = rSpace.Room.Name,
-                RoomNumber = rSpace.Room.Number,
+                RoomName = rSpace.Room?.Name,
+                RoomNumber = rSpace.Room?.Number,
 
                 Area = rSpace.Area,
                 SpecifiedExhaustAirflow = rSpace.ActualExhaustAirflow,

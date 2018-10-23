@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Autodesk.Revit.DB;
 
 namespace BRPLUSA.Revit.Core.Extensions
@@ -24,14 +25,21 @@ namespace BRPLUSA.Revit.Core.Extensions
         {
             try
             {
-                var elem = new FilteredElementCollector(doc).OfCategory(category).FirstElement();
+                var elem = new FilteredElementCollector(doc)
+                    .OfCategoryId(new ElementId(category))
+                    .FirstOrDefault(e => e != null);
 
-                return elem.GetParameterFromElement(name);
+                if(elem == null)
+                    throw new Exception("Couldn't find element of this category!");
+
+                var parameter = elem.GetParameterFromElement(name);
+
+                return parameter;
             }
 
             catch (Exception e)
             {
-                return null;
+                throw new Exception("Could not find parameter in element", e.InnerException);
             }
         }
     }

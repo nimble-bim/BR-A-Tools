@@ -65,10 +65,6 @@ namespace BRPLUSA.Revit.Services.Utilities
         public static void AddVentParametersToModel(Document doc)
         {
             var spaceCat = doc.Settings.Categories.get_Item(BuiltInCategory.OST_MEPSpaces);
-            var buildLocation = Path.GetDirectoryName(typeof(VentilationParameterUtility).Assembly.Location);
-            var dirname = Path.Combine(buildLocation, "Data");
-            var paramFile = Path.Combine(dirname, ParameterFileName);
-            var spFile = RevitParameterUtility.AddSharedParameterFileToModel(doc.Application, paramFile);
             var ventParams = VentilationParameterFactory.GetVentParameterDefinitions(doc);
 
             foreach (var p in ventParams)
@@ -76,6 +72,16 @@ namespace BRPLUSA.Revit.Services.Utilities
                 if (!doc.HasParameter(p))
                     RevitParameterUtility.BindParameterToCategory(doc, spaceCat, p);
             }
+        }
+
+        public static DefinitionFile SetVentParameterFileAsCurrent(Document doc)
+        {
+            var buildLocation = Path.GetDirectoryName(typeof(VentilationParameterUtility).Assembly.Location);
+            var dirname = Path.Combine(buildLocation, "Data");
+            var paramFile = Path.Combine(dirname, ParameterFileName);
+            var spFile = RevitParameterUtility.AddSharedParameterFileToModel(doc.Application, paramFile);
+
+            return spFile;
         }
 
         public static DefinitionFile CreateOrGetSharedParameterFile(Document doc)

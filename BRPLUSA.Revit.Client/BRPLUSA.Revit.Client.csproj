@@ -125,7 +125,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="Data\Lookup_VentilationTable.csv" />
+    <None Include="Data\Lookup_VentilationTable.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Models\HIVE.Revit.Model.rvt" />
     <None Include="Utilities\BRPLUSA.DEBUG.addin">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -169,7 +171,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Data\VentParameters.txt" />
+    <Content Include="Data\VentParameters.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Parameters\" />

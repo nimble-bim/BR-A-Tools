@@ -13,10 +13,7 @@ namespace BRPLUSA.Revit.Services.Factories
 
         public static ViewSchedule CreateOrGetVentilationSchedule(Document doc)
         {
-            var schedule = GetVentilationSchedule(doc);
-
-            if(schedule == null)
-                schedule = RevitScheduleFactory.Create(doc, BuiltInCategory.OST_MEPSpaces, ScheduleName);
+            var schedule = GetVentilationSchedule(doc) ?? RevitScheduleFactory.Create(doc, BuiltInCategory.OST_MEPSpaces, ScheduleName);
 
             return schedule;
         }

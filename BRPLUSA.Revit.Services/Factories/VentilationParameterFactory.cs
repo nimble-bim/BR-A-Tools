@@ -38,7 +38,9 @@ namespace BRPLUSA.Revit.Services.Factories
         /// <returns></returns>
         public static IList<Definition> GetVentParameterDefinitions(Document doc)
         {
-            var file = doc.Application.OpenSharedParameterFile();
+            var file = doc.Application.OpenSharedParameterFile() ??
+                       VentilationParameterUtility.SetVentParameterFileAsCurrent(doc);
+
             var list = new List<Definition>();
             var achr = CreateOrGetACHRParameter(file);
             var achm = CreateOrGetACHMParameter(file);

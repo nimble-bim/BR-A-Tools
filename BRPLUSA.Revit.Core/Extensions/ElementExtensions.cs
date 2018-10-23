@@ -14,7 +14,12 @@ namespace BRPLUSA.Revit.Core.Extensions
         {
             try
             {
-                return element.ParametersMap.get_Item(parameterName);
+                var parameter = element.ParametersMap.get_Item(parameterName);
+
+                if (parameter == null)
+                    throw new Exception("Parameter was not found in the element");
+
+                return parameter;
             }
 
             catch (Exception e)
