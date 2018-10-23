@@ -12,7 +12,6 @@ namespace BRPLUSA.Revit.Client.EndUser.Applications
 {
     // if this doesn't debug - check this link:
     // https://blogs.msdn.microsoft.com/devops/2013/10/16/switching-to-managed-compatibility-mode-in-visual-studio-2013/
-
     public class RevitApplicationEnhancements : IExternalApplication
     {
         public BardWebClient Sidebar { get; set; }

@@ -3,6 +3,7 @@ using Autodesk.Revit.Attributes;
 using Autodesk.Revit.UI;
 using BRPLUSA.Revit.Client.Base;
 using BRPLUSA.Revit.Client.UI.Services;
+using BRPLUSA.Revit.Core.Exceptions;
 using BRPLUSA.Revit.Services.Elements;
 
 namespace BRPLUSA.Revit.Client.EndUser.Commands
@@ -26,8 +27,15 @@ namespace BRPLUSA.Revit.Client.EndUser.Commands
                 return Result.Succeeded;
             }
 
+            catch (CancellableException e)
+            {
+                TaskDialog.Show("Ended", "The requested operation was cancelled");
+                return Result.Failed;
+            }
+
             catch (Exception e)
             {
+                TaskDialog.Show("Failure", e.Message);
                 return Result.Failed;
             }
         }

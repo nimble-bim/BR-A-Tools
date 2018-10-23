@@ -7,6 +7,7 @@ using Autodesk.Revit.DB.Electrical;
 using Autodesk.Revit.UI;
 using Autodesk.Revit.UI.Events;
 using BRPLUSA.Revit.Client.UI.Views;
+using BRPLUSA.Revit.Core.Exceptions;
 using BRPLUSA.Revit.Services.Elements;
 using View = Autodesk.Revit.DB.View;
 
@@ -24,7 +25,7 @@ namespace BRPLUSA.Revit.Client.UI.Services
             var result = dialog.ShowDialog();
 
             if(result == DialogResult.Cancel)
-                throw new Exception("User cancelled operation");
+                throw new CancellableException("User cancelled operation");
 
             return new QuickElementData(dialog.ElementName, dialog.ElementValue);
         }
