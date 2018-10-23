@@ -108,9 +108,9 @@
       <Project>{B56FEBB5-8F1A-4B67-AD47-9201F7BE49AA}</Project>
       <Name>BRPLUSA.Database</Name>
     </ProjectReference>
-    <ProjectReference Include="..\BRPLUSA.Domain\BRPLUSA.Domain.csproj">
+    <ProjectReference Include="..\BRPLUSA.Domain.Core\BRPLUSA.Domain.Core.csproj">
       <Project>{123711A9-C92E-4F15-8BD0-B1222A2D5F0B}</Project>
-      <Name>BRPLUSA.Domain</Name>
+      <Name>BRPLUSA.Domain.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <Choose>

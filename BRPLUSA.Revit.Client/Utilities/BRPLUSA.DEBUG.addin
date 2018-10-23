@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<RevitAddIns>
+  <AddIn Type="Application">
+    <Name>BR+A BIM Suite</Name>
+    <Assembly>%TEMP%\BRPLUSA\BR+A Revit Suite 2018\BRPLUSA.Revit.Client.dll</Assembly>
+    <FullClassName>BRPLUSA.Revit.Client.EndUser.Applications.RevitApplicationEnhancements</FullClassName>
+    <ClientId>646D2997-B33A-4C21-8CD1-81B13A59C477</ClientId>
+    <VendorId>5</VendorId>
+    <VendorDescription>BR+A, brplusa.com</VendorDescription>
+  </AddIn>
+</RevitAddIns>
