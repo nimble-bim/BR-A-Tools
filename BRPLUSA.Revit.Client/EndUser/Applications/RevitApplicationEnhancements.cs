@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using Autodesk.Revit.UI;
+using BRPLUSA.Core.Services;
 using BRPLUSA.Revit.Client.EndUser.Commands;
 using BRPLUSA.Revit.Client.EndUser.Commands.Mechanical;
 using BRPLUSA.Revit.Client.EndUser.Services;
@@ -52,11 +53,13 @@ namespace BRPLUSA.Revit.Client.EndUser.Applications
                 app.ControlledApplication.DocumentClosed += UpdaterRegistrationService.DeregisterServices;
                 app.ControlledApplication.DocumentClosed += SocketRegistrationService.DeregisterServices;
 
+                LoggingService.LogInfo("Application loaded successfully");
                 return Result.Succeeded;
             }
             catch (Exception e)
             {
                 Debug.WriteLine($"Error occuring: {e.Message}");
+                LoggingService.LogError($"Error occuring", e);
                 return Result.Failed;
             }
         }
