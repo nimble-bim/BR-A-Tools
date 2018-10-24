@@ -8,11 +8,10 @@ namespace BRPLUSA.Core.Services
 {
     public class LoggingService
     {
-        private static Logger _logger = LogManager.GetCurrentClassLogger();
+        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
         public static void LogError(string msg, Exception innerException)
         {
-            LogManager.ThrowExceptions = true;
             _logger.Error(innerException, msg);
         }
 
