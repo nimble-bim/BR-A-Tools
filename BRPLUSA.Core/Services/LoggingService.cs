@@ -13,7 +13,6 @@ namespace BRPLUSA.Core.Services
     public static class LoggingService
     {
         private static Logger Logger { get; set; }
-
         private static string LogDirectory { get; set; }
 
         static LoggingService()
@@ -90,9 +89,14 @@ namespace BRPLUSA.Core.Services
             return logFull;
         }
 
-        public static void LogError(string msg, Exception innerException)
+        public static void LogError(string msg, Exception e)
         {
-            Logger.Error(innerException, msg);
+            Logger.Error(e, msg);
+
+            var inner = e.InnerException;
+
+            if(inner != null)
+                LogError(inner.Message, inner);
         }
 
         public static void LogInfo(string msg)
