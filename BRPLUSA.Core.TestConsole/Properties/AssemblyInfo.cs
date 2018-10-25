@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("BRPLUSA.Console.Web")]
+[assembly: AssemblyTitle("BRPLUSA.Core.TestConsole")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("BRPLUSA.Console.Web")]
+[assembly: AssemblyProduct("BRPLUSA.Core.TestConsole")]
 [assembly: AssemblyCopyright("Copyright ©  2018")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("94493f2e-0282-4c57-b9d0-cac04930b7ce")]
+[assembly: Guid("64629da0-7633-4a3e-8d8e-4b119e934ed9")]
 
 // Version information for an assembly consists of the following four values:
 //
