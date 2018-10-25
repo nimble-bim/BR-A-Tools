@@ -28,8 +28,8 @@ namespace BRPLUSA.Core.Services
             var error = CreateErrorLoggingTarget();
             var full = CreateFullLoggingTarget();
 
-            config.AddRule(LogLevel.Trace, LogLevel.Fatal, error);
-            config.AddRule(LogLevel.Warn, LogLevel.Fatal, full);
+            config.AddRule(LogLevel.Trace, LogLevel.Fatal, full);
+            config.AddRule(LogLevel.Warn, LogLevel.Fatal, error);
 
             LogManager.Configuration = config;
             Logger = new LogFactory(config).GetCurrentClassLogger();
@@ -43,24 +43,37 @@ namespace BRPLUSA.Core.Services
             LogDirectory = dir;
         }
 
+        private static string GetLogName(bool isFullLog)
+        {
+            var time = DateTime.Now.ToString("s").Replace(":", string.Empty);
+            var name = isFullLog 
+                ? $"{time}_full.log" 
+                : $"{time}_errors.log";
+
+            return name;
+        }
+
         private static FileTarget CreateErrorLoggingTarget()
         {
+            var logName = GetLogName(false);
+
             var logError = new FileTarget("log_error")
             {
-                FileName =  LogDirectory + "${shortdate}/${longdate}_error.log",
+                FileName =  LogDirectory + logName,
+                CleanupFileName = true,
                 Layout = "${longdate}\t${level}\t${message}\t\t${exception}",
-                Header = "*********Enhancement_Log_Errors*************",
+                //Header = "*********Enhancement_Log_Errors*************",
                 Encoding = Encoding.UTF8,
-                ArchiveAboveSize = 100,
-                MaxArchiveFiles = 100,
-                ArchiveFileName = "archive_${shortdate}",
-                ArchiveOldFileOnStartup = true,
-                DeleteOldFileOnStartup = false,
-                EnableFileDelete = true,
-                CreateDirs = true,
-                ConcurrentWrites = true,
-                NetworkWrites = true,
-                KeepFileOpen = true
+                //ArchiveAboveSize = 100,
+                //MaxArchiveFiles = 100,
+                //ArchiveFileName = "archive_${shortdate}",
+                //ArchiveOldFileOnStartup = true,
+                //DeleteOldFileOnStartup = false,
+                //EnableFileDelete = true,
+                //CreateDirs = true,
+                //ConcurrentWrites = true,
+                //NetworkWrites = true,
+                //KeepFileOpen = true
             };
 
             return logError;
@@ -68,22 +81,25 @@ namespace BRPLUSA.Core.Services
 
         private static FileTarget CreateFullLoggingTarget()
         {
+            var logName = GetLogName(true);
+
             var logFull = new FileTarget("log_full")
             {
-                FileName = LogDirectory + "${shortdate}/${longdate}_full.log",
+                FileName = LogDirectory + logName,
+                CleanupFileName = true,
                 Layout = "${longdate}\t${level}\t${message}\t\t${exception}",
-                Header = "*********Enhancement_Log_Errors*************",
+                //Header = "*********Enhancement_Log_Errors*************",
                 Encoding = Encoding.UTF8,
-                ArchiveAboveSize = 100,
-                MaxArchiveFiles = 100,
-                ArchiveFileName = "archive_${shortdate}",
-                ArchiveOldFileOnStartup = true,
-                DeleteOldFileOnStartup = false,
-                EnableFileDelete = true,
-                CreateDirs = true,
-                ConcurrentWrites = true,
-                NetworkWrites = true,
-                KeepFileOpen = true
+                //ArchiveAboveSize = 100,
+                //MaxArchiveFiles = 100,
+                //ArchiveFileName = "archive_${shortdate}",
+                //ArchiveOldFileOnStartup = true,
+                //DeleteOldFileOnStartup = false,
+                //EnableFileDelete = true,
+                //CreateDirs = true,
+                //ConcurrentWrites = true,
+                //NetworkWrites = true,
+                //KeepFileOpen = true
             };
 
             return logFull;

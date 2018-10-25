@@ -60,6 +60,7 @@ namespace BRPLUSA.Revit.Client.EndUser.Applications
             catch (Exception e)
             {
                 LoggingService.LogError("Failed to load application due to internal error:", e);
+                TaskDialog.Show("Fatal error", $"Failed to load application due to internal exception: {e.Message}");
                 return Result.Failed;
             }
         }
