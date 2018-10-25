@@ -6,7 +6,7 @@ using NLog;
 
 namespace BRPLUSA.Core.Services
 {
-    public class LoggingService
+    public static class LoggingService
     {
         private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
