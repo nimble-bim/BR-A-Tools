@@ -34,4 +34,17 @@ namespace BRPLUSA.Core.Services
             Trace.WriteLine(msg);
         }
     }
+
+    public class WarningLogger : TraceListener
+    {
+        public override void Write(string message)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void WriteLine(string message)
+        {
+            throw new NotImplementedException();
+        }
+    }
 }
