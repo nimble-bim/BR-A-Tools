@@ -12,19 +12,39 @@ variables:
   buildConfiguration: 'Release'
 
 steps:
-- task: NuGetToolInstaller@0
+- task: Install_NuGet
+  displayName: 'Install NuGet'
+  inputs:
+    versionSpec: 4.4.1
 
-- task: NuGetCommand@2
+- task: Restore_Packages
   inputs:
     restoreSolution: '$(solution)'
 
-- task: VSBuild@1
+- task: Build_Entire_Solution
   inputs:
     solution: '$(solution)'
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
 
-- task: VSTest@2
+- task: Run_Unit_Tests
   inputs:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
+
+    variables:
+
+  BuildConfiguration: 'Revit_Installer'
+
+- task: Send_Files_To_Staging
+  displayName: 'Send Files To Staging'
+  inputs:
+    SourceFolder: '$(system.defaultworkingdirectory)'
+    Contents: '**\bin\$(BuildConfiguration)\**'
+    TargetFolder: '$(build.artifactstagingdirectory)'
+
+- task: Publish_Build_Artifacts
+  displayName: 'Publish Installer'
+  inputs:
+    PathtoPublish: '$(build.artifactstagingdirectory)'
+    ArtifactName: 'install_package'
