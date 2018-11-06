@@ -60,22 +60,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\References\Revit\2018\AdWindows.dll</HintPath>
     </Reference>
-    <Reference Include="Autodesk.Navisworks.Api, Version=13.0.1240.52, Culture=neutral, PublicKeyToken=d85e58fa5af9b484, processorArchitecture=AMD64">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\References\Navisworks\2017\Autodesk.Navisworks.Api.dll</HintPath>
-    </Reference>
-    <Reference Include="Autodesk.Navisworks.Automation, Version=13.0.1240.52, Culture=neutral, PublicKeyToken=d85e58fa5af9b484, processorArchitecture=AMD64">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\References\Navisworks\2017\Autodesk.Navisworks.Automation.dll</HintPath>
-    </Reference>
-    <Reference Include="Autodesk.Navisworks.Clash, Version=13.0.1240.52, Culture=neutral, PublicKeyToken=d85e58fa5af9b484, processorArchitecture=AMD64">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\References\Navisworks\2017\Autodesk.Navisworks.Clash.dll</HintPath>
-    </Reference>
-    <Reference Include="Autodesk.Navisworks.Controls, Version=13.0.1240.52, Culture=neutral, PublicKeyToken=d85e58fa5af9b484, processorArchitecture=AMD64">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\References\Navisworks\2017\Autodesk.Navisworks.Controls.dll</HintPath>
-    </Reference>
     <Reference Include="LiteDB, Version=3.1.4.0, Culture=neutral, PublicKeyToken=4ee40123013c9f27, processorArchitecture=MSIL">
       <HintPath>..\packages\LiteDB.3.1.4\lib\net35\LiteDB.dll</HintPath>
     </Reference>
@@ -144,10 +128,6 @@
     <ProjectReference Include="..\BRPLUSA.Domain.Core\BRPLUSA.Domain.Core.csproj">
       <Project>{123711A9-C92E-4F15-8BD0-B1222A2D5F0B}</Project>
       <Name>BRPLUSA.Domain.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\BRPLUSA.Navisworks.Client\BRPLUSA.Navisworks.Client.csproj">
-      <Project>{309CBCA2-AA99-4E3D-87FE-98CDEDA3CCFB}</Project>
-      <Name>BRPLUSA.Navisworks.Client</Name>
     </ProjectReference>
     <ProjectReference Include="..\BRPLUSA.Core\BRPLUSA.Core.csproj">
       <Project>{ec0e8d93-3d21-482a-9f97-e7e5d2f8a192}</Project>
