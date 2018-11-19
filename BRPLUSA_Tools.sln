@@ -44,7 +44,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BRPLUSA.Pipelines", "BRPLUS
 		BRPLUSA.Pipelines\azure_pipeline_build_installer.yml = BRPLUSA.Pipelines\azure_pipeline_build_installer.yml
 	EndProjectSection
 EndProject
-Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "BRPLUSA.Installers.Revit.2018", "BRPLUSA.Installers.Revit.2018\BRPLUSA.Installers.Revit.2018.vdproj", "{BFDE08CA-2D34-4ACA-BAD1-05765A1CB4A3}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BRPLUSA.Utilities", "BRPLUSA.Utilities", "{21F018A4-ACA0-4D3A-8612-B430E73457A0}"
+	ProjectSection(SolutionItems) = preProject
+		BRPLUSA.Utilities\versionupdate.bat = BRPLUSA.Utilities\versionupdate.bat
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BRPLUSA.Revit.Installer.2018", "BRPLUSA.Revit.Installer.2018\BRPLUSA.Revit.Installer.2018.csproj", "{EBA251C6-4C3F-4173-B2AC-AD8D5C0E79C3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -161,11 +166,14 @@ Global
 		{64629DA0-7633-4A3E-8D8E-4B119E934ED9}.Release|Any CPU.Build.0 = Release|Any CPU
 		{64629DA0-7633-4A3E-8D8E-4B119E934ED9}.Revit_Installer|Any CPU.ActiveCfg = Release|Any CPU
 		{64629DA0-7633-4A3E-8D8E-4B119E934ED9}.Revit_Installer|Any CPU.Build.0 = Release|Any CPU
-		{BFDE08CA-2D34-4ACA-BAD1-05765A1CB4A3}.Debug|Any CPU.ActiveCfg = Debug
-		{BFDE08CA-2D34-4ACA-BAD1-05765A1CB4A3}.Installer|Any CPU.ActiveCfg = Release
-		{BFDE08CA-2D34-4ACA-BAD1-05765A1CB4A3}.Release|Any CPU.ActiveCfg = Release
-		{BFDE08CA-2D34-4ACA-BAD1-05765A1CB4A3}.Revit_Installer|Any CPU.ActiveCfg = Release
-		{BFDE08CA-2D34-4ACA-BAD1-05765A1CB4A3}.Revit_Installer|Any CPU.Build.0 = Release
+		{EBA251C6-4C3F-4173-B2AC-AD8D5C0E79C3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EBA251C6-4C3F-4173-B2AC-AD8D5C0E79C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EBA251C6-4C3F-4173-B2AC-AD8D5C0E79C3}.Installer|Any CPU.ActiveCfg = Release|Any CPU
+		{EBA251C6-4C3F-4173-B2AC-AD8D5C0E79C3}.Installer|Any CPU.Build.0 = Release|Any CPU
+		{EBA251C6-4C3F-4173-B2AC-AD8D5C0E79C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EBA251C6-4C3F-4173-B2AC-AD8D5C0E79C3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EBA251C6-4C3F-4173-B2AC-AD8D5C0E79C3}.Revit_Installer|Any CPU.ActiveCfg = Release|Any CPU
+		{EBA251C6-4C3F-4173-B2AC-AD8D5C0E79C3}.Revit_Installer|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -185,7 +193,7 @@ Global
 		{E46B68F5-F133-4E41-8CA6-975B6B854357} = {C3A304F7-CE9A-4C27-9671-6DDEFB79F842}
 		{123711A9-C92E-4F15-8BD0-B1222A2D5F0B} = {9A6EEE42-4F60-4095-AB61-AA3095520D81}
 		{64629DA0-7633-4A3E-8D8E-4B119E934ED9} = {56F8D6E0-2890-4120-BC6D-1E912A503815}
-		{BFDE08CA-2D34-4ACA-BAD1-05765A1CB4A3} = {9A3C7B26-5920-4657-AD59-01BCDED64E6D}
+		{EBA251C6-4C3F-4173-B2AC-AD8D5C0E79C3} = {9A3C7B26-5920-4657-AD59-01BCDED64E6D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {AF18FFBD-36EB-4C77-AB9B-29CFC4786A89}
