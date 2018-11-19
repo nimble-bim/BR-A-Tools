@@ -203,7 +203,7 @@ xcopy "$(TargetDir)\Utilities\BRPLUSA.DEBUG.addin" /E  /Y /D "%25appdata%25\Auto
   </PropertyGroup>
   <PropertyGroup>
     <PreBuildEvent>if $(ConfigurationName) == Release (
-call "$(SolutionDir)versionupdate.bat"
+call "$(SolutionDir)BRPLUSA.Utilities\versionupdate.bat"
 )</PreBuildEvent>
   </PropertyGroup>
   <Target Name="AfterBuild" Condition=" '$(Configuration)' == 'Release'">
@@ -225,7 +225,7 @@ call "$(SolutionDir)versionupdate.bat"
     <Error Condition="!Exists(%(NuGetExe.FullPath))" Text="You are trying to use the NuGet.CommandLine package, but it is not installed. Please install NuGet.CommandLine from the Package Manager." />
     <Error Condition="!Exists(%(SquirrelExe.FullPath))" Text="You are trying to use the Squirrel.Windows package, but it is not installed. Please install Squirrel.Windows from the Package Manager." />
     <!-- Build nupkg into the project local bin\Release\ directory temporarily -->
-    <Exec Command="&quot;%(NuGetExe.FullPath)&quot; pack $(TargetName).nuspec -Version $(SemVerNumber) -OutputDirectory $(OutDir) -BasePath $(OutDir)" />
+    <Exec Command="&quot;%(NuGetExe.FullPath)&quot; pack $(ProjectDir)\Utilities\$(TargetName).nuspec -Version $(SemVerNumber) -OutputDirectory $(OutDir) -BasePath $(OutDir)" />
     <!-- Squirrelify into the release dir (usually at solution level. Change the property above for a different location -->
     <Exec Command="&quot;%(SquirrelExe.FullPath)&quot; --releasify $(OutDir)$(TargetName).$(SemVerNumber).nupkg --releaseDir=$(ReleaseDir) $(SquirrelParams)" />
   </Target>

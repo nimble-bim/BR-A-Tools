@@ -35,4 +35,4 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyVersion("1.0.1.0")]
 [assembly: AssemblyFileVersion("1.0.1.0")]
 
-[assembly: AssemblyInformationalVersion("1.0.1-gitversions.1+17.Branch.feature/gitversions.Sha.c3e5200725588a789761b8519f1f0b200115b890")]
+[assembly: AssemblyInformationalVersion("1.0.1-gitversions.1+18.Branch.feature/gitversions.Sha.a4ffc7b121b3dd49482a0f28367be5f9edfb9605")]
