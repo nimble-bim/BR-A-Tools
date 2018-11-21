@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace BRPLUSA.Installer._2018.Properties
+namespace BRPLUSA.Revit.Installers._2018.Properties
 {
 
 
@@ -44,7 +44,7 @@ namespace BRPLUSA.Installer._2018.Properties
             {
                 if ((resourceMan == null))
                 {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("BRPLUSA.Installer._2018.Properties.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("BRPLUSA.Revit.Installers._2018.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

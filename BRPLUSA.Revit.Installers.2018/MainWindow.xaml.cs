@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace BRPLUSA.Installer._2018
+namespace BRPLUSA.Revit.Installers._2018
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -23,6 +23,16 @@ namespace BRPLUSA.Installer._2018
         public MainWindow()
         {
             InitializeComponent();
+        }
+
+        private void ShutdownPage(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
+
+        private void OnDragRequest(object sender, MouseButtonEventArgs e)
+        {
+            DragMove();
         }
     }
 }

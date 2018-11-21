@@ -6,7 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace BRPLUSA.Installer._2018
+namespace BRPLUSA.Revit.Installers._2018
 {
     /// <summary>
     /// Interaction logic for App.xaml

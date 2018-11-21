@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace BRPLUSA.Installer._2018.Properties
+namespace BRPLUSA.Revit.Installers._2018.Properties
 {
 
 

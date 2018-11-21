@@ -1,11 +1,12 @@
 ﻿using System;
-using System.Diagnostics;
+using System.Threading;
 using Autodesk.Revit.UI;
 using BRPLUSA.Core.Services;
 using BRPLUSA.Revit.Client.EndUser.Commands;
 using BRPLUSA.Revit.Client.EndUser.Commands.Mechanical;
 using BRPLUSA.Revit.Client.EndUser.Services;
 using BRPLUSA.Revit.Client.UI.Views;
+using BRPLUSA.Revit.Installers._2018;
 using BRPLUSA.Revit.Services.Registration;
 using BRPLUSA.Revit.Services.Web;
 
@@ -71,6 +72,7 @@ namespace BRPLUSA.Revit.Client.EndUser.Applications
             {
                 LoggingService.LogInfo("Shutting down application via Revit");
                 HandleServiceDeregistration(app);
+                HandleApplicationUpdate();
 
                 LoggingService.LogInfo("Application shutdown complete!");
                 return Result.Succeeded;
@@ -92,7 +94,23 @@ namespace BRPLUSA.Revit.Client.EndUser.Applications
 
         private void HandleApplicationUpdate()
         {
+            LoggingService.LogInfo("Initializing application to check for product updates");
+            var apple = new App();
+            var window = new MainWindow();
+            apple.ShutdownMode = System.Windows.ShutdownMode.OnLastWindowClose;
+            apple.Run(window);
+            LoggingService.LogInfo("Product update application initialized and ready to run");
 
+            //var thread = new Thread(() =>
+            //{
+            //    var apple = new App();
+            //    var window = new MainWindow();
+            //    apple.ShutdownMode = System.Windows.ShutdownMode.OnLastWindowClose;
+            //    apple.Run(window);
+            //});
+            //thread.SetApartmentState(ApartmentState.STA);
+            //thread.IsBackground = true;
+            //thread.Start();
         }
 
         public void CreateRibbon(UIControlledApplication app)

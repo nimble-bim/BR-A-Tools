@@ -1,0 +1,76 @@
+﻿<Window x:Class="BRPLUSA.Revit.Installers._2018.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="Blur Test" 
+        Height="950" 
+        Width="450"
+        Background="#12000000"
+		BorderThickness="3"
+        WindowStartupLocation="CenterScreen" Foreground="{x:Null}" AllowsTransparency="True" WindowStyle="None"
+        MouseDown="OnDragRequest">
+    <Window.Resources>
+        <Style x:Key="Button_SemiTransparent_OnHover" TargetType="Button">
+            <Setter Property="OverridesDefaultStyle" Value="True" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Name="border" BorderThickness="0" BorderBrush="Black" Background="{TemplateBinding Background}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Opacity" Value="0.8" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <Grid Background="White" Margin="0,0,0,303">
+        <Button Content="Install" HorizontalAlignment="Left" Margin="207,296,0,0" VerticalAlignment="Top" Width="76" Background="#FF339DFF" Foreground="White" BorderBrush="{x:Null}" Height="30">
+        </Button>
+        <Button Content="Cancel" HorizontalAlignment="Left" Margin="294,296,0,0" VerticalAlignment="Top" Width="76" Background="Gray" Foreground="White" BorderBrush="{x:Null}" Height="30"/>
+        <TextBlock HorizontalAlignment="Left" Margin="72,96,0,0" TextWrapping="Wrap" Text="Bard, Rao + Athanas" VerticalAlignment="Top" Height="68" Width="298" Foreground="Black" FontSize="36" FontFamily="Myriad Pro Light"/>
+        <TextBlock HorizontalAlignment="Left" Margin="96,157,0,0" TextWrapping="Wrap" Text="REVIT ENHANCEMENTS" VerticalAlignment="Top" Height="21" Width="106" Foreground="#FFB9B6B6" FontFamily="Calibri" FontWeight="Bold" FontSize="10"/>
+        <TextBlock HorizontalAlignment="Left" Margin="72,292,0,0" TextWrapping="Wrap" Text="Revit 2018" VerticalAlignment="Top" Height="20" Width="124" Foreground="Black" FontSize="20" FontFamily="Myriad Pro"/>
+        <TextBlock HorizontalAlignment="Left" Margin="72,315,0,0" TextWrapping="Wrap" Text="Up to date" VerticalAlignment="Top" Height="12" Width="124" Foreground="#FFB9B6B6" FontFamily="Myriad Pro Light" FontSize="10"/>
+        <TextBlock HorizontalAlignment="Center" Margin="191,610,188,0" TextWrapping="Wrap" Text="v0.1.09" VerticalAlignment="Top" Height="16" Width="65" Foreground="#FFB9B6B6" FontFamily="Calibri"/>
+        <Rectangle Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="2" Margin="74,162,0,0" Stroke="Black" VerticalAlignment="Top" Width="14"/>
+        <Rectangle Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="2" Margin="0,595,0,0" Stroke="#FFC7C7C7" VerticalAlignment="Top" Width="444"/>
+        <TextBlock HorizontalAlignment="Left" Margin="74,194,0,0" TextWrapping="Wrap" Text="Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure " VerticalAlignment="Top" Height="96" Width="296" Foreground="#FF616060" FontFamily="Calibri" FontSize="10"/>
+        <Button Content="Install" HorizontalAlignment="Left" Margin="207,348,0,0" VerticalAlignment="Top" Width="76" Background="#FF339DFF" Foreground="White" BorderBrush="{x:Null}" Height="30"/>
+        <Button Content="Cancel" HorizontalAlignment="Left" Margin="294,348,0,0" VerticalAlignment="Top" Width="76" Background="Gray" Foreground="White" BorderBrush="{x:Null}" Height="30"/>
+        <TextBlock HorizontalAlignment="Left" Margin="72,344,0,0" TextWrapping="Wrap" Text="Revit 2019" VerticalAlignment="Top" Height="20" Width="124" Foreground="Black" FontSize="20" FontFamily="Myriad Pro"/>
+        <TextBlock HorizontalAlignment="Left" Margin="72,367,0,0" TextWrapping="Wrap" Text="Update Available" VerticalAlignment="Top" Height="12" Width="124" Foreground="#FFB9B6B6" FontFamily="Myriad Pro Light" FontSize="10"/>
+        <Button Content="Install" HorizontalAlignment="Left" Margin="207,401,0,0" VerticalAlignment="Top" Width="76" Background="#FF339DFF" Foreground="White" BorderBrush="{x:Null}" Height="30"/>
+        <Button Content="Cancel" HorizontalAlignment="Left" Margin="294,401,0,0" VerticalAlignment="Top" Width="76" Background="Gray" Foreground="White" BorderBrush="{x:Null}" Height="30"/>
+        <TextBlock HorizontalAlignment="Left" Margin="72,397,0,0" TextWrapping="Wrap" Text="Revit 2020" VerticalAlignment="Top" Height="20" Width="124" Foreground="Black" FontSize="20" FontFamily="Myriad Pro"/>
+        <TextBlock HorizontalAlignment="Left" Margin="72,420,0,0" TextWrapping="Wrap" Text="Coming soon!" VerticalAlignment="Top" Height="12" Width="124" Foreground="#FFB9B6B6" FontFamily="Myriad Pro Light" FontSize="10"/>
+        <Button Name="Button_Close" 
+                Content="X" 
+                HorizontalAlignment="Left" 
+                Margin="391,10,0,0" 
+                VerticalAlignment="Top" 
+                Width="43" 
+                Background="{x:Null}" 
+                Foreground="Black" 
+                BorderBrush="{x:Null}" 
+                Height="30" 
+                Click="ShutdownPage" 
+                Style="{StaticResource Button_SemiTransparent_OnHover}"
+                FontSize="20">
+        </Button>
+
+
+    </Grid>
+</Window>
+    
+    
+
+    

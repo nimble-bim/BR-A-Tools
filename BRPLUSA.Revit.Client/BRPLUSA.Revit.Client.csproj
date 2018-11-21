@@ -179,6 +179,10 @@
       <Project>{E46B68F5-F133-4E41-8CA6-975B6B854357}</Project>
       <Name>BRPLUSA.Revit.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\BRPLUSA.Revit.Installers.2018\BRPLUSA.Revit.Installers.2018.csproj">
+      <Project>{c831267a-f732-4c22-8e4f-7aae2ba3b60e}</Project>
+      <Name>BRPLUSA.Revit.Installers.2018</Name>
+    </ProjectReference>
     <ProjectReference Include="..\BRPLUSA.Revit.Services\BRPLUSA.Revit.Services.csproj">
       <Project>{ad967b1c-df2e-4690-8b0e-958596ff3c4e}</Project>
       <Name>BRPLUSA.Revit.Services</Name>
