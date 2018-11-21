@@ -70,10 +70,8 @@ namespace BRPLUSA.Revit.Client.EndUser.Applications
             try
             {
                 LoggingService.LogInfo("Shutting down application via Revit");
-                app.ControlledApplication.DocumentOpened -= UpdaterRegistrationService.RegisterServices;
-                app.ControlledApplication.DocumentOpened -= SocketRegistrationService.RegisterServices;
-                app.ControlledApplication.DocumentClosed -= UpdaterRegistrationService.DeregisterServices;
-                app.ControlledApplication.DocumentClosed -= SocketRegistrationService.DeregisterServices;
+                HandleServiceDeregistration(app);
+
                 LoggingService.LogInfo("Application shutdown complete!");
                 return Result.Succeeded;
             }
@@ -82,6 +80,19 @@ namespace BRPLUSA.Revit.Client.EndUser.Applications
                 LoggingService.LogError("Failure to shut down correctly", e);
                 return Result.Failed;
             }
+        }
+
+        private void HandleServiceDeregistration(UIControlledApplication app)
+        {
+            app.ControlledApplication.DocumentOpened -= UpdaterRegistrationService.RegisterServices;
+            app.ControlledApplication.DocumentOpened -= SocketRegistrationService.RegisterServices;
+            app.ControlledApplication.DocumentClosed -= UpdaterRegistrationService.DeregisterServices;
+            app.ControlledApplication.DocumentClosed -= SocketRegistrationService.DeregisterServices;
+        }
+
+        private void HandleApplicationUpdate()
+        {
+
         }
 
         public void CreateRibbon(UIControlledApplication app)

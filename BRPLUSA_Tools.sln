@@ -46,6 +46,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BRPLUSA.Pipelines", "BRPLUS
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BRPLUSA.Utilities", "BRPLUSA.Utilities", "{21F018A4-ACA0-4D3A-8612-B430E73457A0}"
 	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
 		BRPLUSA.Utilities\versionupdate.bat = BRPLUSA.Utilities\versionupdate.bat
 	EndProjectSection
 EndProject

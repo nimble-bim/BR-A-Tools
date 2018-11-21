@@ -38,4 +38,4 @@ using System.Runtime.InteropServices;
 [assembly: InternalsVisibleTo("BRPLUSA.Domain.Explorables")]
 
 
-[assembly: AssemblyInformationalVersion("1.0.1-gitversions.1+18.Branch.feature/gitversions.Sha.a4ffc7b121b3dd49482a0f28367be5f9edfb9605")]
+[assembly: AssemblyInformationalVersion("1.0.1-gitversions.1+20.Branch.feature/gitversions.Sha.09e6f4d792390d5939f82dc5ce44057f2049b0e6")]
