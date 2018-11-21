@@ -94,23 +94,36 @@ namespace BRPLUSA.Revit.Client.EndUser.Applications
 
         private void HandleApplicationUpdate()
         {
-            LoggingService.LogInfo("Initializing application to check for product updates");
-            var apple = new App();
-            var window = new MainWindow();
-            apple.ShutdownMode = System.Windows.ShutdownMode.OnLastWindowClose;
-            apple.Run(window);
-            LoggingService.LogInfo("Product update application initialized and ready to run");
+            try
+            {
+                // check if app update is necessary
+                LoggingService.LogInfo("Initializing application to check for product updates");
+                var updater = new ProductInstallationService();
+                var shouldUpdate = updater.IsApplicationUpdateNecessary();
 
-            //var thread = new Thread(() =>
-            //{
-            //    var apple = new App();
-            //    var window = new MainWindow();
-            //    apple.ShutdownMode = System.Windows.ShutdownMode.OnLastWindowClose;
-            //    apple.Run(window);
-            //});
-            //thread.SetApartmentState(ApartmentState.STA);
-            //thread.IsBackground = true;
-            //thread.Start();
+                // if so, ask the user if they'd like to update
+                if (!shouldUpdate)
+                    return;
+
+                const string title = "BR+A Revit Enhancements Update Available";
+                const string msg = "Would you like to update the application?";
+                var wantsUpdate = TaskDialog.Show(title, msg, 
+                    TaskDialogCommonButtons.No, 
+                    TaskDialogResult.Yes);
+
+                // if yes, present the app installer and start it automatically
+                if(wantsUpdate == TaskDialogResult.No)
+                    return;
+
+                LoggingService.LogInfo("Product update application initialized and ready to run");
+                updater.StartUpdaterApplication();
+                LoggingService.LogInfo("Product update application process completed");
+            }
+
+            catch (Exception e)
+            {
+                LoggingService.LogError("Unable to start application update service", e);
+            }
         }
 
         public void CreateRibbon(UIControlledApplication app)

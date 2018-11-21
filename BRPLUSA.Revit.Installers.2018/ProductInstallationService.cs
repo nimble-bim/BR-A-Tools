@@ -135,12 +135,25 @@ namespace BRPLUSA.Revit.Installers._2018
         private void ReplicateFilesToRevit2018Location()
         {
             var appDir = UpdateManager.RootAppDirectory;
-            ReplicationService.ReplicateFilesToRevit2018AddinLocation(appDir);
+            FileReplicationService.ReplicateFilesToRevit2018AddinLocation(appDir);
         }
 
         private void CleanUpReplicationDirectory()
         {
-            ReplicationService.CleanUpReplicationDirectory();
+            FileReplicationService.CleanUpReplicationDirectory();
+        }
+
+        public bool IsApplicationUpdateNecessary()
+        {
+            return true;
+        }
+
+        public void StartUpdaterApplication()
+        {
+            var app = new App();
+            var window = new MainWindow();
+            app.ShutdownMode = System.Windows.ShutdownMode.OnLastWindowClose;
+            app.Run(window);
         }
     }
 }
