@@ -12,10 +12,10 @@ namespace BRPLUSA.Revit.Installers._2018
         private string ServerPath { get; set; }
         private UpdateManager UpdateManager { get; set; }
         private FileReplicationService FileReplicationService { get; set; }
-        public ProductInstallHandler InstallHandler { get; private set; }
-        public ProductUpgradeHandler UpgradeHandler { get; private set; }
-        public ProductDownloadHandler DownloadHandler { get; private set; }
-        public ProductVersionHandler VersionHandler { get; private set; }
+        public static ProductInstallHandler InstallHandler { get; private set; }
+        public static ProductUpgradeHandler UpgradeHandler { get; private set; }
+        public static ProductDownloadHandler DownloadHandler { get; private set; }
+        public static ProductVersionHandler VersionHandler { get; private set; }
 
         public InstallationManager()
         {
@@ -47,14 +47,16 @@ namespace BRPLUSA.Revit.Installers._2018
 
         public async Task<bool> HandleApplicationUpgrade()
         {
-            var success = await UpgradeHandler.HandleProductUpgrade(VersionHandler, DownloadHandler);
+            var success = await UpgradeHandler.HandleProductUpgrade(VersionHandler, DownloadHandler, InstallHandler);
 
             return success;
         }
 
         public async Task<bool> HandleApplicationInstallation()
         {
-            return false;
+            var success = await InstallHandler.HandleInitialInstallation(VersionHandler, DownloadHandler);
+
+            return success;
         }
 
         //public void StartUpdaterApplication()
