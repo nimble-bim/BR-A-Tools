@@ -98,7 +98,7 @@ namespace BRPLUSA.Revit.Client.EndUser.Applications
             {
                 // check if app update is necessary
                 LoggingService.LogInfo("Initializing application to check for product updates");
-                var updater = new ProductInstallationService();
+                var updater = new ProductInstallationApplication();
                 var shouldUpdate = updater.IsApplicationUpdateNecessary();
 
                 // if so, ask the user if they'd like to update

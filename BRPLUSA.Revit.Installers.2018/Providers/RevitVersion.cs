@@ -1,4 +1,4 @@
-﻿namespace BRPLUSA.Revit.Installers._2018
+﻿namespace BRPLUSA.Revit.Installers._2018.Providers
 {
     public enum RevitVersion
     {

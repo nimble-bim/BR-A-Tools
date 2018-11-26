@@ -84,29 +84,35 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <ApplicationDefinition Include="App.xaml">
+    <ApplicationDefinition Include="Views\MainApplicationView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="ReleaseEntryExtensions.cs" />
-    <Compile Include="RevitAddinLocationProvider.cs" />
-    <Compile Include="RevitVersion.cs" />
-    <Page Include="MainWindow.xaml">
+    <Compile Include="ProductHandlers\BaseProductHandler.cs" />
+    <Compile Include="ProductHandlers\DownloadHandler.cs" />
+    <Compile Include="ProductHandlers\InstallHandler.cs" />
+    <Compile Include="ProductHandlers\IProductHandler.cs" />
+    <Compile Include="Extensions\ReleaseEntryExtensions.cs" />
+    <Compile Include="Providers\RevitAddinLocationProvider.cs" />
+    <Compile Include="Providers\RevitVersion.cs" />
+    <Compile Include="ProductHandlers\ProductUpgradeHandler.cs" />
+    <Compile Include="ProductHandlers\VersionCheckHandler.cs" />
+    <Page Include="Views\ProductSelectionView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Compile Include="App.xaml.cs">
-      <DependentUpon>App.xaml</DependentUpon>
+    <Compile Include="Views\MainApplicationView.xaml.cs">
+      <DependentUpon>MainApplicationView.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="FileReplicationService.cs" />
-    <Compile Include="MainWindow.xaml.cs">
-      <DependentUpon>MainWindow.xaml</DependentUpon>
+    <Compile Include="Services\FileReplicationService.cs" />
+    <Compile Include="Views\ProductSelectionView.xaml.cs">
+      <DependentUpon>ProductSelectionView.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ProductInstallationService.cs" />
+    <Compile Include="ProductInstallationApplication.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

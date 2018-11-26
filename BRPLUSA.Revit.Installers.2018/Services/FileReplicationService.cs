@@ -1,10 +1,17 @@
 ﻿using System.IO;
+using BRPLUSA.Revit.Installers._2018.Providers;
 
-namespace BRPLUSA.Revit.Installers._2018
+namespace BRPLUSA.Revit.Installers._2018.Services
 {
     public class FileReplicationService
     {
-        public static void ReplicateFilesToRevit2018AddinLocation(string appDir, string finalDir = null)
+        public void ReplicateFilesToRevitLocations(string appDir)
+        {
+            ReplicateFilesToRevit2018AddinLocation(appDir);
+            //ReplicateFilesToRevit2019Location();
+        }
+
+        public void ReplicateFilesToRevit2018AddinLocation(string appDir, string finalDir = null)
         {
             var v2018 = finalDir ?? RevitAddinLocationProvider.Revit2018AddinLocation;
 
@@ -21,7 +28,7 @@ namespace BRPLUSA.Revit.Installers._2018
             //}
         }
 
-        public static void CleanUpReplicationDirectory()
+        public void CleanUpReplicationDirectory()
         {
 
         }

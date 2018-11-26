@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace BRPLUSA.Revit.Installers._2018
+namespace BRPLUSA.Revit.Installers._2018.Providers
 {
     public class RevitAddinLocationProvider
     {
