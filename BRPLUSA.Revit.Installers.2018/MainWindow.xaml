@@ -33,7 +33,7 @@
     </Window.Resources>
 
     <Grid Background="White" Height="650" VerticalAlignment="Top" Width="445">
-        <Button Content="Install" HorizontalAlignment="Left" Margin="207,296,0,0" VerticalAlignment="Top" Width="76" Background="#FF339DFF" Foreground="White" BorderBrush="{x:Null}" Height="30">
+        <Button Content="Install" HorizontalAlignment="Left" Margin="207,296,0,0" VerticalAlignment="Top" Width="76" Background="#FF339DFF" Foreground="White" BorderBrush="{x:Null}" Height="30" Click="InstallRevit2018">
         </Button>
         <Button Content="Cancel" HorizontalAlignment="Left" Margin="294,296,0,0" VerticalAlignment="Top" Width="76" Background="Gray" Foreground="White" BorderBrush="{x:Null}" Height="30"/>
         <TextBlock HorizontalAlignment="Left" Margin="72,96,0,0" TextWrapping="Wrap" Text="Bard, Rao + Athanas" VerticalAlignment="Top" Height="68" Width="298" Foreground="Black" FontSize="36" FontFamily="Myriad Pro Light"/>
@@ -47,7 +47,7 @@
         <Button Content="Install" HorizontalAlignment="Left" Margin="207,348,0,0" VerticalAlignment="Top" Width="76" Background="#FF339DFF" Foreground="White" BorderBrush="{x:Null}" Height="30"/>
         <Button Content="Cancel" HorizontalAlignment="Left" Margin="294,348,0,0" VerticalAlignment="Top" Width="76" Background="Gray" Foreground="White" BorderBrush="{x:Null}" Height="30"/>
         <TextBlock HorizontalAlignment="Left" Margin="72,344,0,0" TextWrapping="Wrap" Text="Revit 2019" VerticalAlignment="Top" Height="20" Width="124" Foreground="Black" FontSize="20" FontFamily="Myriad Pro"/>
-        <TextBlock HorizontalAlignment="Left" Margin="72,367,0,0" TextWrapping="Wrap" Text="Update Available" VerticalAlignment="Top" Height="12" Width="124" Foreground="#FFB9B6B6" FontFamily="Myriad Pro Light" FontSize="10"/>
+        <TextBlock HorizontalAlignment="Left" Margin="72,367,0,0" TextWrapping="Wrap" Text="Coming soon!" VerticalAlignment="Top" Height="12" Width="124" Foreground="#FFB9B6B6" FontFamily="Myriad Pro Light" FontSize="10"/>
         <Button Content="Install" HorizontalAlignment="Left" Margin="207,401,0,0" VerticalAlignment="Top" Width="76" Background="#FF339DFF" Foreground="White" BorderBrush="{x:Null}" Height="30"/>
         <Button Content="Cancel" HorizontalAlignment="Left" Margin="294,401,0,0" VerticalAlignment="Top" Width="76" Background="Gray" Foreground="White" BorderBrush="{x:Null}" Height="30"/>
         <TextBlock HorizontalAlignment="Left" Margin="72,397,0,0" TextWrapping="Wrap" Text="Revit 2020" VerticalAlignment="Top" Height="20" Width="124" Foreground="Black" FontSize="20" FontFamily="Myriad Pro"/>

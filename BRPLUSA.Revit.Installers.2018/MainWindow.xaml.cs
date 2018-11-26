@@ -1,17 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
+﻿using System.Windows;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace BRPLUSA.Revit.Installers._2018
 {
@@ -20,9 +8,12 @@ namespace BRPLUSA.Revit.Installers._2018
     /// </summary>
     public partial class MainWindow : Window
     {
+        private static ProductInstallationService Installer { get; set; }
+
         public MainWindow()
         {
             InitializeComponent();
+            Installer = new ProductInstallationService();
         }
 
         private void ShutdownPage(object sender, RoutedEventArgs e)
@@ -33,6 +24,11 @@ namespace BRPLUSA.Revit.Installers._2018
         private void OnDragRequest(object sender, MouseButtonEventArgs e)
         {
             DragMove();
+        }
+
+        private async void InstallRevit2018(object sender, RoutedEventArgs e)
+        {
+            await Installer.HandleApplicationUpgrade();
         }
     }
 }
