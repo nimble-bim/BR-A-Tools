@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Threading;
 using Autodesk.Revit.UI;
 using BRPLUSA.Core.Services;
 using BRPLUSA.Revit.Client.EndUser.Commands;
 using BRPLUSA.Revit.Client.EndUser.Commands.Mechanical;
 using BRPLUSA.Revit.Client.EndUser.Services;
 using BRPLUSA.Revit.Client.UI.Views;
-using BRPLUSA.Revit.Installers._2018;
 using BRPLUSA.Revit.Installers._2018.Views;
 using BRPLUSA.Revit.Services.Registration;
 using BRPLUSA.Revit.Services.Web;
@@ -19,6 +17,7 @@ namespace BRPLUSA.Revit.Client.EndUser.Applications
     {
         public BardWebClient Sidebar { get; set; }
         private static SocketService SocketService { get; set; }
+        private static AppInstallClient InstallApp { get; set; }
 
         public Result OnStartup(UIControlledApplication app)
         {
@@ -99,8 +98,8 @@ namespace BRPLUSA.Revit.Client.EndUser.Applications
             {
                 // check if app update is necessary
                 LoggingService.LogInfo("Initializing application to check for product updates");
-                var app = new AppInstallClient();
-                var shouldUpdate = app.NeedsUpdate;
+                InstallApp = new AppInstallClient();
+                var shouldUpdate = InstallApp.NeedsUpdate;
 
                 // if so, ask the user if they'd like to update
                 if (!shouldUpdate)
@@ -117,7 +116,7 @@ namespace BRPLUSA.Revit.Client.EndUser.Applications
                     return;
 
                 LoggingService.LogInfo("Product update application initialized and ready to run");
-                app.Start();
+                InstallApp.Start();
                 LoggingService.LogInfo("Product update application process completed");
             }
 

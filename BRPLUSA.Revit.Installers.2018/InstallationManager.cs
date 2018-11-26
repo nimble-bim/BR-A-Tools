@@ -57,12 +57,12 @@ namespace BRPLUSA.Revit.Installers._2018
             return false;
         }
 
-        public void StartUpdaterApplication()
-        {
-            var app = new AppInstallClient();
-            var window = new ProductSelectionView();
-            app.ShutdownMode = System.Windows.ShutdownMode.OnLastWindowClose;
-            app.Run(window);
-        }
+        //public void StartUpdaterApplication()
+        //{
+        //    var app = new AppInstallClient();
+        //    var window = new ProductSelectionView();
+        //    app.ShutdownMode = System.Windows.ShutdownMode.OnLastWindowClose;
+        //    app.Run(window);
+        //}
     }
 }
