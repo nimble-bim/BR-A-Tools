@@ -34,5 +34,5 @@ using System.Runtime.InteropServices;
 // [assembly: AssemblyVersion("1.0.1.0")]
 [assembly: AssemblyVersion("1.0.1.0")]
 [assembly: AssemblyFileVersion("1.0.1.0")]
-
-[assembly: AssemblyInformationalVersion("1.0.1-gitversions.1+20.Branch.feature/gitversions.Sha.09e6f4d792390d5939f82dc5ce44057f2049b0e6")]
+[assembly: AssemblyMetadata("SquirrelAwareVersion", "1")]
+[assembly: AssemblyInformationalVersion("1.0.1-installer-wpf.1+26.Branch.feature/installer-wpf.Sha.61341f022607277f91cf40f3e78b9bc03811731d")]

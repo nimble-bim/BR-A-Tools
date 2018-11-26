@@ -50,6 +50,8 @@ using System.Windows;
 //
 // You can specify all the values or you can default the Build and Revision Numbers
 // by using the '*' as shown below:
-// [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("1.0.0.0")]
+// [assembly: AssemblyVersion("1.0.1.0")]
+[assembly: AssemblyVersion("1.0.1.0")]
+[assembly: AssemblyFileVersion("1.0.1.0")]
+[assembly: AssemblyMetadata("SquirrelAwareVersion", "1")]
+[assembly: AssemblyInformationalVersion("1.0.1-installer-wpf.1+26.Branch.feature/installer-wpf.Sha.61341f022607277f91cf40f3e78b9bc03811731d")]
