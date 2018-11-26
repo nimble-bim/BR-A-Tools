@@ -7,6 +7,7 @@ using BRPLUSA.Revit.Client.EndUser.Commands.Mechanical;
 using BRPLUSA.Revit.Client.EndUser.Services;
 using BRPLUSA.Revit.Client.UI.Views;
 using BRPLUSA.Revit.Installers._2018;
+using BRPLUSA.Revit.Installers._2018.Views;
 using BRPLUSA.Revit.Services.Registration;
 using BRPLUSA.Revit.Services.Web;
 
@@ -98,8 +99,8 @@ namespace BRPLUSA.Revit.Client.EndUser.Applications
             {
                 // check if app update is necessary
                 LoggingService.LogInfo("Initializing application to check for product updates");
-                var updater = new ProductInstallationApplication();
-                var shouldUpdate = updater.IsApplicationUpdateNecessary();
+                var app = new AppInstallClient();
+                var shouldUpdate = app.NeedsUpdate;
 
                 // if so, ask the user if they'd like to update
                 if (!shouldUpdate)
@@ -107,16 +108,16 @@ namespace BRPLUSA.Revit.Client.EndUser.Applications
 
                 const string title = "BR+A Revit Enhancements Update Available";
                 const string msg = "Would you like to update the application?";
-                var wantsUpdate = TaskDialog.Show(title, msg, 
+                var userWantsUpdate = TaskDialog.Show(title, msg, 
                     TaskDialogCommonButtons.No, 
                     TaskDialogResult.Yes);
 
                 // if yes, present the app installer and start it automatically
-                if(wantsUpdate == TaskDialogResult.No)
+                if(userWantsUpdate == TaskDialogResult.No)
                     return;
 
                 LoggingService.LogInfo("Product update application initialized and ready to run");
-                updater.StartUpdaterApplication();
+                app.Start();
                 LoggingService.LogInfo("Product update application process completed");
             }
 

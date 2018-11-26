@@ -84,7 +84,7 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <ApplicationDefinition Include="Views\MainApplicationView.xaml">
+    <ApplicationDefinition Include="Views\AppInstallClient.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
@@ -101,8 +101,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Compile Include="Views\MainApplicationView.xaml.cs">
-      <DependentUpon>MainApplicationView.xaml</DependentUpon>
+    <Compile Include="Views\AppInstallClient.xaml.cs">
+      <DependentUpon>AppInstallClient.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Services\FileReplicationService.cs" />
@@ -112,7 +112,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ProductInstallationApplication.cs" />
+    <Compile Include="InstallationManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

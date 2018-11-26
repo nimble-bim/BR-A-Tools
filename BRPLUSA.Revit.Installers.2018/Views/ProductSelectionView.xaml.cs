@@ -6,14 +6,18 @@ namespace BRPLUSA.Revit.Installers._2018.Views
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class ProductSelectionView : Window
     {
-        private static ProductInstallationApplication Installer { get; set; }
+        private static InstallationManager Installer { get; set; }
 
-        public MainWindow()
+        public ProductSelectionView()
         {
             InitializeComponent();
-            Installer = new ProductInstallationApplication();
+        }
+
+        public ProductSelectionView(InstallationManager manager) : this()
+        {
+            Installer = manager;
         }
 
         private void ShutdownPage(object sender, RoutedEventArgs e)
@@ -28,7 +32,10 @@ namespace BRPLUSA.Revit.Installers._2018.Views
 
         private async void InstallRevit2018(object sender, RoutedEventArgs e)
         {
-            Installer.ConfigureAppEvents();
+            await Installer.HandleApplicationInstallation();
+        }
+        private async void UpgradeRevit2018(object sender, RoutedEventArgs e)
+        {
             await Installer.HandleApplicationUpgrade();
         }
     }

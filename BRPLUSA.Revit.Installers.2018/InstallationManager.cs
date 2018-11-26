@@ -1,6 +1,4 @@
 ﻿using Squirrel;
-using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using BRPLUSA.Revit.Installers._2018.ProductHandlers;
 using BRPLUSA.Revit.Installers._2018.Services;
@@ -8,18 +6,18 @@ using BRPLUSA.Revit.Installers._2018.Views;
 
 namespace BRPLUSA.Revit.Installers._2018
 {
-    public class ProductInstallationApplication
+    public class InstallationManager
     {
         private string LocalPath { get; set; }
         private string ServerPath { get; set; }
         private UpdateManager UpdateManager { get; set; }
         private FileReplicationService FileReplicationService { get; set; }
-        public InstallHandler InstallHandler { get; private set; }
-        public ProductUpgradeHandler UpdateHandler { get; private set; }
-        public DownloadHandler DownloadHandler { get; private set; }
-        public VersionCheckHandler VersionHandler { get; private set; }
+        public ProductInstallHandler InstallHandler { get; private set; }
+        public ProductUpgradeHandler UpgradeHandler { get; private set; }
+        public ProductDownloadHandler DownloadHandler { get; private set; }
+        public ProductVersionHandler VersionHandler { get; private set; }
 
-        public ProductInstallationApplication()
+        public InstallationManager()
         {
             Initialize();
         }
@@ -36,31 +34,33 @@ namespace BRPLUSA.Revit.Installers._2018
 
             FileReplicationService = new FileReplicationService();
 
-            InitializeHandlers();
+            InitializeHandlers(UpdateManager, FileReplicationService);
         }
 
-        private void InitializeHandlers()
+        private void InitializeHandlers(UpdateManager mgr, FileReplicationService frp)
         {
-            InstallHandler = new InstallHandler();
-            UpdateHandler = new ProductUpgradeHandler();
-            DownloadHandler = new DownloadHandler();
-            VersionHandler = new VersionCheckHandler();
+            InstallHandler = new ProductInstallHandler(mgr, frp);
+            UpgradeHandler = new ProductUpgradeHandler(mgr, frp);
+            DownloadHandler = new ProductDownloadHandler(mgr, frp);
+            VersionHandler = new ProductVersionHandler(mgr, frp);
         }
 
-        public async Task<ReleaseEntry> HandleApplicationUpgrade()
+        public async Task<bool> HandleApplicationUpgrade()
         {
-            var info = await GetVersionInformationFromServer();
+            var success = await UpgradeHandler.HandleProductUpgrade(VersionHandler, DownloadHandler);
 
-            await DownloadNewReleases(info.ReleasesToApply);
-            await ApplyUpgrade(info);
+            return success;
+        }
 
-            return info.FutureReleaseEntry;
+        public async Task<bool> HandleApplicationInstallation()
+        {
+            return false;
         }
 
         public void StartUpdaterApplication()
         {
-            var app = new App();
-            var window = new MainWindow();
+            var app = new AppInstallClient();
+            var window = new ProductSelectionView();
             app.ShutdownMode = System.Windows.ShutdownMode.OnLastWindowClose;
             app.Run(window);
         }

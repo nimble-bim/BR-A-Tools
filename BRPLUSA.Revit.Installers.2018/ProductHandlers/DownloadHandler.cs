@@ -6,9 +6,9 @@ using Squirrel;
 
 namespace BRPLUSA.Revit.Installers._2018.ProductHandlers
 {
-    public class DownloadHandler : BaseProductHandler
+    public class ProductDownloadHandler : BaseProductHandler
     {
-        public DownloadHandler(UpdateManager mgr, FileReplicationService frp)
+        public ProductDownloadHandler(UpdateManager mgr, FileReplicationService frp)
             : base(mgr, frp) { }
 
         public async Task DownloadNewReleases(IEnumerable<ReleaseEntry> releases)

@@ -10,13 +10,25 @@ namespace BRPLUSA.Revit.Installers._2018.ProductHandlers
         public ProductUpgradeHandler(UpdateManager mgr, FileReplicationService frp)
             : base(mgr, frp) { }
 
-        public async Task<string> ApplyUpgrade(UpdateInfo info)
+        public async Task<bool> HandleProductUpgrade(ProductVersionHandler vHandler, ProductDownloadHandler dHandler)
+        {
+            if (!vHandler.ShouldUpdate)
+                return true;
+
+            var info = vHandler.GetVersionInformationFromServer();
+            await dHandler.DownloadNewReleases(info.Result.ReleasesToApply);
+            var success = await ApplyUpgrade(info);
+
+            return success;
+        }
+
+        public async Task<bool> ApplyUpgrade(UpdateInfo info)
         {
             try
             {
                 var version = await UpdateManager.ApplyReleases(info);
 
-                return version;
+                return true;
             }
 
             catch (Exception e)

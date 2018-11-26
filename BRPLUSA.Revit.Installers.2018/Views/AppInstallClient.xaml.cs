@@ -25,8 +25,29 @@ namespace BRPLUSA.Revit.Installers._2018.Views
     /// *
     /// *
     /// </summary>
-    public partial class App : Application
+    public partial class AppInstallClient : Application
     {
+        public InstallationManager InstallationManager { get; set; }
 
+        public AppInstallClient()
+        {
+            InitializeComponent();
+            Initialize();
+        }
+
+        public void Initialize()
+        {
+            InstallationManager = new InstallationManager();
+        }
+
+        public bool NeedsUpdate
+        {
+            get { return InstallationManager.VersionHandler.ShouldUpdate; }
+        }
+
+        public void Start()
+        {
+            Run(new ProductSelectionView(InstallationManager));
+        }
     }
 }

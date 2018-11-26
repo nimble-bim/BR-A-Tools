@@ -3,9 +3,9 @@ using Squirrel;
 
 namespace BRPLUSA.Revit.Installers._2018.ProductHandlers
 {
-    public class InstallHandler : BaseProductHandler
+    public class ProductInstallHandler : BaseProductHandler
     {
-        public InstallHandler(UpdateManager mgr, FileReplicationService frp)
+        public ProductInstallHandler(UpdateManager mgr, FileReplicationService frp)
             : base(mgr, frp) { }
 
         public void ConfigureAppInstallation()
