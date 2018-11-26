@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
         Title="Blur Test" 
-        Height="950" 
+        Height="650" 
         Width="450"
         Background="#12000000"
 		BorderThickness="3"
@@ -32,7 +32,7 @@
         </Style>
     </Window.Resources>
 
-    <Grid Background="White" Margin="0,0,0,303">
+    <Grid Background="White" Height="650" VerticalAlignment="Top" Width="445">
         <Button Content="Install" HorizontalAlignment="Left" Margin="207,296,0,0" VerticalAlignment="Top" Width="76" Background="#FF339DFF" Foreground="White" BorderBrush="{x:Null}" Height="30">
         </Button>
         <Button Content="Cancel" HorizontalAlignment="Left" Margin="294,296,0,0" VerticalAlignment="Top" Width="76" Background="Gray" Foreground="White" BorderBrush="{x:Null}" Height="30"/>
