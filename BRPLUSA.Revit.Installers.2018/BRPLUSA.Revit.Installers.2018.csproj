@@ -141,5 +141,11 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BRPLUSA.Core\BRPLUSA.Core.csproj">
+      <Project>{EC0E8D93-3D21-482A-9F97-E7E5D2F8A192}</Project>
+      <Name>BRPLUSA.Core</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

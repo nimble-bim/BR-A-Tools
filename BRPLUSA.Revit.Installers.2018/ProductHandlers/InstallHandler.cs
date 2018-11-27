@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using BRPLUSA.Core.Services;
 using BRPLUSA.Revit.Installers._2018.Services;
 using Squirrel;
 
@@ -71,7 +72,9 @@ namespace BRPLUSA.Revit.Installers._2018.ProductHandlers
 
             catch (Exception e)
             {
+                LoggingService.LogError("Failed to apply releases", e);
                 throw new Exception("Failed to apply releases", e);
+                
             }
         }
     }
