@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using BRPLUSA.Revit.Installers._2018.Entities;
+﻿using BRPLUSA.Revit.Installers._2018.Entities;
 using Squirrel;
 
 namespace BRPLUSA.Revit.Installers._2018.Services
