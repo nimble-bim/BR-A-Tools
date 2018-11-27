@@ -50,13 +50,11 @@ namespace BRPLUSA.Revit.Installers._2018.ProductHandlers
 
         public async Task<bool> HandleProductInstallation(ProductVersionHandler vHandler, ProductDownloadHandler dHandler)
         {
-            ConfigureAppInstallation();
-
             if (!vHandler.ShouldUpdate)
                 return true;
 
-            var info = vHandler.GetVersionInformationFromServer();
-            await dHandler.DownloadNewReleases(info.Result.ReleasesToApply);
+            var info = await vHandler.GetVersionInformationFromServer();
+            await dHandler.DownloadNewReleases(info.ReleasesToApply);
             var success = await ApplyNewProduct(info);
 
             return success;
