@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using BRPLUSA.Revit.Installers._2018.ProductHandlers;
 using BRPLUSA.Revit.Installers._2018.Services;
-using BRPLUSA.Revit.Installers._2018.Views;
 
 namespace BRPLUSA.Revit.Installers._2018
 {
@@ -12,10 +11,10 @@ namespace BRPLUSA.Revit.Installers._2018
         private string ServerPath { get; set; }
         private UpdateManager UpdateManager { get; set; }
         private FileReplicationService FileReplicationService { get; set; }
-        public static ProductInstallHandler InstallHandler { get; private set; }
-        public static ProductUpgradeHandler UpgradeHandler { get; private set; }
-        public static ProductDownloadHandler DownloadHandler { get; private set; }
-        public static ProductVersionHandler VersionHandler { get; private set; }
+        public ProductInstallHandler InstallHandler { get; private set; }
+        public ProductUpgradeHandler UpgradeHandler { get; private set; }
+        public ProductDownloadHandler DownloadHandler { get; private set; }
+        public ProductVersionHandler VersionHandler { get; private set; }
 
         public InstallationManager()
         {
@@ -25,7 +24,7 @@ namespace BRPLUSA.Revit.Installers._2018
         private void Initialize(bool useLocalFiles = false)
         {
             LocalPath = UpdateManager.GetLocalAppDataDirectory() + @"\BRPLUSA\ProductVersions";
-            ServerPath = "https://app.brplusa.release.s3.amazonaws.com";
+            ServerPath = "https://app-brplusa-release.s3.amazonaws.com";
 
             UpdateManager = new UpdateManager(
                 useLocalFiles

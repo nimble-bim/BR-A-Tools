@@ -94,7 +94,7 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <ApplicationDefinition Include="Views\AppInstallClient.xaml">
+    <ApplicationDefinition Include="AppInstallClient.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
@@ -108,17 +108,17 @@
     <Compile Include="Providers\RevitVersion.cs" />
     <Compile Include="ProductHandlers\ProductUpgradeHandler.cs" />
     <Compile Include="ProductHandlers\VersionCheckHandler.cs" />
-    <Page Include="Views\ProductSelectionView.xaml">
+    <Page Include="ProductSelectionView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
     <Compile Include="Services\VersionService.cs" />
-    <Compile Include="Views\AppInstallClient.xaml.cs">
+    <Compile Include="AppInstallClient.xaml.cs">
       <DependentUpon>AppInstallClient.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Services\FileReplicationService.cs" />
-    <Compile Include="Views\ProductSelectionView.xaml.cs">
+    <Compile Include="ProductSelectionView.xaml.cs">
       <DependentUpon>ProductSelectionView.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
@@ -160,6 +160,9 @@
       <Project>{EC0E8D93-3D21-482A-9F97-E7E5D2F8A192}</Project>
       <Name>BRPLUSA.Core</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Views\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="AfterBuild" Condition=" '$(Configuration)' == 'Debug_Installer'">

@@ -1,24 +1,35 @@
 ﻿using System.Windows;
 using System.Windows.Input;
 
-namespace BRPLUSA.Revit.Installers._2018.Views
+namespace BRPLUSA.Revit.Installers._2018
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class ProductSelectionView : Window
     {
-        private static InstallationManager Installer { get; set; }
+        private InstallationManager Installer { get; set; }
 
         public ProductSelectionView()
         {
             InitializeComponent();
+            InitializeServices();
         }
 
-        public ProductSelectionView(InstallationManager manager) : this()
+        private void InitializeServices()
         {
-            Installer = manager;
+            Installer = new InstallationManager();
         }
+
+        public bool NeedsUpdate
+        {
+            get { return Installer.VersionHandler.ShouldUpdate; }
+        }
+
+        //public ProductSelectionView(InstallationManager manager) : this()
+        //{
+        //    Installer = manager;
+        //}
 
         private void ShutdownPage(object sender, RoutedEventArgs e)
         {

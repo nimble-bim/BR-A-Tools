@@ -1,9 +1,0 @@
-﻿<Application x:Class="BRPLUSA.Revit.Installers._2018.Views.AppInstallClient"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:BRPLUSA.Revit.Installers._2018"
-             StartupUri="Views/AppInstallClient.xaml">
-    <Application.Resources>
-         
-    </Application.Resources>
-</Application>

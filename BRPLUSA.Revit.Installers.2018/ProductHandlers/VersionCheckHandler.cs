@@ -20,11 +20,15 @@ namespace BRPLUSA.Revit.Installers._2018.ProductHandlers
         {
             get
             {
-                if (!_hasChecked)
-                    Task.Run(GetVersionInformationFromServer);
+                //Task.Run(GetVersionInformationFromServer).Wait();
 
                 return _isOutdated;
             }
+        }
+
+        public bool HasChecked
+        {
+            get { return _hasChecked; }
         }
 
         public ReleaseEntry GetReleaseInfo()

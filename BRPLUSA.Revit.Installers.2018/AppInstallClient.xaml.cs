@@ -1,6 +1,7 @@
 ﻿using System.Windows;
+using BRPLUSA.Core.Services;
 
-namespace BRPLUSA.Revit.Installers._2018.Views
+namespace BRPLUSA.Revit.Installers._2018
 {
     /// <summary>
     /// * DOCUMENTATION
@@ -27,27 +28,14 @@ namespace BRPLUSA.Revit.Installers._2018.Views
     /// </summary>
     public partial class AppInstallClient : Application
     {
-        public InstallationManager InstallationManager { get; set; }
-
         public AppInstallClient()
         {
-            InitializeComponent();
             Initialize();
         }
 
-        public void Initialize()
+        private void Initialize()
         {
-            InstallationManager = new InstallationManager();
-        }
-
-        public bool NeedsUpdate
-        {
-            get { return InstallationManager.VersionHandler.ShouldUpdate; }
-        }
-
-        public void Start()
-        {
-            Run(new ProductSelectionView(InstallationManager));
+            LoggingService.LogInfo("Starting installation app client");
         }
     }
 }
