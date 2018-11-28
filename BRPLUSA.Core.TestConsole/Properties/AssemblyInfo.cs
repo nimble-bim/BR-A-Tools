@@ -35,4 +35,4 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyVersion("1.0.1.0")]
 [assembly: AssemblyFileVersion("1.0.1.0")]
 
-[assembly: AssemblyInformationalVersion("1.0.1-gitversions.1+20.Branch.feature/gitversions.Sha.09e6f4d792390d5939f82dc5ce44057f2049b0e6")]
+[assembly: AssemblyInformationalVersion("1.0.1-installer-wpf.1+36.Branch.feature/installer-wpf.Sha.659c6ea358d7db80777070592ccb9693b57e97c2")]

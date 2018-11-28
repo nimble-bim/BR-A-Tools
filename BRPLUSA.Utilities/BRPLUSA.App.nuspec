@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
-    <id>BRPLUSA.Revit.Client</id>
+    <id>BRPLUSA.App</id>
     <version>0.0.0</version>
     <title></title>
     <authors>PSmith</authors>
@@ -10,6 +10,6 @@
     <description>My package description.</description>
   </metadata>
   <files>
-    <file src="**\*.*" target="lib\net45\" exclude="*.pdb;*.nupkg;*.vshost.*"/>
+    <file src="**\*.*" target="lib\net45\" exclude="*.ps1;*.pdb;*.nupkg;*.vshost.*"/>
   </files>
 </package>

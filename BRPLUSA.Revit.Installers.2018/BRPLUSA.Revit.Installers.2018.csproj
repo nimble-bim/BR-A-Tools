@@ -34,6 +34,16 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug_Installer|AnyCPU'">
+    <OutputPath>bin\Debug_Installer\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="DeltaCompressionDotNet, Version=1.1.0.0, Culture=neutral, PublicKeyToken=1d14d6e5194e7f4a, processorArchitecture=MSIL">
       <HintPath>..\packages\DeltaCompressionDotNet.1.1.0\lib\net20\DeltaCompressionDotNet.dll</HintPath>
@@ -132,6 +142,10 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="..\BRPLUSA.Utilities\BRPLUSA.App.nuspec">
+      <Link>BRPLUSA.App.nuspec</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -148,4 +162,34 @@
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Target Name="AfterBuild" Condition=" '$(Configuration)' == 'Debug_Installer'">
+    <GetAssemblyIdentity AssemblyFiles="$(TargetPath)">
+      <Output TaskParameter="Assemblies" ItemName="myAssemblyInfo" />
+    </GetAssemblyIdentity>
+    <ItemGroup>
+      <!-- If your .NET version is <3.5 and you get build error, move this ItemGroup outside of Target -->
+      <NuGetExe Include="..\packages\NuGet.CommandLine.*\tools\nuget.exe" />
+      <SquirrelExe Include="..\packages\Squirrel.Windows.*\tools\squirrel.exe" />
+    </ItemGroup>
+    <PropertyGroup>
+      <ReleaseDir>Releases\</ReleaseDir>
+      <!-- Extra optional params for squirrel. can be empty -->
+      <SquirrelParams>--no-msi</SquirrelParams>
+      <SemVerNumber>$([System.Version]::Parse(%(myAssemblyInfo.Version)).ToString(3))</SemVerNumber>
+    </PropertyGroup>
+    <!-- Add some nice errors for the next person that comes along -->
+    <Error Condition="!Exists(%(NuGetExe.FullPath))" Text="You are trying to use the NuGet.CommandLine package, but it is not installed. Please install NuGet.CommandLine from the Package Manager." />
+    <Error Condition="!Exists(%(SquirrelExe.FullPath))" Text="You are trying to use the Squirrel.Windows package, but it is not installed. Please install Squirrel.Windows from the Package Manager." />
+    <!-- Build nupkg into the project local bin\Release\ directory temporarily -->
+    <Exec Command="&quot;%(NuGetExe.FullPath)&quot; pack $(TargetDir)\$(SolutionName).nuspec -Version $(SemVerNumber) -OutputDirectory $(OutDir) -BasePath $(OutDir)" />
+    <!-- Squirrelify into the release dir (usually at solution level. Change the property above for a different location -->
+    <Exec Command="&quot;%(SquirrelExe.FullPath)&quot; --releasify $(OutDir)$(SolutionName).$(SemVerNumber).nupkg --releaseDir=$(ReleaseDir) $(SquirrelParams)" />
+  </Target>
+  <PropertyGroup>
+    <PostBuildEvent>if $(ConfigurationName) == Debug_Installer (
+if NOT exist "$(ProjectDir)\bin\Update.exe" (
+XCOPY "$(SolutionDir)packages\squirrel.windows.1.9.0\tools\Squirrel.exe" $(ProjectDir)bin\
+RENAME "$(ProjectDir)\bin\Squirrel.exe" Update.exe)
+)</PostBuildEvent>
+  </PropertyGroup>
 </Project>

@@ -34,21 +34,12 @@
   <PropertyGroup>
     <ApplicationManifest>Utilities\BRPLUSA.addin</ApplicationManifest>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Installer|AnyCPU'">
-    <OutputPath>bin\Installer_Revit\</OutputPath>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug_Installer|AnyCPU'">
+    <OutputPath>bin\Debug_Installer\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Revit_Installer|AnyCPU'">
-    <OutputPath>bin\Revit_Installer\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>x64</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
@@ -141,6 +132,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\BRPLUSA.Utilities\BRPLUSA.App.nuspec">
+      <Link>BRPLUSA.App.nuspec</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="app.config" />
     <None Include="Data\Lookup_VentilationTable.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -153,7 +148,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="packages.config" />
-    <None Include="Utilities\BRPLUSA.Revit.Client.nuspec" />
     <None Include="Utilities\processAddin.ps1">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -231,8 +225,8 @@ call "$(SolutionDir)BRPLUSA.Utilities\versionupdate.bat"
     <Error Condition="!Exists(%(NuGetExe.FullPath))" Text="You are trying to use the NuGet.CommandLine package, but it is not installed. Please install NuGet.CommandLine from the Package Manager." />
     <Error Condition="!Exists(%(SquirrelExe.FullPath))" Text="You are trying to use the Squirrel.Windows package, but it is not installed. Please install Squirrel.Windows from the Package Manager." />
     <!-- Build nupkg into the project local bin\Release\ directory temporarily -->
-    <Exec Command="&quot;%(NuGetExe.FullPath)&quot; pack $(ProjectDir)\Utilities\$(TargetName).nuspec -Version $(SemVerNumber) -OutputDirectory $(OutDir) -BasePath $(OutDir)" />
+    <Exec Command="&quot;%(NuGetExe.FullPath)&quot; pack $(TargetDir)\$(SolutionName).nuspec -Version $(SemVerNumber) -OutputDirectory $(OutDir) -BasePath $(OutDir)" />
     <!-- Squirrelify into the release dir (usually at solution level. Change the property above for a different location -->
-    <Exec Command="&quot;%(SquirrelExe.FullPath)&quot; --releasify $(OutDir)$(TargetName).$(SemVerNumber).nupkg --releaseDir=$(ReleaseDir) $(SquirrelParams)" />
+    <Exec Command="&quot;%(SquirrelExe.FullPath)&quot; --releasify $(OutDir)$(SolutionName).$(SemVerNumber).nupkg --releaseDir=$(ReleaseDir) $(SquirrelParams)" />
   </Target>
 </Project>
