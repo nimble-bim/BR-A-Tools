@@ -8,9 +8,11 @@
         Height="650" 
         Width="450"
         Background="#12000000"
-		BorderThickness="3"
+        BorderBrush="Black"
+		BorderThickness="1"
         WindowStartupLocation="CenterScreen" Foreground="{x:Null}" AllowsTransparency="True" WindowStyle="None"
-        MouseDown="OnDragRequest">
+        MouseDown="OnDragRequest" 
+        >
     <Window.Resources>
         <Style x:Key="Button_SemiTransparent_OnHover" TargetType="Button">
             <Setter Property="OverridesDefaultStyle" Value="True" />
