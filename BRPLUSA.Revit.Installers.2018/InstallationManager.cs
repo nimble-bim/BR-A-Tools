@@ -34,6 +34,8 @@ namespace BRPLUSA.Revit.Installers._2018
             FileReplicationService = new FileReplicationService();
 
             InitializeHandlers(UpdateManager, FileReplicationService);
+
+            InstallHandler.ConfigureAppInstallation();
         }
 
         private void InitializeHandlers(UpdateManager mgr, FileReplicationService frp)
@@ -57,13 +59,5 @@ namespace BRPLUSA.Revit.Installers._2018
 
             return success;
         }
-
-        //public void StartUpdaterApplication()
-        //{
-        //    var app = new AppInstallClient();
-        //    var window = new ProductSelectionView();
-        //    app.ShutdownMode = System.Windows.ShutdownMode.OnLastWindowClose;
-        //    app.Run(window);
-        //}
     }
 }

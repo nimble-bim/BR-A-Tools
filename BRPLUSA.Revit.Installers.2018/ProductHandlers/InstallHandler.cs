@@ -11,21 +11,17 @@ namespace BRPLUSA.Revit.Installers._2018.ProductHandlers
         public ProductInstallHandler(UpdateManager mgr, FileReplicationService frp)
             : base(mgr, frp) { }
 
-        private void ConfigureAppInstallation()
+        public void ConfigureAppInstallation()
         {
-            var appDir = UpdateManager.RootAppDirectory;
-
             SquirrelAwareApp.HandleEvents(
                 onInitialInstall: v =>
                 {
                     UpdateManager.KillAllExecutablesBelongingToPackage();
                     UpdateManager.RemoveShortcutForThisExe();
-                    FileReplicationService.ReplicateFilesToRevitLocations(appDir);
                     UpdateManager.KillAllExecutablesBelongingToPackage();
                 },
                 onAppUpdate: v => {
                     UpdateManager.RemoveShortcutForThisExe();
-                    FileReplicationService.ReplicateFilesToRevitLocations(appDir);
                 },
                 onAppUninstall: async v => {
                     UpdateManager.RemoveShortcutForThisExe();
@@ -36,7 +32,6 @@ namespace BRPLUSA.Revit.Installers._2018.ProductHandlers
                 {
                     UpdateManager.KillAllExecutablesBelongingToPackage();
                     UpdateManager.RemoveShortcutForThisExe();
-                    FileReplicationService.ReplicateFilesToRevitLocations(appDir);
                     UpdateManager.KillAllExecutablesBelongingToPackage();
                 }
             );
@@ -44,7 +39,7 @@ namespace BRPLUSA.Revit.Installers._2018.ProductHandlers
 
         public async Task<bool> HandleInitialInstallation(ProductVersionHandler vHandler, ProductDownloadHandler dHandler)
         {
-            ConfigureAppInstallation();
+            //ConfigureAppInstallation();
 
             return await HandleProductInstallation(vHandler, dHandler);
         }
@@ -57,6 +52,9 @@ namespace BRPLUSA.Revit.Installers._2018.ProductHandlers
             var info = await vHandler.GetVersionInformationFromServer();
             await dHandler.DownloadNewReleases(info.ReleasesToApply);
             var success = await ApplyNewProduct(info);
+
+            var appDir = UpdateManager.RootAppDirectory;
+            FileReplicationService.ReplicateFilesToRevitLocations(appDir);
 
             return success;
         }
