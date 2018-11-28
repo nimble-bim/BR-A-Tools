@@ -20,8 +20,6 @@ namespace BRPLUSA.Revit.Installers._2018.ProductHandlers
         {
             get
             {
-                //Task.Run(GetVersionInformationFromServer).Wait();
-
                 return _isOutdated;
             }
         }
