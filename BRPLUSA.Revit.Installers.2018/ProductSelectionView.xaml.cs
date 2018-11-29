@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 
 namespace BRPLUSA.Revit.Installers._2018
@@ -8,16 +9,37 @@ namespace BRPLUSA.Revit.Installers._2018
     /// </summary>
     public partial class ProductSelectionView : Window
     {
+        private const string _updateAvailable = "Update Available!";
+        private const string _updateNotAvailable = "Up to date";
+        private const string _productInstalled = "Installed";
+        private const string _productNeedsInstall = "Install";
         private InstallationManager Manager { get; set; }
-        private bool Revit2018AppInstalled { get; set; }
+
+        private bool Revit2018AppInstalled
+        {
+            get => Manager.InstallHandler.Revit2018AppInstalled;
+            set => Revit2018AppInstallStatus.Text = value 
+                ? _productInstalled
+                : _productNeedsInstall;
+        }
         private bool Revit2019AppInstalled { get; set; }
-        private bool Revit2018AppUpdateAvailable { get; set; }
+
+        private bool Revit2018AppUpdateAvailable
+        {
+            get => Manager.UpgradeHandler.Revit2018AppUpdateAvailable;
+            set => Revit2018UpdateStatus.Text = value 
+                ? _updateAvailable 
+                : _updateNotAvailable;
+        }
+
         private bool Revit2019AppUpdateAvailable { get; set; }
 
         public ProductSelectionView()
         {
             InitializeComponent();
             InitializeServices();
+            InitializeProductState();
+            //Task.Run(async () => await InitializeProductState());
         }
 
         private void InitializeServices()
@@ -25,9 +47,10 @@ namespace BRPLUSA.Revit.Installers._2018
             Manager = new InstallationManager();
         }
 
-        private void InitializeProductState()
+        private async void InitializeProductState()
         {
-            Manager.VersionHandler.
+            Revit2018AppInstalled = Manager.InstallHandler.Revit2018AppInstalled;
+            Revit2018AppUpdateAvailable = Manager.UpgradeHandler.Revit2018AppUpdateAvailable;
         }
 
         private void ShutdownPage(object sender, RoutedEventArgs e)

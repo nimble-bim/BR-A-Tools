@@ -11,6 +11,8 @@ namespace BRPLUSA.Revit.Installers._2018.ProductHandlers
         public ProductInstallHandler(UpdateManager mgr, FileInstallationService frp)
             : base(mgr, frp) { }
 
+        public bool Revit2018AppInstalled { get; set; }
+
         public void ConfigureAppInstallation()
         {
             SquirrelAwareApp.HandleEvents(
