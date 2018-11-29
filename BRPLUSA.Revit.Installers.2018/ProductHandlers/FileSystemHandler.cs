@@ -45,7 +45,7 @@ namespace BRPLUSA.Revit.Installers._2018.ProductHandlers
 
             var v2018 = RevitAddinLocationProvider.GetRevitAddinFolderLocation(RevitVersion.V2018);
             var addinFiles = await Task.Run(() => Directory.EnumerateFiles(v2018).ToArray());
-            var v2018installed = addinFiles.Any(fileName => fileName.Equals("BRPLUSA.addin"));
+            var v2018installed = addinFiles.Any(fileName => fileName.Contains("BRPLUSA.addin"));
 
             return v2018installed;
         }

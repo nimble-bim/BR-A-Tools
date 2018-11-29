@@ -41,7 +41,8 @@ namespace BRPLUSA.Revit.Installers._2018
                         ? _updateAvailable
                         : _updateNotAvailable;
 
-                    ButtonRevit2018AppInstallStatus.Content = _productCanBeUpgraded;
+                    if(value)
+                        ButtonRevit2018AppInstallStatus.Content = _productCanBeUpgraded;
                 }
 
                 Revit2018UpdateStatus.Text = string.Empty;
@@ -89,6 +90,9 @@ namespace BRPLUSA.Revit.Installers._2018
 
         private async void InstallRevit2018(object sender, RoutedEventArgs e)
         {
+            if (Revit2018AppInstalled)
+                return;
+
             ShowRevit2018InstallationInProcess();
 
             var promise = new Promise(
