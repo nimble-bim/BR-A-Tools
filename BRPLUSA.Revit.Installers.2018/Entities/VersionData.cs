@@ -7,6 +7,8 @@
         private readonly int _build;
         private readonly int _revision;
 
+        public VersionData(): this(0, 0, 0, 0) { }
+
         public VersionData(int major, int minor, int build, int revision)
         {
             _major = major;
