@@ -33,7 +33,6 @@ namespace BRPLUSA.Revit.Installers._2018.ProductHandlers
                     : ServerPath);
 
             ConfigureAppInstallation();
-            //InitializeProductState();
         }
 
         public async Task InitializeProductState()

@@ -64,7 +64,8 @@ namespace BRPLUSA.Revit.Installers._2018.ProductHandlers
         public void PushAddinFileToLibrary(string origin, string destination)
         {
             var filename = Path.GetFileName(origin);
-            var destFilename = Path.Combine(destination, filename);
+            var parentDir = Directory.GetParent(destination).ToString();
+            var destFilename = Path.Combine(parentDir, filename);
 
             FileLibrary.Add(origin, destFilename);
         }

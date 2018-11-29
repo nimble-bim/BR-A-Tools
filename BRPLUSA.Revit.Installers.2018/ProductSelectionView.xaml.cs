@@ -91,8 +91,6 @@ namespace BRPLUSA.Revit.Installers._2018
         {
             ShowRevit2018InstallationInProcess();
 
-            //await Manager.HandleRevit2018ApplicationInstallation();
-
             var promise = new Promise(
                 async (resolve, reject) =>
                 {
@@ -130,11 +128,6 @@ namespace BRPLUSA.Revit.Installers._2018
             ButtonRevit2018AppInstallStatus.Background = Brushes.Crimson;
             ButtonRevit2018AppInstallStatus.Foreground = Brushes.White;
             ButtonRevit2018AppInstallStatus.Content = "Failed";
-        }
-
-        private async void UpgradeRevit2018(object sender, RoutedEventArgs e)
-        {
-            await Manager.HandleRevit2018ApplicationUpgrade();
         }
 
         public void Dispose()
