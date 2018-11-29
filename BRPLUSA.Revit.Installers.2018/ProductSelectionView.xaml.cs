@@ -10,7 +10,7 @@ namespace BRPLUSA.Revit.Installers._2018
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class ProductSelectionView : Window
+    public partial class ProductSelectionView : Window, IDisposable
     {
         private const string _updateAvailable = "Update Available!";
         private const string _updateNotAvailable = "Up to date";
@@ -79,6 +79,7 @@ namespace BRPLUSA.Revit.Installers._2018
         private void ShutdownPage(object sender, RoutedEventArgs e)
         {
             Close();
+            Dispose();
         }
 
         private void OnDragRequest(object sender, MouseButtonEventArgs e)
@@ -134,6 +135,11 @@ namespace BRPLUSA.Revit.Installers._2018
         private async void UpgradeRevit2018(object sender, RoutedEventArgs e)
         {
             await Manager.HandleRevit2018ApplicationUpgrade();
+        }
+
+        public void Dispose()
+        {
+            Manager.Dispose();
         }
     }
 }

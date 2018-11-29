@@ -6,7 +6,7 @@ using Squirrel;
 
 namespace BRPLUSA.Revit.Installers._2018.ProductHandlers
 {
-    public class ProductInstallHandler
+    public class ProductInstallHandler : IDisposable
     {
         private string LocalPath { get; set; }
         private string ServerPath { get; set; }
@@ -130,6 +130,11 @@ namespace BRPLUSA.Revit.Installers._2018.ProductHandlers
                 throw new Exception("Failed to apply releases", e);
                 
             }
+        }
+
+        public void Dispose()
+        {
+            UpdateManager.Dispose();
         }
     }
 }
