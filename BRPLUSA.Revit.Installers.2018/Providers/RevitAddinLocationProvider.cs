@@ -20,7 +20,7 @@ namespace BRPLUSA.Revit.Installers._2018.Providers
             }
         }
 
-        public static string Revit2018AddinLocation
+        private static string Revit2018AddinLocation
         {
             get
             {

@@ -43,11 +43,11 @@ namespace BRPLUSA.Revit.Installers._2018
 
         private async void InstallRevit2018(object sender, RoutedEventArgs e)
         {
-            await Installer.HandleApplicationInstallation();
+            await Installer.HandleRevit2018ApplicationInstallation();
         }
         private async void UpgradeRevit2018(object sender, RoutedEventArgs e)
         {
-            await Installer.HandleApplicationUpgrade();
+            await Installer.HandleRevit2018ApplicationUpgrade();
         }
     }
 }

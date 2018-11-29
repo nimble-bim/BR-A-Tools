@@ -46,16 +46,16 @@ namespace BRPLUSA.Revit.Installers._2018
             VersionHandler = new ProductVersionHandler(mgr, frp);
         }
 
-        public async Task<bool> HandleApplicationUpgrade()
+        public async Task<bool> HandleRevit2018ApplicationUpgrade()
         {
-            var success = await UpgradeHandler.HandleProductUpgrade(VersionHandler, DownloadHandler, InstallHandler);
+            var success = await UpgradeHandler.HandleRevit2018Upgrade(VersionHandler, DownloadHandler, InstallHandler);
 
             return success;
         }
 
-        public async Task<bool> HandleApplicationInstallation()
+        public async Task<bool> HandleRevit2018ApplicationInstallation()
         {
-            var success = await InstallHandler.HandleInitialInstallation(VersionHandler, DownloadHandler);
+            var success = await InstallHandler.HandleRevit2018Installation(VersionHandler, DownloadHandler);
 
             return success;
         }

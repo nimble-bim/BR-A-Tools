@@ -37,14 +37,7 @@ namespace BRPLUSA.Revit.Installers._2018.ProductHandlers
             );
         }
 
-        public async Task<bool> HandleInitialInstallation(ProductVersionHandler vHandler, ProductDownloadHandler dHandler)
-        {
-            //ConfigureAppInstallation();
-
-            return await HandleProductInstallation(vHandler, dHandler);
-        }
-
-        public async Task<bool> HandleProductInstallation(ProductVersionHandler vHandler, ProductDownloadHandler dHandler)
+        public async Task<bool> HandleRevit2018Installation(ProductVersionHandler vHandler, ProductDownloadHandler dHandler)
         {
             try
             {
@@ -55,7 +48,7 @@ namespace BRPLUSA.Revit.Installers._2018.ProductHandlers
                 await dHandler.DownloadNewReleases(info.ReleasesToApply);
                 var tempLocation = PushNewReleaseToTempLocation(info).Result;
 
-                FileReplicationService.InstallOnFileSystem(tempLocation);
+                FileReplicationService.HandleRevit2018Installation(tempLocation);
 
                 return true;
             }

@@ -20,15 +20,9 @@ namespace BRPLUSA.Revit.Installers._2018.Services
             InstallHandler = new FileInstallHandler();
         }
 
-        public void InstallOnFileSystem(string appDir)
-        {
-            HandleRevit2018Installation(appDir);
-            //ReplicateFilesToRevit2019Location();
-        }
-
         public void HandleRevit2018Installation(string tempDir, string destDir = null)
         {
-            var v2018 = destDir ?? RevitAddinLocationProvider.Revit2018AddinLocation;
+            var v2018 = destDir ?? RevitAddinLocationProvider.GetRevitAddinFolderLocation(RevitVersion.V2018);
             var finalDir = Path.Combine(v2018, "BRPLUSA");
 
             var files = Directory.EnumerateFiles(tempDir, "*", SearchOption.AllDirectories).ToArray();

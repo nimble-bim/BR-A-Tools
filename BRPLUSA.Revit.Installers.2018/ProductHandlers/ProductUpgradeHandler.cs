@@ -10,9 +10,9 @@ namespace BRPLUSA.Revit.Installers._2018.ProductHandlers
         public ProductUpgradeHandler(UpdateManager mgr, FileInstallationService frp)
             : base(mgr, frp) { }
 
-        public async Task<bool> HandleProductUpgrade(ProductVersionHandler vHandler, ProductDownloadHandler dHandler, ProductInstallHandler iHandler)
+        public async Task<bool> HandleRevit2018Upgrade(ProductVersionHandler vHandler, ProductDownloadHandler dHandler, ProductInstallHandler iHandler)
         {
-            var success = await iHandler.HandleProductInstallation(vHandler, dHandler);
+            var success = await iHandler.HandleRevit2018Installation(vHandler, dHandler);
 
             return success;
         }
