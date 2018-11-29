@@ -32,16 +32,20 @@ namespace BRPLUSA.Revit.Installers._2018.ProductHandlers
                     ? LocalPath
                     : ServerPath);
 
+            ConfigureAppInstallation();
+            //InitializeProductState();
+        }
+
+        public async Task InitializeProductState()
+        {
             VersionHandler = new ProductVersionHandler(UpdateManager);
             DownloadHandler = new ProductDownloadHandler(UpdateManager);
             FileHandler = new FileSystemHandler(UpdateManager);
 
-            ConfigureAppInstallation();
-            InitializeProductState();
-        }
+            await VersionHandler.InitializeProductState();
+            await DownloadHandler.InitializeProductState();
+            await FileHandler.InitializeProductState();
 
-        private void InitializeProductState()
-        {
             Revit2018AppInstalled = CheckRevit2018AppInstallation();
             Revit2018AppUpdateAvailable = CheckForRevit2018AppUpdates();
         }
@@ -91,9 +95,9 @@ namespace BRPLUSA.Revit.Installers._2018.ProductHandlers
 
                 var info = await VersionHandler.GetVersionInformationFromServer();
                 await DownloadHandler.DownloadNewReleases(info.ReleasesToApply);
-                var tempLocation = PushNewReleaseToTempLocation(info).Result;
+                var tempLocation = await PushNewReleaseToTempLocation(info);
 
-                FileHandler.HandleRevit2018Installation(tempLocation);
+                await FileHandler.HandleRevit2018Installation(tempLocation);
 
                 return true;
             }

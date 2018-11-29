@@ -1,5 +1,7 @@
-﻿using Squirrel;
+﻿using System;
+using Squirrel;
 using System.Threading.Tasks;
+using System.Windows;
 using BRPLUSA.Revit.Installers._2018.ProductHandlers;
 using BRPLUSA.Revit.Installers._2018.Services;
 
@@ -23,7 +25,6 @@ namespace BRPLUSA.Revit.Installers._2018
         private void Initialize()
         {
             InitializeHandlers();
-            InitializeProductState();
         }
 
         private void InitializeHandlers()
@@ -31,8 +32,9 @@ namespace BRPLUSA.Revit.Installers._2018
             InstallHandler = new ProductInstallHandler();
         }
 
-        private void InitializeProductState()
+        public async Task InitializeProductState()
         {
+            await InstallHandler.InitializeProductState();
             Revit2018AppInstalled = InstallHandler.Revit2018AppInstalled;
             Revit2018AppUpdateAvailable = InstallHandler.Revit2018AppUpdateAvailable;
         }

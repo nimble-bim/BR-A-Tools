@@ -22,7 +22,11 @@ namespace BRPLUSA.Revit.Installers._2018.ProductHandlers
         private void Initialize(UpdateManager mgr)
         {
             UpdateManager = mgr;
-            GetVersionInformationFromServer().Wait();
+        }
+
+        public async Task InitializeProductState()
+        {
+            await GetVersionInformationFromServer();
         }
 
         public async Task<UpdateInfo> GetVersionInformationFromServer()

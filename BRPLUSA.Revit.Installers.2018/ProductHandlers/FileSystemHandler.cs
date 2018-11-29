@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using BRPLUSA.Revit.Installers._2018.Providers;
 using Squirrel;
 
@@ -21,30 +22,29 @@ namespace BRPLUSA.Revit.Installers._2018.ProductHandlers
         {
             InstallHandler = new FileInstallHandler();
             UpdateManager = mgr;
-            InitializeProductState();
         }
 
-        private void InitializeProductState()
+        public async Task InitializeProductState()
         {
-            IsRevit2018AppInstalled = CheckForRevit2018AppInstallations();
+            IsRevit2018AppInstalled = await CheckForRevit2018AppInstallations();
         }
 
-        public void HandleRevit2018Installation(string tempDir, string destDir = null)
+        public async Task HandleRevit2018Installation(string tempDir, string destDir = null)
         {
             var v2018 = destDir ?? RevitAddinLocationProvider.GetRevitAddinFolderLocation(RevitVersion.V2018);
             var finalDir = Path.Combine(v2018, "BRPLUSA");
 
-            var files = Directory.EnumerateFiles(tempDir, "*", SearchOption.AllDirectories).ToArray();
+            var files = await Task.Run(() => Directory.EnumerateFiles(tempDir, "*", SearchOption.AllDirectories).ToArray());
             InstallHandler.HandleFileInstallation(files, finalDir);
         }
 
-        private bool CheckForRevit2018AppInstallations()
+        private async Task<bool> CheckForRevit2018AppInstallations()
         {
             if (UpdateManager?.CurrentlyInstalledVersion() != null)
                 return true;
 
             var v2018 = RevitAddinLocationProvider.GetRevitAddinFolderLocation(RevitVersion.V2018);
-            var addinFiles = Directory.EnumerateFiles(v2018).ToArray();
+            var addinFiles = await Task.Run(() => Directory.EnumerateFiles(v2018).ToArray());
             var v2018installed = addinFiles.Any(fileName => fileName.Equals("BRPLUSA.addin"));
 
             return v2018installed;

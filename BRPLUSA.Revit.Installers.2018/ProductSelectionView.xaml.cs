@@ -1,6 +1,9 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Media;
+using RSG;
 
 namespace BRPLUSA.Revit.Installers._2018
 {
@@ -19,17 +22,30 @@ namespace BRPLUSA.Revit.Installers._2018
         private bool Revit2018AppInstalled
         {
             get => Manager.Revit2018AppInstalled;
-            set => Revit2018AppInstallStatus.Text = value 
-                ? _productInstalled
-                : _productNeedsInstall;
+            set
+            {
+                ButtonRevit2018AppInstallStatus.Content = value
+                    ? _productInstalled
+                    : _productNeedsInstall;
+            }
         }
 
         private bool Revit2018AppUpdateAvailable
         {
             get => Manager.Revit2018AppUpdateAvailable;
-            set => Revit2018UpdateStatus.Text = value
-                ? _updateAvailable
-                : _updateNotAvailable;
+            set
+            {
+                if (Revit2018AppInstalled)
+                {
+                    Revit2018UpdateStatus.Text = value
+                        ? _updateAvailable
+                        : _updateNotAvailable;
+
+                    ButtonRevit2018AppInstallStatus.Content = _productCanBeUpgraded;
+                }
+
+                Revit2018UpdateStatus.Text = string.Empty;
+            }
         }
 
         private bool Revit2019AppInstalled { get; set; }
@@ -40,16 +56,22 @@ namespace BRPLUSA.Revit.Installers._2018
         {
             InitializeComponent();
             InitializeServices();
-            InitializeProductState();
         }
 
         private void InitializeServices()
         {
             Manager = new InstallationManager();
+            Loaded += OnLoaded;
         }
 
-        private void InitializeProductState()
+        private async void OnLoaded(object sender, RoutedEventArgs e)
         {
+            await InitializeProductState();
+        }
+
+        private async Task InitializeProductState()
+        {
+            await Manager.InitializeProductState();
             Revit2018AppInstalled = Manager.Revit2018AppInstalled;
             Revit2018AppUpdateAvailable = Manager.Revit2018AppUpdateAvailable;
         }
@@ -66,7 +88,47 @@ namespace BRPLUSA.Revit.Installers._2018
 
         private async void InstallRevit2018(object sender, RoutedEventArgs e)
         {
-            await Manager.HandleRevit2018ApplicationInstallation();
+            ShowRevit2018InstallationInProcess();
+
+            //await Manager.HandleRevit2018ApplicationInstallation();
+
+            var promise = new Promise(
+                async (resolve, reject) =>
+                {
+                    var success = await Manager.HandleRevit2018ApplicationInstallation();
+
+                    if (success)
+                    {
+                        resolve();
+                    }
+                    else
+                    {
+                        reject(null);
+                    }
+                }
+            );
+
+            promise.Done(ShowRevit2018InstallationComplete,
+                (err) => ShowRevit2018InstallationFailed());
+        }
+
+        private void ShowRevit2018InstallationComplete()
+        {
+            ButtonRevit2018AppInstallStatus.Background = new SolidColorBrush(Color.FromRgb(51,157,255));
+            ButtonRevit2018AppInstallStatus.Content = "Installed";
+        }
+
+        private void ShowRevit2018InstallationInProcess()
+        {
+            ButtonRevit2018AppInstallStatus.Background = Brushes.Gray;
+            ButtonRevit2018AppInstallStatus.Content = "Installing...";
+        }
+
+        private void ShowRevit2018InstallationFailed()
+        {
+            ButtonRevit2018AppInstallStatus.Background = Brushes.Crimson;
+            ButtonRevit2018AppInstallStatus.Foreground = Brushes.White;
+            ButtonRevit2018AppInstallStatus.Content = "Failed";
         }
 
         private async void UpgradeRevit2018(object sender, RoutedEventArgs e)

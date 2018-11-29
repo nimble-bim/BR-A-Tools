@@ -14,6 +14,11 @@ namespace BRPLUSA.Revit.Installers._2018.ProductHandlers
             UpdateManager = mgr;
         }
 
+        public async Task InitializeProductState()
+        {
+
+        }
+
         public async Task DownloadNewReleases(IEnumerable<ReleaseEntry> releases)
         {
             try
