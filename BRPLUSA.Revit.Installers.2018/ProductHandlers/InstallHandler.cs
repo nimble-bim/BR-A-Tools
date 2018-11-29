@@ -53,7 +53,7 @@ namespace BRPLUSA.Revit.Installers._2018.ProductHandlers
 
                 var info = await vHandler.GetVersionInformationFromServer();
                 await dHandler.DownloadNewReleases(info.ReleasesToApply);
-                var tempLocation = await PushNewReleaseToTempLocation(info);
+                var tempLocation = PushNewReleaseToTempLocation(info).Result;
 
                 FileReplicationService.InstallOnFileSystem(tempLocation);
 
