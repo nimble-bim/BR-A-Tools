@@ -8,7 +8,7 @@ namespace BRPLUSA.Revit.Installers._2018.ProductHandlers
 {
     public class ProductVersionHandler
     {
-        private UpdateManager UpdateManager { get; }
+        private UpdateManager UpdateManager { get; set; }
         public VersionData LocalVersion { get; private set; }
         public VersionData ServerVersion { get; private set; }
         public bool Revit2018UpdateAvailable { get; private set; }
@@ -16,12 +16,12 @@ namespace BRPLUSA.Revit.Installers._2018.ProductHandlers
 
         public ProductVersionHandler(UpdateManager mgr)
         {
-            UpdateManager = mgr;
-            Initialize();
+            Initialize(mgr);
         }
 
-        private void Initialize()
+        private void Initialize(UpdateManager mgr)
         {
+            UpdateManager = mgr;
             GetVersionInformationFromServer().Wait();
         }
 

@@ -13,6 +13,7 @@ namespace BRPLUSA.Revit.Installers._2018
         private const string _updateNotAvailable = "Up to date";
         private const string _productInstalled = "Installed";
         private const string _productNeedsInstall = "Install";
+        private const string _productCanBeUpgraded = "Upgrade";
         private InstallationManager Manager { get; set; }
 
         private bool Revit2018AppInstalled
@@ -22,15 +23,16 @@ namespace BRPLUSA.Revit.Installers._2018
                 ? _productInstalled
                 : _productNeedsInstall;
         }
-        private bool Revit2019AppInstalled { get; set; }
 
         private bool Revit2018AppUpdateAvailable
         {
             get => Manager.Revit2018AppUpdateAvailable;
-            set => Revit2018UpdateStatus.Text = value 
-                ? _updateAvailable 
+            set => Revit2018UpdateStatus.Text = value
+                ? _updateAvailable
                 : _updateNotAvailable;
         }
+
+        private bool Revit2019AppInstalled { get; set; }
 
         private bool Revit2019AppUpdateAvailable { get; set; }
 
@@ -39,7 +41,6 @@ namespace BRPLUSA.Revit.Installers._2018
             InitializeComponent();
             InitializeServices();
             InitializeProductState();
-            //Task.Run(async () => await InitializeProductState());
         }
 
         private void InitializeServices()
@@ -47,7 +48,7 @@ namespace BRPLUSA.Revit.Installers._2018
             Manager = new InstallationManager();
         }
 
-        private async void InitializeProductState()
+        private void InitializeProductState()
         {
             Revit2018AppInstalled = Manager.Revit2018AppInstalled;
             Revit2018AppUpdateAvailable = Manager.Revit2018AppUpdateAvailable;
@@ -67,6 +68,7 @@ namespace BRPLUSA.Revit.Installers._2018
         {
             await Manager.HandleRevit2018ApplicationInstallation();
         }
+
         private async void UpgradeRevit2018(object sender, RoutedEventArgs e)
         {
             await Manager.HandleRevit2018ApplicationUpgrade();

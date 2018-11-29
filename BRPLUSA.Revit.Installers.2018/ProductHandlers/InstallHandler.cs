@@ -11,7 +11,7 @@ namespace BRPLUSA.Revit.Installers._2018.ProductHandlers
         private string LocalPath { get; set; }
         private string ServerPath { get; set; }
         private UpdateManager UpdateManager { get; set; }
-        private FileSystemHandler FileReplicationService { get; set; }
+        private FileSystemHandler FileHandler { get; set; }
         private ProductVersionHandler VersionHandler { get; set; }
         private ProductDownloadHandler DownloadHandler { get; set; }
         public bool Revit2018AppInstalled { get; set; }
@@ -24,8 +24,8 @@ namespace BRPLUSA.Revit.Installers._2018.ProductHandlers
 
         private void Initialize(bool useLocalFiles = false)
         {
-            LocalPath = UpdateManager.GetLocalAppDataDirectory() + @"\BRPLUSA\ProductVersions";
             ServerPath = "https://app-brplusa-release.s3.amazonaws.com";
+            LocalPath = UpdateManager.GetLocalAppDataDirectory() + @"\BRPLUSA\ProductVersions";
 
             UpdateManager = new UpdateManager(
                 useLocalFiles
@@ -34,7 +34,8 @@ namespace BRPLUSA.Revit.Installers._2018.ProductHandlers
 
             VersionHandler = new ProductVersionHandler(UpdateManager);
             DownloadHandler = new ProductDownloadHandler(UpdateManager);
-            FileReplicationService = new FileSystemHandler();
+            FileHandler = new FileSystemHandler(UpdateManager);
+
             ConfigureAppInstallation();
             InitializeProductState();
         }
@@ -47,12 +48,12 @@ namespace BRPLUSA.Revit.Installers._2018.ProductHandlers
 
         private bool CheckRevit2018AppInstallation()
         {
-            return false;
+            return FileHandler.IsRevit2018AppInstalled;
         }
 
         private bool CheckForRevit2018AppUpdates()
         {
-            return true;
+            return VersionHandler.Revit2018UpdateAvailable;
         }
 
         public void ConfigureAppInstallation()
@@ -70,7 +71,7 @@ namespace BRPLUSA.Revit.Installers._2018.ProductHandlers
                 onAppUninstall: async v => {
                     UpdateManager.RemoveShortcutForThisExe();
                     await UpdateManager.FullUninstall();
-                    FileReplicationService.CleanUpReplicationDirectory();
+                    //FileHandler.CleanUpReplicationDirectory();
                 },
                 onFirstRun: () =>
                 {
@@ -92,7 +93,7 @@ namespace BRPLUSA.Revit.Installers._2018.ProductHandlers
                 await DownloadHandler.DownloadNewReleases(info.ReleasesToApply);
                 var tempLocation = PushNewReleaseToTempLocation(info).Result;
 
-                FileReplicationService.HandleRevit2018Installation(tempLocation);
+                FileHandler.HandleRevit2018Installation(tempLocation);
 
                 return true;
             }
