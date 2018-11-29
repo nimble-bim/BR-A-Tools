@@ -7,7 +7,7 @@ namespace BRPLUSA.Revit.Installers._2018.ProductHandlers
 {
     public class ProductUpgradeHandler : BaseProductHandler
     {
-        public ProductUpgradeHandler(UpdateManager mgr, FileReplicationService frp)
+        public ProductUpgradeHandler(UpdateManager mgr, FileInstallationService frp)
             : base(mgr, frp) { }
 
         public async Task<bool> HandleProductUpgrade(ProductVersionHandler vHandler, ProductDownloadHandler dHandler, ProductInstallHandler iHandler)

@@ -10,7 +10,7 @@ namespace BRPLUSA.Revit.Installers._2018
         private string LocalPath { get; set; }
         private string ServerPath { get; set; }
         private UpdateManager UpdateManager { get; set; }
-        private FileReplicationService FileReplicationService { get; set; }
+        private FileInstallationService FileReplicationService { get; set; }
         public ProductInstallHandler InstallHandler { get; private set; }
         public ProductUpgradeHandler UpgradeHandler { get; private set; }
         public ProductDownloadHandler DownloadHandler { get; private set; }
@@ -31,14 +31,14 @@ namespace BRPLUSA.Revit.Installers._2018
                     ? LocalPath
                     : ServerPath);
 
-            FileReplicationService = new FileReplicationService();
+            FileReplicationService = new FileInstallationService();
 
             InitializeHandlers(UpdateManager, FileReplicationService);
 
             InstallHandler.ConfigureAppInstallation();
         }
 
-        private void InitializeHandlers(UpdateManager mgr, FileReplicationService frp)
+        private void InitializeHandlers(UpdateManager mgr, FileInstallationService frp)
         {
             InstallHandler = new ProductInstallHandler(mgr, frp);
             UpgradeHandler = new ProductUpgradeHandler(mgr, frp);

@@ -13,5 +13,6 @@ namespace BRPLUSA.Revit.Installers._2018.Services
             var data = release.Version.Version;
             return new VersionData(data.Major, data.Minor, data.Build, data.Revision);
         }
+
     }
 }

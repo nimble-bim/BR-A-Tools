@@ -6,6 +6,6 @@ namespace BRPLUSA.Revit.Installers._2018.ProductHandlers
     public interface IProductHandler
     {
         UpdateManager UpdateManager { get; set; }
-        FileReplicationService FileReplicationService { get; set; }
+        FileInstallationService FileReplicationService { get; set; }
     }
 }

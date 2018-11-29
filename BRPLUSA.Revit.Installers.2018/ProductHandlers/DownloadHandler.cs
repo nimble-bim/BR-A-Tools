@@ -8,7 +8,7 @@ namespace BRPLUSA.Revit.Installers._2018.ProductHandlers
 {
     public class ProductDownloadHandler : BaseProductHandler
     {
-        public ProductDownloadHandler(UpdateManager mgr, FileReplicationService frp)
+        public ProductDownloadHandler(UpdateManager mgr, FileInstallationService frp)
             : base(mgr, frp) { }
 
         public async Task DownloadNewReleases(IEnumerable<ReleaseEntry> releases)

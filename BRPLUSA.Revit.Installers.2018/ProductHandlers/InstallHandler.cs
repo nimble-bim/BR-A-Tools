@@ -8,7 +8,7 @@ namespace BRPLUSA.Revit.Installers._2018.ProductHandlers
 {
     public class ProductInstallHandler : BaseProductHandler
     {
-        public ProductInstallHandler(UpdateManager mgr, FileReplicationService frp)
+        public ProductInstallHandler(UpdateManager mgr, FileInstallationService frp)
             : base(mgr, frp) { }
 
         public void ConfigureAppInstallation()
@@ -46,26 +46,35 @@ namespace BRPLUSA.Revit.Installers._2018.ProductHandlers
 
         public async Task<bool> HandleProductInstallation(ProductVersionHandler vHandler, ProductDownloadHandler dHandler)
         {
-            if (vHandler.HasChecked && !vHandler.ShouldUpdate)
+            try
+            {
+                if (vHandler.HasChecked && !vHandler.ShouldUpdate)
+                    return true;
+
+                var info = await vHandler.GetVersionInformationFromServer();
+                await dHandler.DownloadNewReleases(info.ReleasesToApply);
+                var tempLocation = await PushNewReleaseToTempLocation(info);
+
+                FileReplicationService.InstallOnFileSystem(tempLocation);
+
                 return true;
+            }
 
-            var info = await vHandler.GetVersionInformationFromServer();
-            await dHandler.DownloadNewReleases(info.ReleasesToApply);
-            var success = await ApplyNewProduct(info);
+            catch (Exception e)
+            {
+                LoggingService.LogError("Unable to install product because of fatal error", e);
+            }
 
-            var appDir = UpdateManager.RootAppDirectory;
-            FileReplicationService.ReplicateFilesToRevitLocations(appDir);
-
-            return success;
+            return false;
         }
 
-        public async Task<bool> ApplyNewProduct(UpdateInfo info)
+        public async Task<string> PushNewReleaseToTempLocation(UpdateInfo info)
         {
             try
             {
-                var version = await UpdateManager.ApplyReleases(info);
+                var location = await UpdateManager.ApplyReleases(info);
 
-                return true;
+                return location;
             }
 
             catch (Exception e)

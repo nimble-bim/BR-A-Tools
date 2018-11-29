@@ -13,7 +13,7 @@ namespace BRPLUSA.Revit.Installers._2018.ProductHandlers
         private VersionData _localVersion;
         private VersionData _serverVersion;
 
-        public ProductVersionHandler(UpdateManager mgr, FileReplicationService frp) 
+        public ProductVersionHandler(UpdateManager mgr, FileInstallationService frp) 
             : base(mgr, frp) { }
 
         public bool ShouldUpdate

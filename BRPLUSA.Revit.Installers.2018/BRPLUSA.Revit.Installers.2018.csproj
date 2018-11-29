@@ -112,12 +112,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Compile Include="Services\FileInstallHandler.cs" />
+    <Compile Include="Services\ProductInstallationUtilities.cs" />
     <Compile Include="Services\VersionService.cs" />
     <Compile Include="AppInstallClient.xaml.cs">
       <DependentUpon>AppInstallClient.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\FileReplicationService.cs" />
+    <Compile Include="Services\FileInstallationService.cs" />
     <Compile Include="ProductSelectionView.xaml.cs">
       <DependentUpon>ProductSelectionView.xaml</DependentUpon>
       <SubType>Code</SubType>
