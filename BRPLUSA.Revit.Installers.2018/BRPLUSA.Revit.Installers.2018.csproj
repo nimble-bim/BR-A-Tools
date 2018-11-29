@@ -99,27 +99,24 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Entities\VersionData.cs" />
-    <Compile Include="ProductHandlers\BaseProductHandler.cs" />
     <Compile Include="ProductHandlers\DownloadHandler.cs" />
     <Compile Include="ProductHandlers\InstallHandler.cs" />
-    <Compile Include="ProductHandlers\IProductHandler.cs" />
     <Compile Include="Extensions\ReleaseEntryExtensions.cs" />
     <Compile Include="Providers\RevitAddinLocationProvider.cs" />
     <Compile Include="Providers\RevitVersion.cs" />
-    <Compile Include="ProductHandlers\ProductUpgradeHandler.cs" />
     <Compile Include="ProductHandlers\VersionCheckHandler.cs" />
     <Page Include="ProductSelectionView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Compile Include="Services\FileInstallHandler.cs" />
+    <Compile Include="ProductHandlers\FileInstallHandler.cs" />
     <Compile Include="Services\ProductInstallationUtilities.cs" />
     <Compile Include="Services\VersionService.cs" />
     <Compile Include="AppInstallClient.xaml.cs">
       <DependentUpon>AppInstallClient.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\FileInstallationService.cs" />
+    <Compile Include="ProductHandlers\FileSystemHandler.cs" />
     <Compile Include="ProductSelectionView.xaml.cs">
       <DependentUpon>ProductSelectionView.xaml</DependentUpon>
       <SubType>Code</SubType>

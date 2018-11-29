@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.IO;
 using BRPLUSA.Core.Services;
+using BRPLUSA.Revit.Installers._2018.Services;
 
-namespace BRPLUSA.Revit.Installers._2018.Services
+namespace BRPLUSA.Revit.Installers._2018.ProductHandlers
 {
     public class FileInstallHandler
     {

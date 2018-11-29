@@ -6,12 +6,54 @@ using Squirrel;
 
 namespace BRPLUSA.Revit.Installers._2018.ProductHandlers
 {
-    public class ProductInstallHandler : BaseProductHandler
+    public class ProductInstallHandler
     {
-        public ProductInstallHandler(UpdateManager mgr, FileInstallationService frp)
-            : base(mgr, frp) { }
-
+        private string LocalPath { get; set; }
+        private string ServerPath { get; set; }
+        private UpdateManager UpdateManager { get; set; }
+        private FileSystemHandler FileReplicationService { get; set; }
+        private ProductVersionHandler VersionHandler { get; set; }
+        private ProductDownloadHandler DownloadHandler { get; set; }
         public bool Revit2018AppInstalled { get; set; }
+        public bool Revit2018AppUpdateAvailable { get; set; }
+
+        public ProductInstallHandler(bool useLocalFiles = false)
+        {
+            Initialize(useLocalFiles);
+        }
+
+        private void Initialize(bool useLocalFiles = false)
+        {
+            LocalPath = UpdateManager.GetLocalAppDataDirectory() + @"\BRPLUSA\ProductVersions";
+            ServerPath = "https://app-brplusa-release.s3.amazonaws.com";
+
+            UpdateManager = new UpdateManager(
+                useLocalFiles
+                    ? LocalPath
+                    : ServerPath);
+
+            VersionHandler = new ProductVersionHandler(UpdateManager);
+            DownloadHandler = new ProductDownloadHandler(UpdateManager);
+            FileReplicationService = new FileSystemHandler();
+            ConfigureAppInstallation();
+            InitializeProductState();
+        }
+
+        private void InitializeProductState()
+        {
+            Revit2018AppInstalled = CheckRevit2018AppInstallation();
+            Revit2018AppUpdateAvailable = CheckForRevit2018AppUpdates();
+        }
+
+        private bool CheckRevit2018AppInstallation()
+        {
+            return false;
+        }
+
+        private bool CheckForRevit2018AppUpdates()
+        {
+            return true;
+        }
 
         public void ConfigureAppInstallation()
         {
@@ -39,15 +81,15 @@ namespace BRPLUSA.Revit.Installers._2018.ProductHandlers
             );
         }
 
-        public async Task<bool> HandleRevit2018Installation(ProductVersionHandler vHandler, ProductDownloadHandler dHandler)
+        public async Task<bool> HandleRevit2018Installation()
         {
             try
             {
-                if (vHandler.HasChecked && !vHandler.ShouldUpdate)
+                if (VersionHandler.HasCheckedForUpdate && !VersionHandler.Revit2018UpdateAvailable)
                     return true;
 
-                var info = await vHandler.GetVersionInformationFromServer();
-                await dHandler.DownloadNewReleases(info.ReleasesToApply);
+                var info = await VersionHandler.GetVersionInformationFromServer();
+                await DownloadHandler.DownloadNewReleases(info.ReleasesToApply);
                 var tempLocation = PushNewReleaseToTempLocation(info).Result;
 
                 FileReplicationService.HandleRevit2018Installation(tempLocation);
@@ -61,6 +103,11 @@ namespace BRPLUSA.Revit.Installers._2018.ProductHandlers
             }
 
             return false;
+        }
+
+        public async Task<bool> HandleRevit2018Upgrade()
+        {
+            return true;
         }
 
         public async Task<string> PushNewReleaseToTempLocation(UpdateInfo info)

@@ -1,16 +1,14 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Linq;
-using BRPLUSA.Core.Services;
 using BRPLUSA.Revit.Installers._2018.Providers;
 
-namespace BRPLUSA.Revit.Installers._2018.Services
+namespace BRPLUSA.Revit.Installers._2018.ProductHandlers
 {
-    public class FileInstallationService
+    public class FileSystemHandler
     {
         private FileInstallHandler InstallHandler { get; set; }
 
-        public FileInstallationService()
+        public FileSystemHandler()
         {
             Initialize();
         }

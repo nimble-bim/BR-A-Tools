@@ -6,32 +6,23 @@ using Squirrel;
 
 namespace BRPLUSA.Revit.Installers._2018.ProductHandlers
 {
-    public class ProductVersionHandler : BaseProductHandler
+    public class ProductVersionHandler
     {
-        private bool _hasChecked;
-        private bool _isOutdated;
-        private VersionData _localVersion;
-        private VersionData _serverVersion;
+        private UpdateManager UpdateManager { get; }
+        public VersionData LocalVersion { get; private set; }
+        public VersionData ServerVersion { get; private set; }
+        public bool Revit2018UpdateAvailable { get; private set; }
+        public bool HasCheckedForUpdate { get; private set; }
 
-        public ProductVersionHandler(UpdateManager mgr, FileInstallationService frp) 
-            : base(mgr, frp) { }
-
-        public bool ShouldUpdate
+        public ProductVersionHandler(UpdateManager mgr)
         {
-            get
-            {
-                return _isOutdated;
-            }
+            UpdateManager = mgr;
+            Initialize();
         }
 
-        public bool HasChecked
+        private void Initialize()
         {
-            get { return _hasChecked; }
-        }
-
-        public ReleaseEntry GetReleaseInfo()
-        {
-            throw new NotImplementedException();
+            GetVersionInformationFromServer().Wait();
         }
 
         public async Task<UpdateInfo> GetVersionInformationFromServer()
@@ -40,10 +31,10 @@ namespace BRPLUSA.Revit.Installers._2018.ProductHandlers
             {
                 var info = await UpdateManager.CheckForUpdate();
 
-                _localVersion = GetVersionData(info?.CurrentlyInstalledVersion);
-                _serverVersion = GetVersionData(info?.FutureReleaseEntry);
-                _isOutdated = _localVersion < _serverVersion;
-                _hasChecked = true;
+                LocalVersion = GetVersionData(info?.CurrentlyInstalledVersion);
+                ServerVersion = GetVersionData(info?.FutureReleaseEntry);
+                Revit2018UpdateAvailable = LocalVersion < ServerVersion;
+                HasCheckedForUpdate = true;
 
                 return info;
             }

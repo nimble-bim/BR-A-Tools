@@ -5,57 +5,48 @@ using BRPLUSA.Revit.Installers._2018.Services;
 
 namespace BRPLUSA.Revit.Installers._2018
 {
+    /// <summary>
+    /// This holds the status of the installation and manages
+    /// the process of installing and upgrading the product
+    /// </summary>
     public class InstallationManager
     {
-        private string LocalPath { get; set; }
-        private string ServerPath { get; set; }
-        private UpdateManager UpdateManager { get; set; }
-        private FileInstallationService FileReplicationService { get; set; }
-        public ProductInstallHandler InstallHandler { get; private set; }
-        public ProductUpgradeHandler UpgradeHandler { get; private set; }
-        public ProductDownloadHandler DownloadHandler { get; private set; }
-        public ProductVersionHandler VersionHandler { get; private set; }
+        public bool Revit2018AppUpdateAvailable { get; set; }
+        public bool Revit2018AppInstalled { get; set; }
+        private ProductInstallHandler InstallHandler { get; set; }
 
         public InstallationManager()
         {
             Initialize();
         }
 
-        private void Initialize(bool useLocalFiles = false)
+        private void Initialize()
         {
-            LocalPath = UpdateManager.GetLocalAppDataDirectory() + @"\BRPLUSA\ProductVersions";
-            ServerPath = "https://app-brplusa-release.s3.amazonaws.com";
-
-            UpdateManager = new UpdateManager(
-                useLocalFiles
-                    ? LocalPath
-                    : ServerPath);
-
-            FileReplicationService = new FileInstallationService();
-
-            InitializeHandlers(UpdateManager, FileReplicationService);
-
-            InstallHandler.ConfigureAppInstallation();
+            InitializeHandlers();
+            InitializeProductState();
         }
 
-        private void InitializeHandlers(UpdateManager mgr, FileInstallationService frp)
+        private void InitializeHandlers()
         {
-            InstallHandler = new ProductInstallHandler(mgr, frp);
-            UpgradeHandler = new ProductUpgradeHandler(mgr, frp);
-            DownloadHandler = new ProductDownloadHandler(mgr, frp);
-            VersionHandler = new ProductVersionHandler(mgr, frp);
+            InstallHandler = new ProductInstallHandler();
+        }
+
+        private void InitializeProductState()
+        {
+            Revit2018AppInstalled = InstallHandler.Revit2018AppInstalled;
+            Revit2018AppUpdateAvailable = InstallHandler.Revit2018AppUpdateAvailable;
         }
 
         public async Task<bool> HandleRevit2018ApplicationUpgrade()
         {
-            var success = await UpgradeHandler.HandleRevit2018Upgrade(VersionHandler, DownloadHandler, InstallHandler);
+            var success = await InstallHandler.HandleRevit2018Upgrade();
 
             return success;
         }
 
         public async Task<bool> HandleRevit2018ApplicationInstallation()
         {
-            var success = await InstallHandler.HandleRevit2018Installation(VersionHandler, DownloadHandler);
+            var success = await InstallHandler.HandleRevit2018Installation();
 
             return success;
         }

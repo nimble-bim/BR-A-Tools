@@ -17,7 +17,7 @@ namespace BRPLUSA.Revit.Installers._2018
 
         private bool Revit2018AppInstalled
         {
-            get => Manager.InstallHandler.Revit2018AppInstalled;
+            get => Manager.Revit2018AppInstalled;
             set => Revit2018AppInstallStatus.Text = value 
                 ? _productInstalled
                 : _productNeedsInstall;
@@ -26,7 +26,7 @@ namespace BRPLUSA.Revit.Installers._2018
 
         private bool Revit2018AppUpdateAvailable
         {
-            get => Manager.UpgradeHandler.Revit2018AppUpdateAvailable;
+            get => Manager.Revit2018AppUpdateAvailable;
             set => Revit2018UpdateStatus.Text = value 
                 ? _updateAvailable 
                 : _updateNotAvailable;
@@ -49,8 +49,8 @@ namespace BRPLUSA.Revit.Installers._2018
 
         private async void InitializeProductState()
         {
-            Revit2018AppInstalled = Manager.InstallHandler.Revit2018AppInstalled;
-            Revit2018AppUpdateAvailable = Manager.UpgradeHandler.Revit2018AppUpdateAvailable;
+            Revit2018AppInstalled = Manager.Revit2018AppInstalled;
+            Revit2018AppUpdateAvailable = Manager.Revit2018AppUpdateAvailable;
         }
 
         private void ShutdownPage(object sender, RoutedEventArgs e)
