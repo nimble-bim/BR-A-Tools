@@ -8,7 +8,11 @@ namespace BRPLUSA.Revit.Installers._2018
     /// </summary>
     public partial class ProductSelectionView : Window
     {
-        private InstallationManager Installer { get; set; }
+        private InstallationManager Manager { get; set; }
+        private bool Revit2018AppInstalled { get; set; }
+        private bool Revit2019AppInstalled { get; set; }
+        private bool Revit2018AppUpdateAvailable { get; set; }
+        private bool Revit2019AppUpdateAvailable { get; set; }
 
         public ProductSelectionView()
         {
@@ -18,18 +22,13 @@ namespace BRPLUSA.Revit.Installers._2018
 
         private void InitializeServices()
         {
-            Installer = new InstallationManager();
+            Manager = new InstallationManager();
         }
 
-        public bool NeedsUpdate
+        private void InitializeProductState()
         {
-            get { return Installer.VersionHandler.ShouldUpdate; }
+            Manager.VersionHandler.
         }
-
-        //public ProductSelectionView(InstallationManager manager) : this()
-        //{
-        //    Installer = manager;
-        //}
 
         private void ShutdownPage(object sender, RoutedEventArgs e)
         {
@@ -43,11 +42,11 @@ namespace BRPLUSA.Revit.Installers._2018
 
         private async void InstallRevit2018(object sender, RoutedEventArgs e)
         {
-            await Installer.HandleRevit2018ApplicationInstallation();
+            await Manager.HandleRevit2018ApplicationInstallation();
         }
         private async void UpgradeRevit2018(object sender, RoutedEventArgs e)
         {
-            await Installer.HandleRevit2018ApplicationUpgrade();
+            await Manager.HandleRevit2018ApplicationUpgrade();
         }
     }
 }
