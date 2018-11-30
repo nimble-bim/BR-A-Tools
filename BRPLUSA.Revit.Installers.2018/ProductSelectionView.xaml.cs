@@ -24,6 +24,7 @@ namespace BRPLUSA.Revit.Installers._2018
         private bool Revit2018Installed { get; set; }
         private bool AppFor2018Installed { get; set; }
         private bool AppFor2018Installing { get; set; }
+        private bool AppFor2018CanInstall { get; set; }
         private bool AppFor2018HasUpdateAvailable { get; set; }
 
         public ProductSelectionView()
@@ -66,11 +67,13 @@ namespace BRPLUSA.Revit.Installers._2018
         private void SetRevit2018InstallStatus(bool status)
         {
             AppFor2018Installed = status;
+            AppFor2018CanInstall = status;
         }
 
         private void ShowAppFor2018InstallationComplete()
         {
             AppFor2018Installing = false;
+            AppFor2018CanInstall = false;
             ButtonRevit2018AppInstallStatus.Background = new SolidColorBrush(Color.FromRgb(51,157,255));
             ButtonRevit2018AppInstallStatus.Content = "Installed";
         }
@@ -78,6 +81,7 @@ namespace BRPLUSA.Revit.Installers._2018
         private void ShowAppFor2018InstallationInProcess()
         {
             AppFor2018Installing = true;
+            AppFor2018CanInstall = false;
             ButtonRevit2018AppInstallStatus.Background = Brushes.Gray;
             ButtonRevit2018AppInstallStatus.Content = "Installing...";
         }
@@ -85,6 +89,7 @@ namespace BRPLUSA.Revit.Installers._2018
         private void ShowAppFor2018InstallationFailed()
         {
             AppFor2018Installing = false;
+            AppFor2018CanInstall = true;
             ButtonRevit2018AppInstallStatus.Background = Brushes.Crimson;
             ButtonRevit2018AppInstallStatus.Foreground = Brushes.White;
             ButtonRevit2018AppInstallStatus.Content = "Failed";
@@ -98,11 +103,14 @@ namespace BRPLUSA.Revit.Installers._2018
 
             Revit2018UpdateStatus.Foreground = Brushes.Crimson;
             Revit2018UpdateStatus.Text = "Revit 2018 Not Installed";
+
+            AppFor2018CanInstall = false;
         }
 
         private void SetAppFor2018InstallStatus(bool status)
         {
             AppFor2018Installed = status;
+            AppFor2018CanInstall = !status;
             ButtonRevit2018AppInstallStatus.Content = status
                 ? _productInstalled
                 : _productNeedsInstall;
@@ -132,7 +140,7 @@ namespace BRPLUSA.Revit.Installers._2018
 
         private async void InstallRevit2018(object sender, RoutedEventArgs e)
         {
-            if (AppFor2018Installed || AppFor2018Installing)
+            if (!AppFor2018CanInstall)
                 return;
 
             ShowAppFor2018InstallationInProcess();
