@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Threading.Tasks;
 using BRPLUSA.Core.Services;
-using BRPLUSA.Revit.Installers._2018.Services;
+using BRPLUSA.Revit.Installers._2018.ProductHandlers;
+using BRPLUSA.Revit.Installers._2018.Providers;
 using Squirrel;
 
-namespace BRPLUSA.Revit.Installers._2018.ProductHandlers
+namespace BRPLUSA.Revit.Installers._2018.Services
 {
-    public class ProductInstallHandler : IDisposable
+    public class InstallHandlingService : IDisposable
     {
         private string LocalPath { get; set; }
         private string ServerPath { get; set; }
@@ -14,10 +15,11 @@ namespace BRPLUSA.Revit.Installers._2018.ProductHandlers
         private FileSystemHandler FileHandler { get; set; }
         private ProductVersionHandler VersionHandler { get; set; }
         private ProductDownloadHandler DownloadHandler { get; set; }
+
         public bool Revit2018AppInstalled { get; set; }
         public bool Revit2018AppUpdateAvailable { get; set; }
 
-        public ProductInstallHandler(bool useLocalFiles = false)
+        public InstallHandlingService(bool useLocalFiles = false)
         {
             Initialize(useLocalFiles);
         }

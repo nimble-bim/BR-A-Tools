@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Squirrel;
 
-namespace BRPLUSA.Revit.Installers._2018
+namespace BRPLUSA.Revit.Installers._2018.Extensions
 {
     public static class ReleaseEntryExtensions
     {

@@ -1,8 +1,5 @@
 ﻿using System;
-using Squirrel;
 using System.Threading.Tasks;
-using System.Windows;
-using BRPLUSA.Revit.Installers._2018.ProductHandlers;
 using BRPLUSA.Revit.Installers._2018.Services;
 
 namespace BRPLUSA.Revit.Installers._2018
@@ -11,30 +8,51 @@ namespace BRPLUSA.Revit.Installers._2018
     /// This holds the status of the installation and manages
     /// the process of installing and upgrading the product
     /// </summary>
-    public class InstallationManager : IDisposable
+    public class InstallManager : IDisposable
     {
-        public bool Revit2018AppUpdateAvailable { get; set; }
-        public bool Revit2018AppInstalled { get; set; }
-        private ProductInstallHandler InstallHandler { get; set; }
+        public bool Revit2018IsInstalled { get; private set; }
+        public bool Revit2018AppUpdateAvailable { get; private set; }
+        public bool Revit2018AppInstalled { get; private set; }
+        private InstallHandlingService InstallHandler { get; set; }
+        private InstallStatusService StatusService {get; set;}
 
-        public InstallationManager()
+        public InstallManager()
         {
             Initialize();
         }
 
         private void Initialize()
         {
-            InitializeHandlers();
+            InitializeStatusService();
+            DoPreInstallStatusCheck();
+
+            if(Revit2018IsInstalled)
+                InitializeHandlers();
+        }
+
+        private void InitializeStatusService()
+        {
+            StatusService = new InstallStatusService();
+        }
+
+        private void DoPreInstallStatusCheck()
+        {
+            Revit2018IsInstalled = StatusService.IsRevit2018Installed;
         }
 
         private void InitializeHandlers()
         {
-            InstallHandler = new ProductInstallHandler();
+            InstallHandler = new InstallHandlingService();
         }
 
         public async Task InitializeProductState()
         {
             await InstallHandler.InitializeProductState();
+            SetInstallationStatuses();
+        }
+
+        private void SetInstallationStatuses()
+        {
             Revit2018AppInstalled = InstallHandler.Revit2018AppInstalled;
             Revit2018AppUpdateAvailable = InstallHandler.Revit2018AppUpdateAvailable;
         }

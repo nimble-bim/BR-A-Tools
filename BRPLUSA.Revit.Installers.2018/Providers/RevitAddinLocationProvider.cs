@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 
 namespace BRPLUSA.Revit.Installers._2018.Providers
 {
@@ -59,6 +60,13 @@ namespace BRPLUSA.Revit.Installers._2018.Providers
                 case RevitVersion.Unknown:
                     throw new Exception("Unknown version");
             }
+        }
+
+        public static bool IsRevitVersionInstalled(RevitVersion revitVersion)
+        {
+            var addinFolder = GetRevitAddinFolderLocation(revitVersion);
+
+            return Directory.Exists(addinFolder);
         }
     }
 }

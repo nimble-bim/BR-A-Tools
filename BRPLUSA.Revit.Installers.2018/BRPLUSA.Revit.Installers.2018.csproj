@@ -103,7 +103,7 @@
     </ApplicationDefinition>
     <Compile Include="Entities\VersionData.cs" />
     <Compile Include="ProductHandlers\DownloadHandler.cs" />
-    <Compile Include="ProductHandlers\InstallHandler.cs" />
+    <Compile Include="Services\InstallHandlingService.cs" />
     <Compile Include="Extensions\ReleaseEntryExtensions.cs" />
     <Compile Include="Providers\RevitAddinLocationProvider.cs" />
     <Compile Include="Providers\RevitVersion.cs" />
@@ -113,6 +113,7 @@
       <SubType>Designer</SubType>
     </Page>
     <Compile Include="ProductHandlers\FileInstallHandler.cs" />
+    <Compile Include="Services\InstallStatusService.cs" />
     <Compile Include="Services\ProductInstallationUtilities.cs" />
     <Compile Include="Services\VersionService.cs" />
     <Compile Include="AppInstallClient.xaml.cs">
@@ -126,7 +127,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="InstallationManager.cs" />
+    <Compile Include="InstallManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
