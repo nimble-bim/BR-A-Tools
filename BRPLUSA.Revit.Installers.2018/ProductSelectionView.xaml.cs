@@ -49,15 +49,16 @@ namespace BRPLUSA.Revit.Installers._2018
 
         private async Task InitializeProductState()
         {
-            await Manager.InitializeProductState();
-            SetInstallationStatuses();
+            await SetInstallationStatuses();
         }
 
-        private void SetInstallationStatuses()
+        private async Task SetInstallationStatuses()
         {
+            await Manager.InitializeProductState();
+
             SetRevit2018Status(Manager.Revit2018AppInstalled);
-            SetV2018InstallationStatus(Manager.Revit2018AppInstalled);
-            SetV2018UpdateAvailability(Manager.Revit2018AppUpdateAvailable);
+            SetAppFor2018InstallStatus(Manager.Revit2018AppInstalled);
+            SetAppFor2018UpdateAvailability(Manager.Revit2018AppUpdateAvailable);
 
             if (!Revit2018Installed)
                 ReportRevit2018NotInstalled();
@@ -66,13 +67,64 @@ namespace BRPLUSA.Revit.Installers._2018
         private void ReportRevit2018NotInstalled()
         {
             ShowRevit2018NotInstalled();
-            ShowRevit2018InstallationFailed();
+            ShowAppFor2018InstallationFailed();
             Revit2018UpdateStatus.Text = "Revit 2018 is not installed!";
         }
 
         private void SetRevit2018Status(bool status)
         {
             AppFor2018Installed = status;
+        }
+
+        private void ShowAppFor2018InstallationComplete()
+        {
+            AppFor2018Installing = false;
+            ButtonRevit2018AppInstallStatus.Background = new SolidColorBrush(Color.FromRgb(51,157,255));
+            ButtonRevit2018AppInstallStatus.Content = "Installed";
+        }
+
+        private void ShowAppFor2018InstallationInProcess()
+        {
+            AppFor2018Installing = true;
+            ButtonRevit2018AppInstallStatus.Background = Brushes.Gray;
+            ButtonRevit2018AppInstallStatus.Content = "Installing...";
+        }
+
+        private void ShowAppFor2018InstallationFailed()
+        {
+            AppFor2018Installing = false;
+            ButtonRevit2018AppInstallStatus.Background = Brushes.Crimson;
+            ButtonRevit2018AppInstallStatus.Foreground = Brushes.White;
+            ButtonRevit2018AppInstallStatus.Content = "Failed";
+        }
+
+        private void ShowRevit2018NotInstalled()
+        {
+            ButtonRevit2018AppInstallStatus.Background = Brushes.Gray;
+            ButtonRevit2018AppInstallStatus.Foreground = Brushes.White;
+            ButtonRevit2018AppInstallStatus.Content = "Can't Install";
+
+            Revit2018UpdateStatus.Foreground = Brushes.Crimson;
+            Revit2018UpdateStatus.Text = "Revit 2018 Not Installed";
+            
+        }
+
+        private void SetAppFor2018InstallStatus(bool status)
+        {
+            AppFor2018Installed = status;
+            ButtonRevit2018AppInstallStatus.Content = status
+                ? _productInstalled
+                : _productNeedsInstall;
+        }
+
+        private void SetAppFor2018UpdateAvailability(bool status)
+        {
+            Revit2018UpdateStatus.Text = status
+                ? _updateAvailable
+                : _updateNotAvailable;
+
+            if (Revit2018Installed)
+                ButtonRevit2018AppInstallStatus.Content = _productCanBeUpgraded;
         }
 
         private void ShutdownPage(object sender, RoutedEventArgs e)
@@ -91,7 +143,7 @@ namespace BRPLUSA.Revit.Installers._2018
             if (AppFor2018Installed || AppFor2018Installing)
                 return;
 
-            ShowRevit2018InstallationInProcess();
+            ShowAppFor2018InstallationInProcess();
 
             //var success = await Manager.HandleRevit2018ApplicationInstallation();
 
@@ -111,53 +163,8 @@ namespace BRPLUSA.Revit.Installers._2018
                 }
             );
 
-            promise.Done(ShowRevit2018InstallationComplete,
-                (err) => ShowRevit2018InstallationFailed());
-        }
-
-        private void ShowRevit2018InstallationComplete()
-        {
-            AppFor2018Installing = false;
-            ButtonRevit2018AppInstallStatus.Background = new SolidColorBrush(Color.FromRgb(51,157,255));
-            ButtonRevit2018AppInstallStatus.Content = "Installed";
-        }
-
-        private void ShowRevit2018InstallationInProcess()
-        {
-            AppFor2018Installing = true;
-            ButtonRevit2018AppInstallStatus.Background = Brushes.Gray;
-            ButtonRevit2018AppInstallStatus.Content = "Installing...";
-        }
-
-        private void ShowRevit2018InstallationFailed()
-        {
-            AppFor2018Installing = false;
-            ButtonRevit2018AppInstallStatus.Background = Brushes.Crimson;
-            ButtonRevit2018AppInstallStatus.Foreground = Brushes.White;
-            ButtonRevit2018AppInstallStatus.Content = "Failed";
-        }
-
-        private void ShowRevit2018NotInstalled()
-        {
-            throw new NotImplementedException();
-        }
-
-        private void SetV2018InstallationStatus(bool status)
-        {
-            AppFor2018Installed = status;
-            ButtonRevit2018AppInstallStatus.Content = status
-                ? _productInstalled
-                : _productNeedsInstall;
-        }
-
-        private void SetV2018UpdateAvailability(bool status)
-        {
-            Revit2018UpdateStatus.Text = status
-                ? _updateAvailable
-                : _updateNotAvailable;
-
-            if (Revit2018Installed)
-                ButtonRevit2018AppInstallStatus.Content = _productCanBeUpgraded;
+            promise.Done(ShowAppFor2018InstallationComplete,
+                (err) => ShowAppFor2018InstallationFailed());
         }
 
         public void Dispose()
