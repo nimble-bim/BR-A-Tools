@@ -50,7 +50,7 @@ namespace BRPLUSA.Revit.Installers._2018
 
         private async Task SetInstallationStatuses()
         {
-            SetRevit2018InstalledStatus(Manager.Revit2018Installed);
+            SetRevit2018InstallStatus(Manager.Revit2018Installed);
 
             if (!Revit2018Installed)
             {
@@ -63,7 +63,7 @@ namespace BRPLUSA.Revit.Installers._2018
             SetAppFor2018UpdateAvailability(Manager.AppFor2018HasUpdateAvailable);
         }
 
-        private void SetRevit2018InstalledStatus(bool status)
+        private void SetRevit2018InstallStatus(bool status)
         {
             AppFor2018Installed = status;
         }

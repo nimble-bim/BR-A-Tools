@@ -73,7 +73,7 @@ namespace BRPLUSA.Revit.Installers._2018
 
         public void Dispose()
         {
-            InstallHandler.Dispose();
+            InstallHandler?.Dispose();
         }
     }
 }
