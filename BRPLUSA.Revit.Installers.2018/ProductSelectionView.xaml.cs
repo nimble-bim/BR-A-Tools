@@ -24,11 +24,7 @@ namespace BRPLUSA.Revit.Installers._2018
         private bool Revit2018Installed { get; set; }
         private bool AppFor2018Installed { get; set; }
         private bool AppFor2018Installing { get; set; }
-
-        private bool AppFor2018HasUpdateAvailable
-        {
-            get => Manager.Revit2018AppUpdateAvailable;
-        }
+        private bool AppFor2018HasUpdateAvailable { get; set; }
 
         public ProductSelectionView()
         {
@@ -54,17 +50,20 @@ namespace BRPLUSA.Revit.Installers._2018
 
         private async Task SetInstallationStatuses()
         {
-            await Manager.InitializeProductState();
-
-            SetRevit2018Status(Manager.Revit2018AppInstalled);
-            SetAppFor2018InstallStatus(Manager.Revit2018AppInstalled);
-            SetAppFor2018UpdateAvailability(Manager.Revit2018AppUpdateAvailable);
+            SetRevit2018InstalledStatus(Manager.Revit2018Installed);
 
             if (!Revit2018Installed)
+            {
                 ShowRevit2018NotInstalled();
+                return;
+            }
+
+            await Manager.InitializeProductState();
+            SetAppFor2018InstallStatus(Manager.AppFor2018Installed);
+            SetAppFor2018UpdateAvailability(Manager.AppFor2018HasUpdateAvailable);
         }
 
-        private void SetRevit2018Status(bool status)
+        private void SetRevit2018InstalledStatus(bool status)
         {
             AppFor2018Installed = status;
         }
@@ -111,6 +110,7 @@ namespace BRPLUSA.Revit.Installers._2018
 
         private void SetAppFor2018UpdateAvailability(bool status)
         {
+            AppFor2018HasUpdateAvailable = status;
             Revit2018UpdateStatus.Text = status
                 ? _updateAvailable
                 : _updateNotAvailable;

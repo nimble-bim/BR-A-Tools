@@ -10,9 +10,9 @@ namespace BRPLUSA.Revit.Installers._2018
     /// </summary>
     public class InstallManager : IDisposable
     {
-        public bool Revit2018IsInstalled { get; private set; }
-        public bool Revit2018AppUpdateAvailable { get; private set; }
-        public bool Revit2018AppInstalled { get; private set; }
+        public bool Revit2018Installed { get; private set; }
+        public bool AppFor2018HasUpdateAvailable { get; private set; }
+        public bool AppFor2018Installed { get; private set; }
         private InstallHandlingService InstallHandler { get; set; }
         private InstallStatusService StatusService {get; set;}
 
@@ -26,7 +26,7 @@ namespace BRPLUSA.Revit.Installers._2018
             InitializeStatusService();
             DoPreInstallStatusCheck();
 
-            if(Revit2018IsInstalled)
+            if(Revit2018Installed)
                 InitializeHandlers();
         }
 
@@ -37,7 +37,7 @@ namespace BRPLUSA.Revit.Installers._2018
 
         private void DoPreInstallStatusCheck()
         {
-            Revit2018IsInstalled = StatusService.IsRevit2018Installed;
+            Revit2018Installed = StatusService.IsRevit2018Installed;
         }
 
         private void InitializeHandlers()
@@ -53,8 +53,8 @@ namespace BRPLUSA.Revit.Installers._2018
 
         private void SetInstallationStatuses()
         {
-            Revit2018AppInstalled = InstallHandler.Revit2018AppInstalled;
-            Revit2018AppUpdateAvailable = InstallHandler.Revit2018AppUpdateAvailable;
+            AppFor2018Installed = InstallHandler.Revit2018AppInstalled;
+            AppFor2018HasUpdateAvailable = InstallHandler.Revit2018AppUpdateAvailable;
         }
 
         public async Task<bool> HandleRevit2018ApplicationUpgrade()
