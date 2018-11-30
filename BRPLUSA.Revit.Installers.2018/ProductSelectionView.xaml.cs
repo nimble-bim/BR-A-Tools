@@ -61,14 +61,7 @@ namespace BRPLUSA.Revit.Installers._2018
             SetAppFor2018UpdateAvailability(Manager.Revit2018AppUpdateAvailable);
 
             if (!Revit2018Installed)
-                ReportRevit2018NotInstalled();
-        }
-
-        private void ReportRevit2018NotInstalled()
-        {
-            ShowRevit2018NotInstalled();
-            ShowAppFor2018InstallationFailed();
-            Revit2018UpdateStatus.Text = "Revit 2018 is not installed!";
+                ShowRevit2018NotInstalled();
         }
 
         private void SetRevit2018Status(bool status)
@@ -106,7 +99,6 @@ namespace BRPLUSA.Revit.Installers._2018
 
             Revit2018UpdateStatus.Foreground = Brushes.Crimson;
             Revit2018UpdateStatus.Text = "Revit 2018 Not Installed";
-            
         }
 
         private void SetAppFor2018InstallStatus(bool status)
