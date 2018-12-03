@@ -66,7 +66,7 @@ namespace BRPLUSA.Revit.Installers._2018
 
         private void SetRevit2018InstallStatus(bool status)
         {
-            AppFor2018Installed = status;
+            Revit2018Installed = status;
             AppFor2018CanInstall = status;
         }
 
