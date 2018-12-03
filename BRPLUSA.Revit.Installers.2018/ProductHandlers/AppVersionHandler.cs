@@ -6,7 +6,7 @@ using Squirrel;
 
 namespace BRPLUSA.Revit.Installers._2018.ProductHandlers
 {
-    public class ProductVersionHandler
+    public class AppVersionHandler
     {
         private UpdateManager UpdateManager { get; set; }
         public VersionData LocalVersion { get; private set; }
@@ -14,7 +14,7 @@ namespace BRPLUSA.Revit.Installers._2018.ProductHandlers
         public bool Revit2018UpdateAvailable { get; private set; }
         public bool HasCheckedForUpdate { get; private set; }
 
-        public ProductVersionHandler(UpdateManager mgr)
+        public AppVersionHandler(UpdateManager mgr)
         {
             Initialize(mgr);
         }

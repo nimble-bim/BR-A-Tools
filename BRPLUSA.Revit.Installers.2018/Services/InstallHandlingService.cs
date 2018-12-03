@@ -13,7 +13,7 @@ namespace BRPLUSA.Revit.Installers._2018.Services
         private string ServerPath { get; set; }
         private UpdateManager UpdateManager { get; set; }
         private FileSystemHandler FileHandler { get; set; }
-        private ProductVersionHandler VersionHandler { get; set; }
+        private AppVersionHandler VersionHandler { get; set; }
         private ProductDownloadHandler DownloadHandler { get; set; }
 
         public bool Revit2018AppInstalled { get; set; }
@@ -39,7 +39,7 @@ namespace BRPLUSA.Revit.Installers._2018.Services
 
         public async Task InitializeProductState()
         {
-            VersionHandler = new ProductVersionHandler(UpdateManager);
+            VersionHandler = new AppVersionHandler(UpdateManager);
             DownloadHandler = new ProductDownloadHandler(UpdateManager);
             FileHandler = new FileSystemHandler(UpdateManager);
 
