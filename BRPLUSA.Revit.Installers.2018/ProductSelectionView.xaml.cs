@@ -165,8 +165,10 @@ namespace BRPLUSA.Revit.Installers._2018
                 }
             );
 
-            promise.Done(ShowAppFor2018InstallationComplete,
-                (err) => ShowAppFor2018InstallationFailed());
+            promise.Done(
+                ShowAppFor2018InstallationComplete,
+                (err) => ShowAppFor2018InstallationFailed()
+                );
         }
 
         public void Dispose()
