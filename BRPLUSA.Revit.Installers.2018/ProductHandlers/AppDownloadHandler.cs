@@ -1,22 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using BRPLUSA.Core.Services;
 using BRPLUSA.Revit.Installers._2018.Services;
 using Squirrel;
 
 namespace BRPLUSA.Revit.Installers._2018.ProductHandlers
 {
-    public class ProductDownloadHandler
+    public class AppDownloadHandler
     {
         private UpdateManager UpdateManager { get; set; }
-        public ProductDownloadHandler(UpdateManager mgr)
+        public AppDownloadHandler(UpdateManager mgr)
         {
             UpdateManager = mgr;
         }
 
         public async Task InitializeProductState()
         {
-
+            LoggingService.LogInfo("Initializing AppDownloadHandler");
+            LoggingService.LogInfo("Initialized AppDownloadHandler");
         }
 
         public async Task DownloadNewReleases(IEnumerable<ReleaseEntry> releases)

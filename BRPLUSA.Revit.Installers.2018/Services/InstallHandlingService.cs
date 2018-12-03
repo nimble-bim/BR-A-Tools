@@ -14,14 +14,16 @@ namespace BRPLUSA.Revit.Installers._2018.Services
         private UpdateManager UpdateManager { get; set; }
         private FileSystemHandler FileHandler { get; set; }
         private AppVersionHandler VersionHandler { get; set; }
-        private ProductDownloadHandler DownloadHandler { get; set; }
+        private AppDownloadHandler DownloadHandler { get; set; }
 
         public bool Revit2018AppInstalled { get; set; }
         public bool Revit2018AppUpdateAvailable { get; set; }
 
         public InstallHandlingService(bool useLocalFiles = false)
         {
+            LoggingService.LogInfo("Initializing Install Handling Service");
             Initialize(useLocalFiles);
+            LoggingService.LogInfo("Initialized Install Handling Service");
         }
 
         private void Initialize(bool useLocalFiles = false)
@@ -34,26 +36,32 @@ namespace BRPLUSA.Revit.Installers._2018.Services
                     ? LocalPath
                     : ServerPath);
 
+            LoggingService.LogInfo(useLocalFiles 
+                ? "Update Manager is using local path" 
+                : "Update Manager is using server path");
+
+            LoggingService.LogInfo("Starting app installation configuration");
             ConfigureAppInstallation();
+            LoggingService.LogInfo("Completed app installation configuration");
         }
 
         public async Task InitializeProductState()
         {
             VersionHandler = new AppVersionHandler(UpdateManager);
-            DownloadHandler = new ProductDownloadHandler(UpdateManager);
+            DownloadHandler = new AppDownloadHandler(UpdateManager);
             FileHandler = new FileSystemHandler(UpdateManager);
 
             await VersionHandler.InitializeProductState();
             await DownloadHandler.InitializeProductState();
             await FileHandler.InitializeProductState();
 
-            Revit2018AppInstalled = CheckRevit2018AppInstallation();
+            Revit2018AppInstalled = await IsAppForRevit2018Installed();
             Revit2018AppUpdateAvailable = CheckForRevit2018AppUpdates();
         }
 
-        private bool CheckRevit2018AppInstallation()
+        private async Task<bool> IsAppForRevit2018Installed()
         {
-            return FileHandler.IsRevit2018AppInstalled;
+            return await InstallStatusService.IsAppForRevit2018Installed();
         }
 
         private bool CheckForRevit2018AppUpdates()
@@ -91,9 +99,6 @@ namespace BRPLUSA.Revit.Installers._2018.Services
         {
             try
             {
-                //if (VersionHandler.HasCheckedForUpdate && !VersionHandler.Revit2018UpdateAvailable)
-                //    return true;
-
                 var info = await VersionHandler.GetVersionInformationFromServer();
                 await DownloadHandler.DownloadNewReleases(info.ReleasesToApply);
                 var tempLocation = await PushNewReleaseToTempLocation(info);

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using BRPLUSA.Core.Services;
 using BRPLUSA.Revit.Installers._2018.Entities;
 using BRPLUSA.Revit.Installers._2018.Services;
 using Squirrel;
@@ -16,7 +17,9 @@ namespace BRPLUSA.Revit.Installers._2018.ProductHandlers
 
         public AppVersionHandler(UpdateManager mgr)
         {
+            LoggingService.LogInfo("Initializing AppVersionHandler");
             Initialize(mgr);
+            LoggingService.LogInfo("Initialized AppVersionHandler");
         }
 
         private void Initialize(UpdateManager mgr)
@@ -31,29 +34,39 @@ namespace BRPLUSA.Revit.Installers._2018.ProductHandlers
 
         public async Task<UpdateInfo> GetVersionInformationFromServer()
         {
-            try
-            {
-                var info = await UpdateManager.CheckForUpdate();
+            var info = await UpdateManager.CheckForUpdate();
 
-                LocalVersion = GetVersionData(info?.CurrentlyInstalledVersion);
-                ServerVersion = GetVersionData(info?.FutureReleaseEntry);
-                Revit2018UpdateAvailable = LocalVersion < ServerVersion;
-                HasCheckedForUpdate = true;
+            LocalVersion = GetLocalVersion(info);
+            ServerVersion = GetServerVersion(info);
 
-                return info;
-            }
-
-            catch (Exception e)
-            {
-                throw new Exception("Failed to retrieve information", e);
-            }
+            return info;
         }
 
-        public VersionData GetVersionData(ReleaseEntry info)
+        private VersionData GetVersionData(ReleaseEntry info)
         {
+            LoggingService.LogInfo("Getting version data...");
             var version = VersionService.GetVersionInformation(info);
+            LoggingService.LogInfo($"Version is: {version}");
 
             return version;
+        }
+
+        private VersionData GetLocalVersion(UpdateInfo info)
+        {
+            LoggingService.LogInfo("Confirming local version data...");
+            var local = GetVersionData(info?.CurrentlyInstalledVersion);
+            LoggingService.LogInfo("Local version confirmed");
+
+            return local;
+        }
+
+        private VersionData GetServerVersion(UpdateInfo info)
+        {
+            LoggingService.LogInfo("Confirming server version data...");
+            var server = GetVersionData(info?.FutureReleaseEntry);
+            LoggingService.LogInfo("Server version confirmed");
+
+            return server;
         }
     }
 }

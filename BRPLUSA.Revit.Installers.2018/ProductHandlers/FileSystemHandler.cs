@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using BRPLUSA.Revit.Installers._2018.Providers;
+using BRPLUSA.Revit.Installers._2018.Services;
 using Squirrel;
 
 namespace BRPLUSA.Revit.Installers._2018.ProductHandlers
@@ -26,7 +27,7 @@ namespace BRPLUSA.Revit.Installers._2018.ProductHandlers
 
         public async Task InitializeProductState()
         {
-            IsRevit2018AppInstalled = await CheckForRevit2018AppInstallations();
+            IsRevit2018AppInstalled = await IsAppForRevit2018Installed();
         }
 
         public async Task HandleRevit2018Installation(string tempDir, string destDir = null)
@@ -38,16 +39,9 @@ namespace BRPLUSA.Revit.Installers._2018.ProductHandlers
             InstallHandler.HandleFileInstallation(files, finalDir);
         }
 
-        private async Task<bool> CheckForRevit2018AppInstallations()
+        private async Task<bool> IsAppForRevit2018Installed()
         {
-            if (UpdateManager?.CurrentlyInstalledVersion() != null)
-                return true;
-
-            var v2018 = RevitAddinLocationProvider.GetRevitAddinFolderLocation(RevitVersion.V2018);
-            var addinFiles = await Task.Run(() => Directory.EnumerateFiles(v2018).ToArray());
-            var v2018installed = addinFiles.Any(fileName => fileName.Contains("BRPLUSA.addin"));
-
-            return v2018installed;
+            return await InstallStatusService.IsAppForRevit2018Installed();
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using BRPLUSA.Core.Services;
 
 namespace BRPLUSA.Revit.Installers._2018.Providers
 {
@@ -25,7 +26,9 @@ namespace BRPLUSA.Revit.Installers._2018.Providers
         {
             get
             {
-                return RevitAddinLocation + @"\2018";
+                var location = RevitAddinLocation + @"\2018";
+                LoggingService.LogInfo($"Revit 2018 found here: {location}");
+                return location;
             }
         }
 
@@ -47,6 +50,7 @@ namespace BRPLUSA.Revit.Installers._2018.Providers
 
         public static string GetRevitAddinFolderLocation(RevitVersion version)
         {
+            LoggingService.LogInfo("Searching for Revit addin locations...");
             switch (version)
             {
                 case RevitVersion.V2018:
@@ -58,15 +62,22 @@ namespace BRPLUSA.Revit.Installers._2018.Providers
 
                 default:
                 case RevitVersion.Unknown:
-                    throw new Exception("Unknown version");
+                    var exception = new Exception("Unknown version");
+                    LoggingService.LogError("Couldn't identify this version of Revit", exception);
+                    throw exception;
             }
         }
 
         public static bool IsRevitVersionInstalled(RevitVersion revitVersion)
         {
+            LoggingService.LogInfo("Checking for Revit installations");
             var addinFolder = GetRevitAddinFolderLocation(revitVersion);
 
-            return Directory.Exists(addinFolder);
+            var exists = Directory.Exists(addinFolder);
+            var status = exists ? "This version of Revit does exist" : "This version of Revit doesn't exist";
+            LoggingService.LogInfo(status);
+
+            return exists;
         }
     }
 }

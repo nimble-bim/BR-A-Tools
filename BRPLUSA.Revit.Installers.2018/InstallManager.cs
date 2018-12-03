@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using BRPLUSA.Core.Services;
 using BRPLUSA.Revit.Installers._2018.Services;
 
 namespace BRPLUSA.Revit.Installers._2018
@@ -14,7 +15,6 @@ namespace BRPLUSA.Revit.Installers._2018
         public bool AppFor2018HasUpdateAvailable { get; private set; }
         public bool AppFor2018Installed { get; private set; }
         private InstallHandlingService InstallHandler { get; set; }
-        private InstallStatusService StatusService {get; set;}
 
         public InstallManager()
         {
@@ -23,21 +23,17 @@ namespace BRPLUSA.Revit.Installers._2018
 
         private void Initialize()
         {
-            InitializeStatusService();
+            LoggingService.LogInfo("Initializing InstallationManager");
             DoPreInstallStatusCheck();
 
             if(Revit2018Installed)
                 InitializeHandlers();
-        }
-
-        private void InitializeStatusService()
-        {
-            StatusService = new InstallStatusService();
+            LoggingService.LogInfo("Initialized InstallationManager");
         }
 
         private void DoPreInstallStatusCheck()
         {
-            Revit2018Installed = StatusService.IsRevit2018Installed;
+            Revit2018Installed = InstallStatusService.IsRevit2018Installed();
         }
 
         private void InitializeHandlers()

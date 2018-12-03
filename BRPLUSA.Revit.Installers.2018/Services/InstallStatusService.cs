@@ -1,20 +1,79 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BRPLUSA.Core.Services;
+using BRPLUSA.Revit.Installers._2018.Entities;
 using BRPLUSA.Revit.Installers._2018.Providers;
+using Squirrel;
 
 namespace BRPLUSA.Revit.Installers._2018.Services
 {
     public class InstallStatusService
     {
-        public bool IsRevit2018Installed
+        public static bool IsRevit2018Installed()
         {
-            get
+            LoggingService.LogInfo("Checking if Revit 2018 is installed");
+            var installed = RevitAddinLocationProvider.IsRevitVersionInstalled(RevitVersion.V2018);
+            LoggingService.LogInfo(installed ? "Revit 2018 is installed" : "Revit 2018 is not installed");
+
+            return installed;
+        }
+
+        public static async Task<bool> IsAppForRevit2018Installed()
+        {
+            LoggingService.LogInfo("Checking if our app for Revit 2018 is installed");
+
+            var v2018 = RevitAddinLocationProvider.GetRevitAddinFolderLocation(RevitVersion.V2018);
+            var addinFiles = await Task.Run(() => Directory.EnumerateFiles(v2018).ToArray());
+            var installed = addinFiles.Any(fileName => fileName.Contains("BRPLUSA.addin"));
+
+            LoggingService.LogInfo(installed ? "Our app is installed" : "Our app is not installed");
+
+            return installed;
+        }
+
+        public static async Task<bool> IsAppForRevit2018UpdateAvailable(UpdateManager mgr)
+        {
+            try
             {
-                return RevitAddinLocationProvider.IsRevitVersionInstalled(RevitVersion.V2018);
+                LoggingService.LogInfo("Checking for updated version of app software");
+                var info = await mgr.CheckForUpdate();
+
+                LoggingService.LogInfo("Confirming local version data...");
+                LocalVersion = GetVersionData(info?.CurrentlyInstalledVersion);
+                LoggingService.LogInfo("Local version confirmed");
+
+                LoggingService.LogInfo("Confirming server version data...");
+                ServerVersion = GetVersionData(info?.FutureReleaseEntry);
+                LoggingService.LogInfo("Server version confirmed");
+
+                Revit2018UpdateAvailable = LocalVersion < ServerVersion;
+                HasCheckedForUpdate = true;
+
+                LoggingService.LogInfo("Update check complete");
+                LoggingService.LogInfo(Revit2018UpdateAvailable
+                    ? "Update available"
+                    : "No further updates available");
+
+                return info;
             }
+
+            catch (Exception e)
+            {
+                throw new Exception("Failed to retrieve information", e);
+            }
+        }
+
+        private static VersionData GetVersionData(ReleaseEntry info)
+        {
+            LoggingService.LogInfo("Getting version data...");
+            var version = VersionService.GetVersionInformation(info);
+            LoggingService.LogInfo($"Version is: {version}");
+
+            return version;
         }
     }
 }
