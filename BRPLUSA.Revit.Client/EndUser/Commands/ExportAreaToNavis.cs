@@ -8,7 +8,6 @@ using Autodesk.Revit.UI;
 using Autodesk.Revit.UI.Selection;
 using BRPLUSA.Core;
 using BRPLUSA.Core.Utilities;
-using BRPLUSA.Navisworks.Client;
 using BRPLUSA.Revit.Core.Exceptions;
 using Document = Autodesk.Revit.DB.Document;
 
@@ -86,13 +85,13 @@ namespace BRPLUSA.Revit.Client.EndUser.Commands
 
         private void StartClashDetectionThread(string navisFileName)
         {
-            void ClashThread()
-            {
-                NavisworksServer.InitiateClashDetection(navisFileName);
-            }
+            //void ClashThread()
+            //{
+            //    NavisworksServer.InitiateClashDetection(navisFileName);
+            //}
 
-            var thread = new Thread(ClashThread);
-            thread.Start();
+            //var thread = new Thread(ClashThread);
+            //thread.Start();
         }
 
         private string GetProjectNumber(string projFolder)

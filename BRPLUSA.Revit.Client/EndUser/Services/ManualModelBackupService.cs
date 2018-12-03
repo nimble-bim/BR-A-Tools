@@ -4,16 +4,16 @@ using BRPLUSA.Revit.Services.Updates;
 
 namespace BRPLUSA.Revit.Client.EndUser.Services
 {
-    public class ManualModelBackupService : ISocketConsumptionService
+    public class ManualModelBackupService : ISocketConsumer
     {
         private ModelBackupService BackupService { get; set; }
 
-        private void Initialize(Document doc, ISocketService service)
+        private void Initialize(Document doc, ISocketProvider service)
         {
             BackupService = new ModelBackupService(doc, service);
         }
 
-        public void Register(ISocketService service, Document doc)
+        public void Register(ISocketProvider service, Document doc)
         {
             Initialize(doc, service);
             BackupService.RegisterManualBackup(doc);

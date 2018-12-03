@@ -31,9 +31,11 @@ using System.Runtime.InteropServices;
 //
 // You can specify all the values or you can default the Build and Revision Numbers
 // by using the '*' as shown below:
-// [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("1.0.0.0")]
+// [assembly: AssemblyVersion("1.0.1.0")]
+[assembly: AssemblyVersion("1.0.1.0")]
+[assembly: AssemblyFileVersion("1.0.1.0")]
 [assembly: InternalsVisibleTo("BRPLUSA.Domain.Tests")]
 [assembly: InternalsVisibleTo("BRPLUSA.Domain.Explorables")]
 
+
+[assembly: AssemblyInformationalVersion("1.0.1-installer-wpf.1+73.Branch.feature/installer-wpf.Sha.8156c238434924f3791ab832344dd0ffc61b732b")]
