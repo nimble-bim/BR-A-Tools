@@ -113,13 +113,9 @@ namespace BRPLUSA.Revit.Installers._2018.Services
             return false;
         }
 
-        public async Task<bool> HandleRevit2018Upgrade()
-        {
-            return true;
-        }
-
         public async Task<string> PushNewReleaseToTempLocation(UpdateInfo info)
         {
+            LoggingService.LogInfo("Pushing release to temporary location...");
             try
             {
                 var location = await UpdateManager.ApplyReleases(info);

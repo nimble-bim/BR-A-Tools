@@ -53,13 +53,6 @@ namespace BRPLUSA.Revit.Installers._2018
             AppFor2018HasUpdateAvailable = InstallHandler.Revit2018AppUpdateAvailable;
         }
 
-        public async Task<bool> HandleRevit2018ApplicationUpgrade()
-        {
-            var success = await InstallHandler.HandleRevit2018Upgrade();
-
-            return success;
-        }
-
         public async Task<bool> HandleRevit2018ApplicationInstallation()
         {
             var success = await InstallHandler.HandleRevit2018Installation();
