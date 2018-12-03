@@ -123,8 +123,10 @@ namespace BRPLUSA.Revit.Installers._2018
                 ? _updateAvailable
                 : _updateNotAvailable;
 
-            if (Revit2018Installed)
-                ButtonRevit2018AppInstallStatus.Content = _productCanBeUpgraded;
+
+            ButtonRevit2018AppInstallStatus.Content = status
+                ? _productCanBeUpgraded
+                : _productInstalled;
         }
 
         private void ShutdownPage(object sender, RoutedEventArgs e)
