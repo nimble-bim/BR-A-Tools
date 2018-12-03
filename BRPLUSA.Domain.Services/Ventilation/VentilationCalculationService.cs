@@ -1,5 +1,5 @@
 ﻿using System;
-using BRPLUSA.Domain.Core.Wrappers;
+using BRPLUSA.Domain.Core.Entities.Wrappers.Revit;
 using BRPLUSA.Domain.Wrappers;
 
 namespace BRPLUSA.Domain.Services.Ventilation

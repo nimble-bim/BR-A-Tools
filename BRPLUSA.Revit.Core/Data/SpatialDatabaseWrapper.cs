@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using Autodesk.Revit.DB;
-using BRPLUSA.Domain.Core.Wrappers;
 using RevitSpace = Autodesk.Revit.DB.Mechanical.Space;
 using LiteDB;
 using BRPLUSA.Domain.Wrappers;

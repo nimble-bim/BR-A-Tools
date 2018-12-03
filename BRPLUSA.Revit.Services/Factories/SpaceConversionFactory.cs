@@ -1,4 +1,4 @@
-﻿using BRPLUSA.Domain.Core.Wrappers;
+﻿using BRPLUSA.Domain.Core.Entities.Wrappers.Revit;
 using BRPLUSA.Domain.Wrappers;
 using BRPLUSA.Revit.Services.Spaces;
 using RevitSpace = Autodesk.Revit.DB.Mechanical.Space;
