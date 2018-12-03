@@ -48,6 +48,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BRPLUSA.Utilities", "BRPLUS
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
 		BRPLUSA.Utilities\BRPLUSA.App.nuspec = BRPLUSA.Utilities\BRPLUSA.App.nuspec
+		gitversion.yml = gitversion.yml
 		BRPLUSA.Utilities\versionupdate.bat = BRPLUSA.Utilities\versionupdate.bat
 	EndProjectSection
 EndProject

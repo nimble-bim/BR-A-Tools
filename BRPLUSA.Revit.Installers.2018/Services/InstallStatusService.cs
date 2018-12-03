@@ -13,6 +13,7 @@ namespace BRPLUSA.Revit.Installers._2018.Services
 {
     public class InstallStatusService
     {
+        // non useful comment
         public static bool IsRevit2018Installed()
         {
             LoggingService.LogInfo("Checking if Revit 2018 is installed");
