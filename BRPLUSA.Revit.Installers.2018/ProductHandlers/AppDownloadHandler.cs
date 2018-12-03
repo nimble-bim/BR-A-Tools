@@ -15,14 +15,9 @@ namespace BRPLUSA.Revit.Installers._2018.ProductHandlers
             UpdateManager = mgr;
         }
 
-        public async Task InitializeProductState()
-        {
-            LoggingService.LogInfo("Initializing AppDownloadHandler");
-            LoggingService.LogInfo("Initialized AppDownloadHandler");
-        }
-
         public async Task DownloadNewReleases(IEnumerable<ReleaseEntry> releases)
         {
+            LoggingService.LogInfo("Beginning app release download");
             try
             {
                 await UpdateManager.DownloadReleases(releases);
@@ -32,6 +27,8 @@ namespace BRPLUSA.Revit.Installers._2018.ProductHandlers
             {
                 throw new Exception("Failed to download releases", e);
             }
+
+            LoggingService.LogInfo("App release download complete");
         }
     }
 }

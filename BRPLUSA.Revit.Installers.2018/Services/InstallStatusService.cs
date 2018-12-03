@@ -35,30 +35,22 @@ namespace BRPLUSA.Revit.Installers._2018.Services
             return installed;
         }
 
-        public static async Task<bool> IsAppForRevit2018UpdateAvailable(UpdateManager mgr)
+        public static async Task<bool> IsUpdateAvailableForAppForRevit2018(UpdateManager mgr)
         {
             try
             {
-                LoggingService.LogInfo("Checking for updated version of app software");
-                var info = await mgr.CheckForUpdate();
+                var info = await GetVersionInformationFromServer(mgr);
+                var local = GetLocalVersion(info);
+                var server = GetServerVersion(info);
 
-                LoggingService.LogInfo("Confirming local version data...");
-                LocalVersion = GetVersionData(info?.CurrentlyInstalledVersion);
-                LoggingService.LogInfo("Local version confirmed");
-
-                LoggingService.LogInfo("Confirming server version data...");
-                ServerVersion = GetVersionData(info?.FutureReleaseEntry);
-                LoggingService.LogInfo("Server version confirmed");
-
-                Revit2018UpdateAvailable = LocalVersion < ServerVersion;
-                HasCheckedForUpdate = true;
+                var update = local < server;
 
                 LoggingService.LogInfo("Update check complete");
-                LoggingService.LogInfo(Revit2018UpdateAvailable
+                LoggingService.LogInfo(update
                     ? "Update available"
                     : "No further updates available");
 
-                return info;
+                return update;
             }
 
             catch (Exception e)
@@ -67,13 +59,40 @@ namespace BRPLUSA.Revit.Installers._2018.Services
             }
         }
 
-        private static VersionData GetVersionData(ReleaseEntry info)
+        public static async Task<UpdateInfo> GetVersionInformationFromServer(UpdateManager mgr)
+        {
+            LoggingService.LogInfo("Checking for updated version of app software");
+            var info = await mgr.CheckForUpdate();
+            LoggingService.LogInfo("Check complete!");
+
+            return info;
+        }
+
+        public static VersionData GetVersionData(ReleaseEntry info)
         {
             LoggingService.LogInfo("Getting version data...");
             var version = VersionService.GetVersionInformation(info);
             LoggingService.LogInfo($"Version is: {version}");
 
             return version;
+        }
+
+        public static VersionData GetLocalVersion(UpdateInfo info)
+        {
+            LoggingService.LogInfo("Confirming local version data...");
+            var local = GetVersionData(info?.CurrentlyInstalledVersion);
+            LoggingService.LogInfo("Local version confirmed");
+
+            return local;
+        }
+
+        public static VersionData GetServerVersion(UpdateInfo info)
+        {
+            LoggingService.LogInfo("Confirming server version data...");
+            var server = GetVersionData(info?.FutureReleaseEntry);
+            LoggingService.LogInfo("Server version confirmed");
+
+            return server;
         }
     }
 }

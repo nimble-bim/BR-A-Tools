@@ -13,7 +13,6 @@ namespace BRPLUSA.Revit.Installers._2018.Services
         private string ServerPath { get; set; }
         private UpdateManager UpdateManager { get; set; }
         private FileSystemHandler FileHandler { get; set; }
-        private AppVersionHandler VersionHandler { get; set; }
         private AppDownloadHandler DownloadHandler { get; set; }
 
         public bool Revit2018AppInstalled { get; set; }
@@ -47,16 +46,11 @@ namespace BRPLUSA.Revit.Installers._2018.Services
 
         public async Task InitializeProductState()
         {
-            VersionHandler = new AppVersionHandler(UpdateManager);
             DownloadHandler = new AppDownloadHandler(UpdateManager);
             FileHandler = new FileSystemHandler(UpdateManager);
 
-            await VersionHandler.InitializeProductState();
-            await DownloadHandler.InitializeProductState();
-            await FileHandler.InitializeProductState();
-
             Revit2018AppInstalled = await IsAppForRevit2018Installed();
-            Revit2018AppUpdateAvailable = CheckForRevit2018AppUpdates();
+            Revit2018AppUpdateAvailable =  await IsUpdateAvailableForAppForRevit2018();
         }
 
         private async Task<bool> IsAppForRevit2018Installed()
@@ -64,9 +58,9 @@ namespace BRPLUSA.Revit.Installers._2018.Services
             return await InstallStatusService.IsAppForRevit2018Installed();
         }
 
-        private bool CheckForRevit2018AppUpdates()
+        private async Task<bool> IsUpdateAvailableForAppForRevit2018()
         {
-            return VersionHandler.Revit2018UpdateAvailable;
+            return await InstallStatusService.IsUpdateAvailableForAppForRevit2018(UpdateManager);
         }
 
         public void ConfigureAppInstallation()
@@ -97,14 +91,16 @@ namespace BRPLUSA.Revit.Installers._2018.Services
 
         public async Task<bool> HandleRevit2018Installation()
         {
+            LoggingService.LogInfo("Beginning app installation...");
             try
             {
-                var info = await VersionHandler.GetVersionInformationFromServer();
+                var info = await InstallStatusService.GetVersionInformationFromServer(UpdateManager);
                 await DownloadHandler.DownloadNewReleases(info.ReleasesToApply);
                 var tempLocation = await PushNewReleaseToTempLocation(info);
 
                 await FileHandler.HandleRevit2018Installation(tempLocation);
 
+                LoggingService.LogInfo("App installation complete");
                 return true;
             }
 
@@ -113,6 +109,7 @@ namespace BRPLUSA.Revit.Installers._2018.Services
                 LoggingService.LogError("Unable to install product because of fatal error", e);
             }
 
+            LoggingService.LogInfo("App installation failed");
             return false;
         }
 
