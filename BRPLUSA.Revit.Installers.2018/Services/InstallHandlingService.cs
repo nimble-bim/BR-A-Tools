@@ -91,8 +91,8 @@ namespace BRPLUSA.Revit.Installers._2018.Services
         {
             try
             {
-                if (VersionHandler.HasCheckedForUpdate && !VersionHandler.Revit2018UpdateAvailable)
-                    return true;
+                //if (VersionHandler.HasCheckedForUpdate && !VersionHandler.Revit2018UpdateAvailable)
+                //    return true;
 
                 var info = await VersionHandler.GetVersionInformationFromServer();
                 await DownloadHandler.DownloadNewReleases(info.ReleasesToApply);

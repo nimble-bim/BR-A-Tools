@@ -16,6 +16,7 @@ namespace BRPLUSA.Revit.Installers._2018
         private const string _updateAvailable = "Update Available!";
         private const string _updateNotAvailable = "Up to date";
         private const string _productInstalled = "Installed";
+        private const string _productInstalling = "Installing...";
         private const string _productNeedsInstall = "Install";
         private const string _productCanBeUpgraded = "Upgrade";
 
@@ -75,7 +76,7 @@ namespace BRPLUSA.Revit.Installers._2018
             AppFor2018Installing = false;
             AppFor2018CanInstall = false;
             ButtonRevit2018AppInstallStatus.Background = new SolidColorBrush(Color.FromRgb(51,157,255));
-            ButtonRevit2018AppInstallStatus.Content = "Installed";
+            ButtonRevit2018AppInstallStatus.Content = _productInstalled;
         }
 
         private void ShowAppFor2018InstallationInProcess()
@@ -83,7 +84,7 @@ namespace BRPLUSA.Revit.Installers._2018
             AppFor2018Installing = true;
             AppFor2018CanInstall = false;
             ButtonRevit2018AppInstallStatus.Background = Brushes.Gray;
-            ButtonRevit2018AppInstallStatus.Content = "Installing...";
+            ButtonRevit2018AppInstallStatus.Content = _productInstalling;
         }
 
         private void ShowAppFor2018InstallationFailed()
