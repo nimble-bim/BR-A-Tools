@@ -54,4 +54,4 @@ using System.Windows;
 [assembly: AssemblyVersion("1.0.1.0")]
 [assembly: AssemblyFileVersion("1.0.1.0")]
 [assembly: AssemblyMetadata("SquirrelAwareVersion", "1")]
-[assembly: AssemblyInformationalVersion("1.0.1-installer-wpf.1+36.Branch.feature/installer-wpf.Sha.659c6ea358d7db80777070592ccb9693b57e97c2")]
+[assembly: AssemblyInformationalVersion("1.0.1-installer-wpf.1+73.Branch.feature/installer-wpf.Sha.8156c238434924f3791ab832344dd0ffc61b732b")]
