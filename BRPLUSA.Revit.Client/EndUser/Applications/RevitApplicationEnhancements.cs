@@ -1,11 +1,11 @@
 ﻿using System;
-using System.Diagnostics;
 using Autodesk.Revit.UI;
 using BRPLUSA.Core.Services;
 using BRPLUSA.Revit.Client.EndUser.Commands;
 using BRPLUSA.Revit.Client.EndUser.Commands.Mechanical;
 using BRPLUSA.Revit.Client.EndUser.Services;
 using BRPLUSA.Revit.Client.UI.Views;
+using BRPLUSA.Revit.Installers._2018;
 using BRPLUSA.Revit.Services.Registration;
 using BRPLUSA.Revit.Services.Web;
 
@@ -17,6 +17,7 @@ namespace BRPLUSA.Revit.Client.EndUser.Applications
     {
         public BardWebClient Sidebar { get; set; }
         private static SocketService SocketService { get; set; }
+        private static AppInstallClient InstallApp { get; set; }
 
         public Result OnStartup(UIControlledApplication app)
         {
@@ -70,10 +71,9 @@ namespace BRPLUSA.Revit.Client.EndUser.Applications
             try
             {
                 LoggingService.LogInfo("Shutting down application via Revit");
-                app.ControlledApplication.DocumentOpened -= UpdaterRegistrationService.RegisterServices;
-                app.ControlledApplication.DocumentOpened -= SocketRegistrationService.RegisterServices;
-                app.ControlledApplication.DocumentClosed -= UpdaterRegistrationService.DeregisterServices;
-                app.ControlledApplication.DocumentClosed -= SocketRegistrationService.DeregisterServices;
+                HandleServiceDeregistration(app);
+                HandleApplicationUpdate();
+
                 LoggingService.LogInfo("Application shutdown complete!");
                 return Result.Succeeded;
             }
@@ -81,6 +81,48 @@ namespace BRPLUSA.Revit.Client.EndUser.Applications
             {
                 LoggingService.LogError("Failure to shut down correctly", e);
                 return Result.Failed;
+            }
+        }
+
+        private void HandleServiceDeregistration(UIControlledApplication app)
+        {
+            app.ControlledApplication.DocumentOpened -= UpdaterRegistrationService.RegisterServices;
+            app.ControlledApplication.DocumentOpened -= SocketRegistrationService.RegisterServices;
+            app.ControlledApplication.DocumentClosed -= UpdaterRegistrationService.DeregisterServices;
+            app.ControlledApplication.DocumentClosed -= SocketRegistrationService.DeregisterServices;
+        }
+
+        private void HandleApplicationUpdate()
+        {
+            try
+            {
+                // check if app update is necessary
+                LoggingService.LogInfo("Initializing application to check for product updates");
+                InstallApp = new AppInstallClient();
+                //var shouldUpdate = InstallApp.NeedsUpdate;
+
+                // if so, ask the user if they'd like to update
+                //if (!shouldUpdate)
+                //    return;
+
+                const string title = "BR+A Revit Enhancements Update Available";
+                const string msg = "Would you like to update the application?";
+                var userWantsUpdate = TaskDialog.Show(title, msg, 
+                    TaskDialogCommonButtons.No, 
+                    TaskDialogResult.Yes);
+
+                // if yes, present the app installer and start it automatically
+                if(userWantsUpdate == TaskDialogResult.No)
+                    return;
+
+                LoggingService.LogInfo("Product update application initialized and ready to run");
+                //InstallApp.Start();
+                LoggingService.LogInfo("Product update application process completed");
+            }
+
+            catch (Exception e)
+            {
+                LoggingService.LogError("Unable to start application update service", e);
             }
         }
 

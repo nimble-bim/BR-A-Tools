@@ -1,0 +1,15 @@
+mode: Mainline
+branches: {}
+ignore:
+  sha: []
+assembly-versioning-scheme: MajorMinorPatch
+assembly-file-versioning-scheme: MajorMinorPatchTag
+major-version-bump-message: '\+semver:\s?(breaking|major)'
+minor-version-bump-message: '\+semver:\s?(feature|minor)'
+patch-version-bump-message: '\+semver:\s?(fix|patch)'
+commit-message-incrementing: Enabled
+legacy-semver-padding: 4
+build-metadata-padding: 4
+commits-since-version-source-padding: 4
+commit-message-incrementing: Enabled
+commit-date-format: 'yyyy-MM-dd'
