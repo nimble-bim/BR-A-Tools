@@ -5,7 +5,6 @@ using Autodesk.Revit.DB;
 using RevitSpace = Autodesk.Revit.DB.Mechanical.Space;
 using Autodesk.Revit.UI;
 using BRPLUSA.Revit.Client.Base;
-using BRPLUSA.Domain.Core.Wrappers;
 
 namespace BRPLUSA.Revit.Client.EndUser.Services
 {

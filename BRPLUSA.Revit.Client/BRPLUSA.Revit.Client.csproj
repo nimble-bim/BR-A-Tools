@@ -118,10 +118,20 @@
     <Compile Include="EndUser\Commands\ForceTypeSwap.cs" />
     <Compile Include="EndUser\Commands\Mechanical\CompareModelAndCodeVentilationCommand.cs" />
     <Compile Include="EndUser\Commands\Mechanical\CreateVentilationRequirementsScheduleCommand.cs" />
+    <Compile Include="EndUser\Commands\VAVServes\OpenDuctMsgBox.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="EndUser\Commands\VAVServes\OpenDuctMsgBox.Designer.cs">
+      <DependentUpon>OpenDuctMsgBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="EndUser\Commands\VAVServes\ShowRoomsServedByVAV.cs" />
     <Compile Include="EndUser\Commands\SelectByName.cs" />
     <Compile Include="EndUser\Commands\SelectPanelFromSchedule.cs" />
     <Compile Include="EndUser\Commands\ShowSidebar.cs" />
     <Compile Include="EndUser\Commands\UnlinkSpaces.cs" />
+    <Compile Include="EndUser\Commands\VAVServes\SystemTracing.cs" />
+    <Compile Include="EndUser\Commands\VAVServes\TracedSpace.cs" />
+    <Compile Include="EndUser\Commands\VAVServes\Util.cs" />
     <Compile Include="EndUser\Services\AutoModelBackupService.cs" />
     <Compile Include="EndUser\Services\ManualModelBackupService.cs" />
     <Compile Include="EndUser\Services\WorksharingMonitorUpdater.cs" />

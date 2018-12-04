@@ -3,6 +3,7 @@ using Autodesk.Revit.UI;
 using BRPLUSA.Core.Services;
 using BRPLUSA.Revit.Client.EndUser.Commands;
 using BRPLUSA.Revit.Client.EndUser.Commands.Mechanical;
+using BRPLUSA.Revit.Client.EndUser.Commands.VAVServes;
 using BRPLUSA.Revit.Client.EndUser.Services;
 using BRPLUSA.Revit.Client.UI.Views;
 using BRPLUSA.Revit.Installers._2018;
@@ -146,6 +147,10 @@ namespace BRPLUSA.Revit.Client.EndUser.Applications
                 var createVentSchedule = new PushButtonData("Create Vent Schedule", "Create Vent Schedule",
                     typeof(CreateVentilationRequirementsScheduleCommand).Assembly.Location,
                     typeof(CreateVentilationRequirementsScheduleCommand).FullName);
+                var vavServes = new PushButtonData("Show What VAV Serves", "VAV Serves", 
+                    typeof(ShowRoomsServedByVAV).Assembly.Location, 
+                    typeof(ShowRoomsServedByVAV).FullName);
+
 
                 brpa.AddItem(toggleSidebar);
                 //brpa.AddItem(spaceSync);
@@ -154,6 +159,7 @@ namespace BRPLUSA.Revit.Client.EndUser.Applications
                 //brpa.AddItem(findPanel);
                 brpa.AddItem(switchType);
                 brpa.AddItem(createVentSchedule);
+                brpa.AddItem(vavServes);
                 LoggingService.LogInfo("Application Ribbon creation complete");
             }
 
