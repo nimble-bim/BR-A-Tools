@@ -167,7 +167,7 @@ namespace BRPLUSA.Revit.Services.Elements
 
                 var i = 0;
 
-                // store parameter name, parameter value and elementId
+                // store parameter name, paramter value and elementId
                 foreach(var elem in iter)
                 {
                     i++;
@@ -180,8 +180,8 @@ namespace BRPLUSA.Revit.Services.Elements
                         if (p?.Definition?.Name == null)
                             continue;
 
-                        if (string.Equals(p?.Definition?.Name, fieldName, StringComparison.CurrentCultureIgnoreCase) &&
-                            string.Equals(p.AsValueString(), fieldValue, StringComparison.CurrentCultureIgnoreCase))
+                        if (String.Equals(p?.Definition?.Name, fieldName, StringComparison.CurrentCultureIgnoreCase) &&
+                            String.Equals(p.AsValueString(), fieldValue, StringComparison.CurrentCultureIgnoreCase))
                             return p;
                     }
                 }

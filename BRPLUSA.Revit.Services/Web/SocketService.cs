@@ -4,7 +4,7 @@ using Quobject.SocketIoClientDotNet.Client;
 
 namespace BRPLUSA.Revit.Services.Web
 {
-    public class SocketService : ISocketProvider
+    public class SocketService : ISocketService
     {
         private readonly string url = "http://localhost:4422";
         private IO.Options Options { get; set; }

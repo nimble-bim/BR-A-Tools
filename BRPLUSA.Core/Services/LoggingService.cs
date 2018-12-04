@@ -1,8 +1,12 @@
 ﻿using NLog;
 using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 using System.Text;
 using NLog.Config;
 using NLog.Targets;
+using LogFactory = NLog.LogFactory;
 
 namespace BRPLUSA.Core.Services
 {

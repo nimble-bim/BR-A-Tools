@@ -2,9 +2,9 @@
 
 namespace BRPLUSA.Revit.Core.Interfaces
 {
-    public interface ISocketConsumer
+    public interface ISocketConsumptionService
     {
-        void Register(ISocketProvider service, Document doc);
+        void Register(ISocketService service, Document doc);
         void Deregister();
     }
 }

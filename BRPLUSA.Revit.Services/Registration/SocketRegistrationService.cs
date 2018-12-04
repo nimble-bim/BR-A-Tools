@@ -7,9 +7,9 @@ namespace BRPLUSA.Revit.Services.Registration
 {
     public static class SocketRegistrationService
     {
-        private static readonly List<ISocketConsumer> _services = new List<ISocketConsumer>();
+        private static readonly List<ISocketConsumptionService> _services = new List<ISocketConsumptionService>();
 
-        public static void AddRegisterableServices(params ISocketConsumer[] services)
+        public static void AddRegisterableServices(params ISocketConsumptionService[] services)
         {
             foreach (var serv in services)
             {
@@ -17,12 +17,12 @@ namespace BRPLUSA.Revit.Services.Registration
             }
         }
 
-        public static void AddRegisterableServices(ISocketConsumer serv)
+        public static void AddRegisterableServices(ISocketConsumptionService serv)
         {
             _services.Add(serv);
         }
 
-        public static ISocketProvider InitializeSocketService(string url = "http://localhost:4422")
+        public static ISocketService InitializeSocketService(string url = "http://localhost:4422")
         {
             // TODO: upgrade to factory at some point
             return new SocketService();
