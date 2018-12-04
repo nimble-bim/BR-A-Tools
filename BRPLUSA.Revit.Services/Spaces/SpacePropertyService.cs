@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Linq;
 using Autodesk.Revit.DB;
 using Autodesk.Revit.DB.Mechanical;
+using BRPLUSA.Core.Services;
 using BRPLUSA.Revit.Services.Elements;
 
 namespace BRPLUSA.Revit.Services.Spaces
@@ -45,53 +47,94 @@ namespace BRPLUSA.Revit.Services.Spaces
 
         public static double CalculateCeilingHeight(Space space)
         {
-            return space?.Volume <= 0 
-                ? CalculateCeilingHeightByCeiling(space) 
-                : CalculateCeilingHeightByVolume(space);
-        }
+            const double typCeilingHeight = 8.0;
+            double height = 0;
 
-        public static double CalculateCeilingHeightByCeiling(Space space)
-        {
-            var ceiling = FindCeilingInSpace(space);
-            var clgLocation = (LocationPoint) ceiling.Location;
-            var level = (Level) space.Document.GetElement(ceiling.LevelId);
-            var levelHeight = level.Elevation;
-            var height = clgLocation.Point.Z - levelHeight;
+            try
+            {
+                if(space?.Volume > 0.0)
+                    return CalculateCeilingHeightByVolume(space);
+
+                var roomClgHeight = CalculateCeilingHeightByCeiling(space);
+                var heightByLimits = CalculateCeilingHeightByLimits(space);
+
+                var roomHasCloserCalc = Math.Abs(roomClgHeight - roomClgHeight) <
+                                        Math.Abs(typCeilingHeight - heightByLimits);
+
+                height = roomHasCloserCalc
+                    ? roomClgHeight 
+                    : heightByLimits;
+            }
+
+            catch (Exception e)
+            {
+                LoggingService.LogError("Issue attempting to calculate ceiling height", e);
+            }
 
             return height;
         }
 
+        public static double CalculateCeilingHeightByCeiling(Space space)
+        {
+            double height = 0;
+
+            try
+            {
+                var ceiling = FindCeilingInSpace(space);
+                var clgBox = ceiling.get_BoundingBox(null);
+                var level = (Level) space.Document.GetElement(ceiling.LevelId);
+                var levelHeight = level.Elevation;
+
+                height = clgBox.Min.Z - levelHeight;
+            }
+
+            catch (Exception e)
+            {
+                LoggingService.LogError("Issue attempting to calculate ceiling height based on the ceiling in the space", e);
+            }
+
+            return height;
+        }
+
+        public static double CalculateCeilingHeightByLimits(Space space)
+        {
+            var baseOffset = space.BaseOffset;
+            var upperLimit = space.LimitOffset;
+            var lowerLimit = space.Level.Elevation;
+
+            // sometimes the height isn't calculated properly because the 
+            // limit offset and base offset aren't properly calculated
+            var height = upperLimit - lowerLimit;
+
+            return height > 0 
+                ? height 
+                : 0;
+        }
+
         public static double CalculateCeilingHeightByVolume(Space space)
         {
-            if(space.Volume == null)
-                throw new Exception();
+            var height = 0.0;
 
-            var height =  space.Volume / space.Area;
+            try
+            {
+                height = space.Volume / space.Area;
+            }
+
+            catch (Exception e)
+            {
+                LoggingService.LogError("Can't find ceiling height by volume since Volumes are not being calculated for spaces", e);
+            }
 
             return height;
         }
 
         public static Ceiling FindCeilingInSpace(Space space)
         {
-            var ceiling = ElementLocationServices.FindElementInSameSpace<Ceiling>(space);
+            var ceilings = ElementLocationServices.FindIntersectingElementByPosition<Ceiling>(space);
 
-            return ceiling;
+            var clg = ceilings.First();
+
+            return clg;
         }
-
-
-        //public bool ExhaustNeedsUpdate(Space space)
-        //{
-        //    return Math.Abs(space.DesignExhaustAirflow - SpecifiedExhaustAirflow) > .0001;
-        //}
-
-        //public bool ReturnNeedsUpate(Space space)
-        //{
-        //    return Math.Abs(space.DesignReturnAirflow - SpecifiedReturnAirflow) > .0001;
-        //}
-
-        //public bool SupplyNeedsUpdate(Space space)
-        //{
-        //    return Math.Abs(space.DesignSupplyAirflow - SpecifiedSupplyAirflow) > .0001;
-        //}
     }
 }
