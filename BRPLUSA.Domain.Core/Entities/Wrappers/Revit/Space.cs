@@ -1,6 +1,6 @@
 ﻿using BRPLUSA.Domain.Base;
 
-namespace BRPLUSA.Domain.Core.Wrappers
+namespace BRPLUSA.Domain.Core.Entities.Wrappers.Revit
 {
     public class Space : Entity
     {
