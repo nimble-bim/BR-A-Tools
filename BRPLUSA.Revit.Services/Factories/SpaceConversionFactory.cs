@@ -9,6 +9,10 @@ namespace BRPLUSA.Revit.Services.Factories
     {
         public override Space Create(RevitSpace rSpace)
         {
+            var cHeight = SpacePropertyService.CalculateCeilingHeight(rSpace);
+            var spaceType = SpacePropertyService.GetSpaceTypeAsString(rSpace);
+            var oAir = SpacePropertyService.GetOutsideAirFromSpace(rSpace);
+
             var space = new Space
             {
                 Id = rSpace.UniqueId,
@@ -22,9 +26,9 @@ namespace BRPLUSA.Revit.Services.Factories
                 SpecifiedSupplyAirflow = rSpace.ActualSupplyAirflow,
                 SpecifiedReturnAirflow = rSpace.ActualReturnAirflow,
                 NumberOfPeople = rSpace.NumberofPeople,
-                OccupancyCategory = SpacePropertyService.GetSpaceTypeAsString(rSpace),
-                CeilingHeight = SpacePropertyService.CalculateCeilingHeight(rSpace),
-                PercentageOfOutsideAir = SpacePropertyService.GetOutsideAirFromSpace(rSpace)
+                OccupancyCategory = spaceType,
+                CeilingHeight = cHeight == 0.0 ? rSpace.UnboundedHeight : cHeight,
+                PercentageOfOutsideAir = oAir
             };
 
             return space;

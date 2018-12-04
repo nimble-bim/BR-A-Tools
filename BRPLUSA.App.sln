@@ -39,11 +39,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BRPLUSA.Core", "BRPLUSA.Cor
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BRPLUSA.Core.TestConsole", "BRPLUSA.Core.TestConsole\BRPLUSA.Core.TestConsole.csproj", "{64629DA0-7633-4A3E-8D8E-4B119E934ED9}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BRPLUSA.Pipelines", "BRPLUSA.Pipelines", "{FD54F6EE-6B13-4E7B-AB90-C9CA270C4ACE}"
-	ProjectSection(SolutionItems) = preProject
-		BRPLUSA.Pipelines\azure_pipeline_build_installer.yml = BRPLUSA.Pipelines\azure_pipeline_build_installer.yml
-	EndProjectSection
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BRPLUSA.Utilities", "BRPLUSA.Utilities", "{21F018A4-ACA0-4D3A-8612-B430E73457A0}"
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
