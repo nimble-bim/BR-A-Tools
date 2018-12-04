@@ -136,14 +136,17 @@ namespace BRPLUSA.Revit.Client.EndUser.Applications
 
                 var brpa = app.CreateRibbonPanel("BR+A", "Utilities");
                 var toggleSidebar = new PushButtonData("Toggle Sidebar", "Toggle Sidebar",
-                    typeof(ShowSidebar).Assembly.Location, typeof(ShowSidebar).FullName);
+                    typeof(ShowSidebar).Assembly.Location, 
+                    typeof(ShowSidebar).FullName);
                 //var spaceSync = new PushButtonData("Link Spaces", "Link Spaces", typeof(LinkSpaces).Assembly.Location, typeof(LinkSpaces).FullName);
                 //var exportAreaToNavis = new PushButtonData("Export Area To Navisworks", "Clash Area", typeof(ExportAreaToNavis).Assembly.Location, typeof(ExportAreaToNavis).FullName);
                 var findElement = new PushButtonData("Find Element By Name", "Find Element",
-                    typeof(SelectByName).Assembly.Location, typeof(SelectByName).FullName);
+                    typeof(SelectByName).Assembly.Location, 
+                    typeof(SelectByName).FullName);
                 //var findPanel = new PushButtonData("Find Panel By Name", "Find Panel", typeof(SelectPanelFromSchedule).Assembly.Location, typeof(SelectPanelFromSchedule).FullName);
                 var switchType = new PushButtonData("Switch Element Type", "Switch Element Type",
-                    typeof(ForceTypeSwap).Assembly.Location, typeof(ForceTypeSwap).FullName);
+                    typeof(ForceTypeSwap).Assembly.Location, 
+                    typeof(ForceTypeSwap).FullName);
                 var createVentSchedule = new PushButtonData("Create Vent Schedule", "Create Vent Schedule",
                     typeof(CreateVentilationRequirementsScheduleCommand).Assembly.Location,
                     typeof(CreateVentilationRequirementsScheduleCommand).FullName);
