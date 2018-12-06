@@ -101,7 +101,7 @@ namespace BRPLUSA.Revit.Client.EndUser.Applications
                 // check if app update is necessary
                 LoggingService.LogInfo("Initializing application to check for product updates");
                 BackgroundInstallManager = new InstallManager();
-                BackgroundInstallManager.InitializeProductState().Wait();
+                BackgroundInstallManager.InitializeProductState();
 
                 var update = BackgroundInstallManager.AppFor2018HasUpdateAvailable;
 
@@ -121,7 +121,7 @@ namespace BRPLUSA.Revit.Client.EndUser.Applications
                 var result = updateBox.Show();
 
                 // if yes, present the app installer and start it automatically
-                if(result == TaskDialogResult.No)
+                if (result == TaskDialogResult.No)
                     return;
 
                 InstallApp = new AppInstallClient();
@@ -134,6 +134,11 @@ namespace BRPLUSA.Revit.Client.EndUser.Applications
             catch (Exception e)
             {
                 LoggingService.LogError("Unable to start application update service", e);
+            }
+
+            finally
+            {
+                BackgroundInstallManager.Dispose();
             }
         }
 
