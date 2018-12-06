@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 using System.Threading.Tasks;
 using BRPLUSA.Core.Services;
 using BRPLUSA.Revit.Installers._2018.Services;
@@ -58,6 +59,17 @@ namespace BRPLUSA.Revit.Installers._2018
             var success = await InstallHandler.HandleRevit2018Installation();
 
             return success;
+        }
+
+        public static Assembly ResolveSquirrelBinaries(object sender, ResolveEventArgs args)
+        {
+            if(args.Name.ToLower().StartsWith("update.exe"))
+            {
+                Console.WriteLine("Working!");
+                return null;
+            }
+
+            return null;
         }
 
         public void Dispose()

@@ -200,6 +200,11 @@
   <ItemGroup>
     <Folder Include="Parameters\" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="EndUser\Commands\VAVServes\OpenDuctMsgBox.resx">
+      <DependentUpon>OpenDuctMsgBox.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>if $(ConfigurationName) == Debug (

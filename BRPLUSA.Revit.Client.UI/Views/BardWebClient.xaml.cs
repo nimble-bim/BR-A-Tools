@@ -84,7 +84,7 @@ namespace BRPLUSA.Revit.Client.UI.Views
 
         // Will attempt to load missing assembly from either x86 or x64 subdir
         // Required by CefSharp to load the unmanaged dependencies when running using AnyCPU
-        public static Assembly Resolver(object sender, ResolveEventArgs args)
+        public static Assembly ResolveCefBinaries(object sender, ResolveEventArgs args)
         {
             if (args.Name.StartsWith("CefSharp"))
             {

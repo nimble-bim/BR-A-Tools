@@ -19,6 +19,7 @@ namespace BRPLUSA.Revit.Client.EndUser.Applications
         public BardWebClient Sidebar { get; set; }
         private static SocketService SocketService { get; set; }
         private static AppInstallClient InstallApp { get; set; }
+        private static InstallManager BackgroundInstallManager { get; set; }
 
         public Result OnStartup(UIControlledApplication app)
         {
@@ -99,22 +100,31 @@ namespace BRPLUSA.Revit.Client.EndUser.Applications
             {
                 // check if app update is necessary
                 LoggingService.LogInfo("Initializing application to check for product updates");
-                InstallApp = new AppInstallClient();
-                //var shouldUpdate = InstallApp.NeedsUpdate;
+                BackgroundInstallManager = new InstallManager();
+                BackgroundInstallManager.InitializeProductState().Wait();
 
-                // if so, ask the user if they'd like to update
-                //if (!shouldUpdate)
-                //    return;
+                var update = BackgroundInstallManager.AppFor2018HasUpdateAvailable;
+
+                if (!update)
+                    return;
 
                 const string title = "BR+A Revit Enhancements Update Available";
                 const string msg = "Would you like to update the application?";
-                var userWantsUpdate = TaskDialog.Show(title, msg, 
-                    TaskDialogCommonButtons.No, 
-                    TaskDialogResult.Yes);
+
+
+                var updateBox = new TaskDialog(title)
+                {
+                    CommonButtons = TaskDialogCommonButtons.Yes | TaskDialogCommonButtons.No,
+                    MainContent = msg
+                };
+
+                var result = updateBox.Show();
 
                 // if yes, present the app installer and start it automatically
-                if(userWantsUpdate == TaskDialogResult.No)
+                if(result == TaskDialogResult.No)
                     return;
+
+                InstallApp = new AppInstallClient();
 
                 LoggingService.LogInfo("Product update application initialized and ready to run");
                 //InstallApp.Start();
@@ -178,7 +188,8 @@ namespace BRPLUSA.Revit.Client.EndUser.Applications
             {
                 LoggingService.LogInfo("Attempting to resolve browser binaries");
 
-                AppDomain.CurrentDomain.AssemblyResolve += BardWebClient.Resolver;
+                AppDomain.CurrentDomain.AssemblyResolve += BardWebClient.ResolveCefBinaries;
+                AppDomain.CurrentDomain.AssemblyResolve += InstallManager.ResolveSquirrelBinaries;
                 BardWebClient.InitializeCefSharp();
 
                 LoggingService.LogInfo("Browser binary resolution complete");
