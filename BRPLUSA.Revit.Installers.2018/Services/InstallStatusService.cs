@@ -13,8 +13,7 @@ namespace BRPLUSA.Revit.Installers._2018.Services
 {
     public class InstallStatusService
     {
-        // non useful comment
-        public static bool IsRevit2018Installed()
+        public static bool CheckIfRevit2018Installed()
         {
             LoggingService.LogInfo("Checking if Revit 2018 is installed");
             var installed = RevitAddinLocationProvider.IsRevitVersionInstalled(RevitVersion.V2018);
@@ -23,7 +22,12 @@ namespace BRPLUSA.Revit.Installers._2018.Services
             return installed;
         }
 
-        public static async Task<bool> IsAppForRevit2018Installed()
+        public static bool CheckIf2018AppIsInstalled()
+        {
+            return CheckIf2018AppIsInstalledAsync().Result;
+        }
+
+        public static async Task<bool> CheckIf2018AppIsInstalledAsync()
         {
             LoggingService.LogInfo("Checking if our app for Revit 2018 is installed");
 
@@ -36,11 +40,16 @@ namespace BRPLUSA.Revit.Installers._2018.Services
             return installed;
         }
 
-        public static async Task<bool> IsUpdateAvailableForAppForRevit2018(UpdateManager mgr)
+        public static bool CheckForUpdateTo2018App(UpdateManager mgr)
+        {
+            return CheckForUpdateTo2018AppAsync(mgr).Result;
+        }
+
+        public static async Task<bool> CheckForUpdateTo2018AppAsync(UpdateManager mgr)
         {
             try
             {
-                var info = await GetVersionInformationFromServer(mgr);
+                var info = await GetVersionInformationFromServerAsync(mgr);
                 var local = GetLocalVersion(info);
                 var server = GetServerVersion(info);
 
@@ -60,7 +69,7 @@ namespace BRPLUSA.Revit.Installers._2018.Services
             }
         }
 
-        public static async Task<UpdateInfo> GetVersionInformationFromServer(UpdateManager mgr)
+        public static async Task<UpdateInfo> GetVersionInformationFromServerAsync(UpdateManager mgr)
         {
             LoggingService.LogInfo("Checking for updated version of app software");
             var info = await mgr.CheckForUpdate();

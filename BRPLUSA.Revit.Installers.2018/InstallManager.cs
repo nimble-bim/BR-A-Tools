@@ -33,7 +33,7 @@ namespace BRPLUSA.Revit.Installers._2018
 
         private void DoPreInstallStatusCheck()
         {
-            Revit2018Installed = InstallStatusService.IsRevit2018Installed();
+            Revit2018Installed = InstallStatusService.CheckIfRevit2018Installed();
         }
 
         private void InitializeHandlers()

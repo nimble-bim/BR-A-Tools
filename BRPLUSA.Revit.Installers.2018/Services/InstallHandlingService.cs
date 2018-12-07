@@ -55,12 +55,12 @@ namespace BRPLUSA.Revit.Installers._2018.Services
 
         private async Task<bool> IsAppForRevit2018Installed()
         {
-            return await InstallStatusService.IsAppForRevit2018Installed();
+            return await InstallStatusService.CheckIf2018AppIsInstalledAsync();
         }
 
         private async Task<bool> IsUpdateAvailableForAppForRevit2018()
         {
-            return await InstallStatusService.IsUpdateAvailableForAppForRevit2018(UpdateManager);
+            return await InstallStatusService.CheckForUpdateTo2018AppAsync(UpdateManager);
         }
 
         public void ConfigureAppInstallation()
@@ -94,7 +94,7 @@ namespace BRPLUSA.Revit.Installers._2018.Services
             LoggingService.LogInfo("Beginning app installation...");
             try
             {
-                var info = await InstallStatusService.GetVersionInformationFromServer(UpdateManager);
+                var info = await InstallStatusService.GetVersionInformationFromServerAsync(UpdateManager);
                 await DownloadHandler.DownloadNewReleases(info.ReleasesToApply);
                 var tempLocation = await PushNewReleaseToTempLocation(info);
 
