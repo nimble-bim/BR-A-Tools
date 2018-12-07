@@ -39,18 +39,15 @@ namespace BRPLUSA.Revit.Installers._2018.Services
                 ? "Update Manager is using local path" 
                 : "Update Manager is using server path");
 
-            LoggingService.LogInfo("Starting app installation configuration");
-            ConfigureAppInstallation();
-            LoggingService.LogInfo("Completed app installation configuration");
-        }
-
-        public async Task InitializeProductState()
-        {
             DownloadHandler = new AppDownloadHandler(UpdateManager);
             FileHandler = new FileSystemHandler(UpdateManager);
 
             Revit2018AppInstalled = IsAppForRevit2018Installed();
-            Revit2018AppUpdateAvailable =  await IsUpdateAvailableForAppForRevit2018();
+            Revit2018AppUpdateAvailable = IsUpdateAvailableForAppForRevit2018();
+
+            LoggingService.LogInfo("Starting app installation configuration");
+            ConfigureAppInstallation();
+            LoggingService.LogInfo("Completed app installation configuration");
         }
 
         private bool IsAppForRevit2018Installed()
@@ -58,9 +55,9 @@ namespace BRPLUSA.Revit.Installers._2018.Services
             return InstallStatusService.IsAppForRevit2018Installed();
         }
 
-        private async Task<bool> IsUpdateAvailableForAppForRevit2018()
+        private bool IsUpdateAvailableForAppForRevit2018()
         {
-            return await InstallStatusService.IsUpdateAvailableForAppForRevit2018(UpdateManager);
+            return InstallStatusService.CheckForUpdateToAppFor2018(UpdateManager);
         }
 
         public void ConfigureAppInstallation()

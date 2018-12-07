@@ -35,17 +35,19 @@ namespace BRPLUSA.Revit.Installers._2018.Services
             return installed;
         }
 
-        public static async Task<bool> IsUpdateAvailableForAppForRevit2018(UpdateManager mgr)
+        public static async Task<bool> CheckForUpdateToAppFor2018Async(UpdateManager mgr)
         {
             try
             {
+                LoggingService.LogInfo("Starting check for updates...");
                 var info = await GetVersionInformationFromServer(mgr);
+                LoggingService.LogInfo("Update check complete!");
+
                 var local = GetLocalVersion(info);
                 var server = GetServerVersion(info);
 
                 var update = local < server;
 
-                LoggingService.LogInfo("Update check complete");
                 LoggingService.LogInfo(update
                     ? "Update available"
                     : "No further updates available");
@@ -59,13 +61,18 @@ namespace BRPLUSA.Revit.Installers._2018.Services
             }
         }
 
+        public static bool CheckForUpdateToAppFor2018(UpdateManager mgr)
+        {
+            return CheckForUpdateToAppFor2018Async(mgr).Result;
+        }
+
         public static async Task<UpdateInfo> GetVersionInformationFromServer(UpdateManager mgr)
         {
             UpdateInfo info = null;
 
             try
             {
-                LoggingService.LogInfo("Checking for updated version of app software");
+                LoggingService.LogInfo("Getting version information from the server...");
                 info = await mgr.CheckForUpdate();
                 LoggingService.LogInfo("Check complete!");
             }

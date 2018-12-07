@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Reflection;
 using System.Threading.Tasks;
+using System.Windows;
 using BRPLUSA.Core.Services;
 using BRPLUSA.Revit.Installers._2018.Services;
 using RSG;
@@ -19,12 +20,7 @@ namespace BRPLUSA.Revit.Installers._2018
         public bool AppFor2018Installed { get; private set; }
         private InstallHandlingService InstallHandler { get; set; }
 
-        public InstallManager()
-        {
-            Initialize();
-        }
-
-        private void Initialize()
+        public void OnLoaded(object sender, RoutedEventArgs args)
         {
             LoggingService.LogInfo("Initializing InstallationManager");
             DoPreInstallStatusCheck();
@@ -44,9 +40,8 @@ namespace BRPLUSA.Revit.Installers._2018
             InstallHandler = new InstallHandlingService();
         }
 
-        public async Task InitializeProductState()
+        public void InitializeProductState()
         {
-            await InstallHandler.InitializeProductState();
             SetInstallationStatuses();
         }
 
@@ -70,7 +65,6 @@ namespace BRPLUSA.Revit.Installers._2018
 
             Console.WriteLine("Working!");
             return null;
-
         }
 
         public void Dispose()

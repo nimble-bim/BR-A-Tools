@@ -8,9 +8,11 @@ using BRPLUSA.Revit.Client.EndUser.Commands.VAVServes;
 using BRPLUSA.Revit.Client.EndUser.Services;
 using BRPLUSA.Revit.Client.UI.Views;
 using BRPLUSA.Revit.Installers._2018;
+using BRPLUSA.Revit.Installers._2018.Services;
 using BRPLUSA.Revit.Services.Registration;
 using BRPLUSA.Revit.Services.Web;
 using RSG;
+using Squirrel;
 
 namespace BRPLUSA.Revit.Client.EndUser.Applications
 {
@@ -21,7 +23,6 @@ namespace BRPLUSA.Revit.Client.EndUser.Applications
         public BardWebClient Sidebar { get; set; }
         private static SocketService SocketService { get; set; }
         private static AppInstallClient InstallApp { get; set; }
-        private static InstallManager BackgroundInstallManager { get; set; }
 
         public Result OnStartup(UIControlledApplication app)
         {
@@ -101,34 +102,25 @@ namespace BRPLUSA.Revit.Client.EndUser.Applications
             // check if app update is necessary
             LoggingService.LogInfo("Initializing application to check for product updates");
 
-            BackgroundInstallManager = new InstallManager();
-
-            BackgroundInstallManager
-                .InitializeProductState()
-                .ContinueWith((thing) =>
+            using (var mgr = new UpdateManager("https://app-brplusa-release.s3.amazonaws.com"))
+            {
+                try
                 {
-                    try
-                    {
-                        var available = BackgroundInstallManager.AppFor2018HasUpdateAvailable;
+                    var available = InstallStatusService.CheckForUpdateToAppFor2018(mgr);
 
-                        if (!available)
-                            return;
+                    if (!available)
+                        return;
 
-                        var userRequestedUpdate = NotifyUserOfAvailableUpdate();
-                        if (userRequestedUpdate == TaskDialogResult.Yes)
-                            StartUpdateClient();
-                    }
+                    var userRequestedUpdate = NotifyUserOfAvailableUpdate();
+                    if (userRequestedUpdate == TaskDialogResult.Yes)
+                        StartUpdateClient();
+                }
 
-                    catch (Exception e)
-                    {
-                        LoggingService.LogError("Unable to handle update because of internal fatal error: ", e);
-                    }
-
-                    finally
-                    {
-                        BackgroundInstallManager.Dispose();
-                    }
-                });
+                catch (Exception e)
+                {
+                    LoggingService.LogError("Unable to handle update because of internal fatal error: ", e);
+                }
+            }
         }
 
         //private async Task CheckForUpdate()
