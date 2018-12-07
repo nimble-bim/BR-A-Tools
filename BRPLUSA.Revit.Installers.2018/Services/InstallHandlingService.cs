@@ -44,7 +44,12 @@ namespace BRPLUSA.Revit.Installers._2018.Services
             LoggingService.LogInfo("Completed app installation configuration");
         }
 
-        public async Task InitializeAppState()
+        public void InitializeAppState()
+        {
+            InitializeAppStateAsync().RunSynchronously();
+        }
+
+        public async Task InitializeAppStateAsync()
         {
             DownloadHandler = new AppDownloadHandler(UpdateManager);
             FileHandler = new FileSystemHandler(UpdateManager);

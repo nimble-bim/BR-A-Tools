@@ -38,10 +38,10 @@ namespace BRPLUSA.Revit.Installers._2018
         {
             Manager = new InstallManager();
             //Loaded += SetInstallationStatuses;
-            ContentRendered += SetInstallationStatuses;
+            ContentRendered += SetInstallationStatusesAsync;
         }
 
-        private async void SetInstallationStatuses(object sender, EventArgs e)
+        private async void SetInstallationStatusesAsync(object sender, EventArgs e)
         {
             SetRevit2018InstallStatus(Manager.Revit2018Installed);
 
@@ -51,7 +51,7 @@ namespace BRPLUSA.Revit.Installers._2018
                 return;
             }
 
-            await Manager.InitializeAppState();
+            await Manager.InitializeAppStateAsync();
             SetAppFor2018InstallStatus(Manager.AppFor2018Installed);
             SetAppFor2018UpdateAvailability(Manager.AppFor2018HasUpdateAvailable);
         }
