@@ -46,7 +46,7 @@ namespace BRPLUSA.Revit.Installers._2018.Services
 
         public void InitializeAppState()
         {
-            InitializeAppStateAsync().RunSynchronously();
+            Task.Run(InitializeAppStateAsync);
         }
 
         public async Task InitializeAppStateAsync()
