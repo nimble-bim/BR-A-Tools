@@ -37,20 +37,10 @@ namespace BRPLUSA.Revit.Installers._2018
         private void InitializeServices()
         {
             Manager = new InstallManager();
-            Loaded += OnLoaded;
+            Loaded += SetInstallationStatuses;
         }
 
-        private async void OnLoaded(object sender, RoutedEventArgs e)
-        {
-            await InitializeProductState();
-        }
-
-        private async Task InitializeProductState()
-        {
-            await SetInstallationStatuses();
-        }
-
-        private async Task SetInstallationStatuses()
+        private async void SetInstallationStatuses(object sender, RoutedEventArgs e)
         {
             SetRevit2018InstallStatus(Manager.Revit2018Installed);
 
