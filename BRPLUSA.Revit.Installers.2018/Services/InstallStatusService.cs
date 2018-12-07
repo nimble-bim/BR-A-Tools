@@ -69,6 +69,11 @@ namespace BRPLUSA.Revit.Installers._2018.Services
             }
         }
 
+        public static UpdateInfo GetVersionInformationFromServer(UpdateManager mgr)
+        {
+            return GetVersionInformationFromServerAsync(mgr).Result;
+        }
+
         public static async Task<UpdateInfo> GetVersionInformationFromServerAsync(UpdateManager mgr)
         {
             LoggingService.LogInfo("Checking for updated version of app software");
