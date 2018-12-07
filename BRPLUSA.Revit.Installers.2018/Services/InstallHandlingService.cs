@@ -49,13 +49,13 @@ namespace BRPLUSA.Revit.Installers._2018.Services
             DownloadHandler = new AppDownloadHandler(UpdateManager);
             FileHandler = new FileSystemHandler(UpdateManager);
 
-            Revit2018AppInstalled = await IsAppForRevit2018Installed();
+            Revit2018AppInstalled = IsAppForRevit2018Installed();
             Revit2018AppUpdateAvailable =  await IsUpdateAvailableForAppForRevit2018();
         }
 
-        private async Task<bool> IsAppForRevit2018Installed()
+        private bool IsAppForRevit2018Installed()
         {
-            return await InstallStatusService.IsAppForRevit2018Installed();
+            return InstallStatusService.IsAppForRevit2018Installed();
         }
 
         private async Task<bool> IsUpdateAvailableForAppForRevit2018()

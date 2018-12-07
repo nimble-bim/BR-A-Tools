@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Autodesk.Revit.UI;
 using BRPLUSA.Core.Services;
 using BRPLUSA.Revit.Client.EndUser.Commands;
@@ -9,6 +10,7 @@ using BRPLUSA.Revit.Client.UI.Views;
 using BRPLUSA.Revit.Installers._2018;
 using BRPLUSA.Revit.Services.Registration;
 using BRPLUSA.Revit.Services.Web;
+using RSG;
 
 namespace BRPLUSA.Revit.Client.EndUser.Applications
 {
@@ -74,7 +76,7 @@ namespace BRPLUSA.Revit.Client.EndUser.Applications
             {
                 LoggingService.LogInfo("Shutting down application via Revit");
                 HandleServiceDeregistration(app);
-                HandleApplicationUpdate();
+                HandleUpdateProcess();
 
                 LoggingService.LogInfo("Application shutdown complete!");
                 return Result.Succeeded;
@@ -94,52 +96,70 @@ namespace BRPLUSA.Revit.Client.EndUser.Applications
             app.ControlledApplication.DocumentClosed -= SocketRegistrationService.DeregisterServices;
         }
 
-        private void HandleApplicationUpdate()
+        private void HandleUpdateProcess()
         {
-            try
-            {
-                // check if app update is necessary
-                LoggingService.LogInfo("Initializing application to check for product updates");
-                BackgroundInstallManager = new InstallManager();
-                BackgroundInstallManager.InitializeProductState();
+            // check if app update is necessary
+            LoggingService.LogInfo("Initializing application to check for product updates");
 
-                var update = BackgroundInstallManager.AppFor2018HasUpdateAvailable;
+            BackgroundInstallManager = new InstallManager();
 
-                if (!update)
-                    return;
-
-                const string title = "BR+A Revit Enhancements Update Available";
-                const string msg = "Would you like to update the application?";
-
-
-                var updateBox = new TaskDialog(title)
+            BackgroundInstallManager
+                .InitializeProductState()
+                .ContinueWith((thing) =>
                 {
-                    CommonButtons = TaskDialogCommonButtons.Yes | TaskDialogCommonButtons.No,
-                    MainContent = msg
-                };
+                    try
+                    {
+                        var available = BackgroundInstallManager.AppFor2018HasUpdateAvailable;
 
-                var result = updateBox.Show();
+                        if (!available)
+                            return;
 
-                // if yes, present the app installer and start it automatically
-                if (result == TaskDialogResult.No)
-                    return;
+                        var userRequestedUpdate = NotifyUserOfAvailableUpdate();
+                        if (userRequestedUpdate == TaskDialogResult.Yes)
+                            StartUpdateClient();
+                    }
 
-                InstallApp = new AppInstallClient();
+                    catch (Exception e)
+                    {
+                        LoggingService.LogError("Unable to handle update because of internal fatal error: ", e);
+                    }
 
-                LoggingService.LogInfo("Product update application initialized and ready to run");
-                //InstallApp.Start();
-                LoggingService.LogInfo("Product update application process completed");
-            }
+                    finally
+                    {
+                        BackgroundInstallManager.Dispose();
+                    }
+                });
+        }
 
-            catch (Exception e)
+        //private async Task CheckForUpdate()
+        //{
+            
+        //}
+
+        private TaskDialogResult NotifyUserOfAvailableUpdate()
+        {
+            const string title = "BR+A Revit Enhancements Update Available";
+            const string msg = "Would you like to update the application?";
+
+            var updateBox = new TaskDialog(title)
             {
-                LoggingService.LogError("Unable to start application update service", e);
-            }
+                CommonButtons = TaskDialogCommonButtons.Yes | TaskDialogCommonButtons.No,
+                MainContent = msg
+            };
 
-            finally
-            {
-                BackgroundInstallManager.Dispose();
-            }
+            var result = updateBox.Show();
+
+            return result;
+        }
+
+        private void StartUpdateClient()
+        {
+            // if yes, present the app installer and start it automatically
+            InstallApp = new AppInstallClient();
+
+            LoggingService.LogInfo("Product update application initialized and ready to run");
+            //InstallApp.Start();
+            LoggingService.LogInfo("Product update application process completed");
         }
 
         public void CreateRibbon(UIControlledApplication app)

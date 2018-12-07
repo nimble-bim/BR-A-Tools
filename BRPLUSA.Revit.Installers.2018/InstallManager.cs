@@ -3,6 +3,8 @@ using System.Reflection;
 using System.Threading.Tasks;
 using BRPLUSA.Core.Services;
 using BRPLUSA.Revit.Installers._2018.Services;
+using RSG;
+using Squirrel;
 
 namespace BRPLUSA.Revit.Installers._2018
 {
@@ -63,13 +65,12 @@ namespace BRPLUSA.Revit.Installers._2018
 
         public static Assembly ResolveSquirrelBinaries(object sender, ResolveEventArgs args)
         {
-            if(args.Name.ToLower().StartsWith("update.exe"))
-            {
-                Console.WriteLine("Working!");
+            if (!args.Name.ToLower().StartsWith("update.exe"))
                 return null;
-            }
 
+            Console.WriteLine("Working!");
             return null;
+
         }
 
         public void Dispose()

@@ -13,7 +13,6 @@ namespace BRPLUSA.Revit.Installers._2018.Services
 {
     public class InstallStatusService
     {
-        // non useful comment
         public static bool IsRevit2018Installed()
         {
             LoggingService.LogInfo("Checking if Revit 2018 is installed");
@@ -23,12 +22,12 @@ namespace BRPLUSA.Revit.Installers._2018.Services
             return installed;
         }
 
-        public static async Task<bool> IsAppForRevit2018Installed()
+        public static bool IsAppForRevit2018Installed()
         {
             LoggingService.LogInfo("Checking if our app for Revit 2018 is installed");
 
             var v2018 = RevitAddinLocationProvider.GetRevitAddinFolderLocation(RevitVersion.V2018);
-            var addinFiles = await Task.Run(() => Directory.EnumerateFiles(v2018).ToArray());
+            var addinFiles = Task.Run(() => Directory.EnumerateFiles(v2018).ToArray()).Result;
             var installed = addinFiles.Any(fileName => fileName.Contains("BRPLUSA.addin"));
 
             LoggingService.LogInfo(installed ? "Our app is installed" : "Our app is not installed");
@@ -62,9 +61,19 @@ namespace BRPLUSA.Revit.Installers._2018.Services
 
         public static async Task<UpdateInfo> GetVersionInformationFromServer(UpdateManager mgr)
         {
-            LoggingService.LogInfo("Checking for updated version of app software");
-            var info = await mgr.CheckForUpdate();
-            LoggingService.LogInfo("Check complete!");
+            UpdateInfo info = null;
+
+            try
+            {
+                LoggingService.LogInfo("Checking for updated version of app software");
+                info = await mgr.CheckForUpdate();
+                LoggingService.LogInfo("Check complete!");
+            }
+
+            catch (Exception e)
+            {
+                LoggingService.LogError("Unknown error caused a failure to check server for update information", e);
+            }
 
             return info;
         }
