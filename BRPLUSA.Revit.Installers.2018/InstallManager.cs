@@ -28,6 +28,7 @@ namespace BRPLUSA.Revit.Installers._2018
 
             if(Revit2018Installed)
                 InitializeHandlers();
+
             LoggingService.LogInfo("Initialized InstallationManager");
         }
 
@@ -41,9 +42,9 @@ namespace BRPLUSA.Revit.Installers._2018
             InstallHandler = new InstallHandlingService();
         }
 
-        public async Task InitializeProductState()
+        public async Task InitializeAppState()
         {
-            await InstallHandler.InitializeProductState();
+            await InstallHandler.InitializeAppState();
             SetInstallationStatuses();
         }
 
