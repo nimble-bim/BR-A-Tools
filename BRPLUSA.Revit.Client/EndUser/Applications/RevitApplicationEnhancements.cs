@@ -101,17 +101,8 @@ namespace BRPLUSA.Revit.Client.EndUser.Applications
             {
                 TaskDialog.Show("WARNING!", "About to check for update...");
 
-                var app = new AppInstallClient();
-                var productView = new ProductSelectionView();
-                app.MainWindow.Visibility = System.Windows.Visibility.Hidden;
-                app.Run(productView);
-
-                if(app.MainWindow.Visibility == System.Windows.Visibility.Hidden)
-                    TaskDialog.Show("WARNING!", "App should be running as invisible?");
-                else
-                {
-                    TaskDialog.Show("WARNING!", "App couldn't be made invisible");
-                }
+                var app = new AppInstallClient(true);
+                app.Run();
 
                 //// check if app update is necessary
                 //LoggingService.LogInfo("Initializing application to check for product updates");

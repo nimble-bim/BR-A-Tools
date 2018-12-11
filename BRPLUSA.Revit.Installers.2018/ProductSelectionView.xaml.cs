@@ -28,20 +28,18 @@ namespace BRPLUSA.Revit.Installers._2018
         private bool AppFor2018CanInstall { get; set; }
         private bool AppFor2018HasUpdateAvailable { get; set; }
 
-        public ProductSelectionView()
+        public ProductSelectionView(InstallManager mgr)
         {
             InitializeComponent();
-            InitializeServices();
+            InitializeServices(mgr);
         }
 
-        private void InitializeServices()
+        private void InitializeServices(InstallManager mgr)
         {
-            Manager = new InstallManager();
-
-            ContentRendered += SetInstallationStatusesAsync;
-            //ContentRendered += SetInstallationStatuses;
-
+            Manager = mgr;
             HandlePreInstallationChecks();
+            ContentRendered += SetInstallationStatuses;
+            //ContentRendered += SetInstallationStatusesAsync;
         }
 
         private void HandlePreInstallationChecks()
@@ -56,21 +54,11 @@ namespace BRPLUSA.Revit.Installers._2018
 
         private void SetInstallationStatuses(object sender, EventArgs e)
         {
-            Manager.InitializeAppStateAsync().ContinueWith((err) =>
+            Dispatcher.Invoke(() =>
             {
-                Dispatcher.Invoke(() =>
-                {
-                    SetAppFor2018InstallStatus(Manager.AppFor2018Installed);
-                    SetAppFor2018UpdateAvailability(Manager.AppFor2018HasUpdateAvailable);
-                });
+                SetAppFor2018InstallStatus(Manager.AppFor2018Installed);
+                SetAppFor2018UpdateAvailability(Manager.AppFor2018HasUpdateAvailable);
             });
-        }
-
-        private async void SetInstallationStatusesAsync(object sender, EventArgs e)
-        {
-            await Manager.InitializeAppStateAsync();
-            SetAppFor2018InstallStatus(Manager.AppFor2018Installed);
-            SetAppFor2018UpdateAvailability(Manager.AppFor2018HasUpdateAvailable);
         }
 
         private void SetRevit2018InstallStatus(bool status)

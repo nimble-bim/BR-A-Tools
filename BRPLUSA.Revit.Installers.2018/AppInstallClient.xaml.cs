@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using System.Windows.Navigation;
 using BRPLUSA.Core.Services;
 
 namespace BRPLUSA.Revit.Installers._2018
@@ -28,14 +29,61 @@ namespace BRPLUSA.Revit.Installers._2018
     /// </summary>
     public partial class AppInstallClient : Application
     {
-        public AppInstallClient()
+        private bool _makeVisible;
+
+        public AppInstallClient(bool startSilent = false) : base()
         {
-            Initialize();
+            _makeVisible = !startSilent;
         }
 
-        private void Initialize()
+        private InstallManager Manager { get; set; }
+
+        public bool Revit2018Installed
+        {
+            get
+            {
+                return Manager.Revit2018Installed;
+            }
+        }
+
+        public bool AppFor2018Installed
+        {
+            get
+            {
+                return Manager.AppFor2018Installed;
+            }
+        }
+
+        public bool AppFor2018HasUpdate
+        {
+            get
+            {
+                return Manager.AppFor2018HasUpdateAvailable;
+            }
+        }
+
+        protected override void OnStartup(StartupEventArgs e)
+        {
+            base.OnStartup(e);
+            InitializeServices();
+        }
+
+        private async void InitializeServices()
         {
             LoggingService.LogInfo("Starting installation app client");
+
+            Manager = new InstallManager();
+            await Manager.InitializeAppStateAsync();
+
+            MainWindow = new ProductSelectionView(Manager);
+
+            if (_makeVisible)
+                MainWindow.Show();
+        }
+
+        public void Reveal()
+        {
+            MainWindow.Show();
         }
     }
 }
