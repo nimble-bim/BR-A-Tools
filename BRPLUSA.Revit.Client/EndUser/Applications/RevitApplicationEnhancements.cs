@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Threading;
+using System.Threading.Tasks;
 using Autodesk.Revit.UI;
 using BRPLUSA.Core.Services;
 using BRPLUSA.Revit.Client.EndUser.Commands;
@@ -95,41 +97,38 @@ namespace BRPLUSA.Revit.Client.EndUser.Applications
             app.ControlledApplication.DocumentClosed -= SocketRegistrationService.DeregisterServices;
         }
 
-        private void HandleApplicationUpdate()
+        private async Task HandleApplicationUpdate()
         {
             try
             {
-                TaskDialog.Show("WARNING!", "About to check for update...");
-
+                // check if app update is necessary
+                LoggingService.LogInfo("Initializing application to check for product updates");
+                
                 var app = new AppInstallClient(true);
-                app.Run();
+                await app.GetAppUpdateStatus().ContinueWith((update) =>
+                {
+                    // if so, ask the user if they'd like to update
+                    if (!update.Result)
+                        return;
 
-                //// check if app update is necessary
-                //LoggingService.LogInfo("Initializing application to check for product updates");
-                //var update = InstallStatusService.CheckForUpdateTo2018App();
+                    const string title = "BR+A Revit Enhancements Update Available";
+                    const string msg = "Would you like to update the application?";
 
-                //// if so, ask the user if they'd like to update
-                //if(!update)
-                //    return;
+                    var updateBox = new TaskDialog(title)
+                    {
+                        CommonButtons = TaskDialogCommonButtons.Yes | TaskDialogCommonButtons.No,
+                        MainContent = msg
+                    };
+                    var result = updateBox.Show();
 
-                //const string title = "BR+A Revit Enhancements Update Available";
-                //const string msg = "Would you like to update the application?";
+                    // if yes, present the app installer and start it automatically
+                    if (result == TaskDialogResult.No)
+                        return;
 
-                //var updateBox = new TaskDialog(title)
-                //{
-                //    CommonButtons = TaskDialogCommonButtons.Yes | TaskDialogCommonButtons.No,
-                //    MainContent = msg
-                //};
-                //var result = updateBox.Show();
-
-                //// if yes, present the app installer and start it automatically
-                //if (result == TaskDialogResult.No)
-                //    return;
-
-                //LoggingService.LogInfo("Product update application initialized and ready to run");
-                //InstallApp = new AppInstallClient();
-                //// InstallApp.Start();
-                //LoggingService.LogInfo("Product update application process completed");
+                    LoggingService.LogInfo("Product update application initialized and ready to run");
+                    app.Reveal();
+                    LoggingService.LogInfo("Product update application process completed");
+                });
             }
 
             catch (Exception e)

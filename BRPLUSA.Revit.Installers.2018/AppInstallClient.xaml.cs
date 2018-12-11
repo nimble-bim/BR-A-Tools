@@ -1,4 +1,6 @@
-﻿using System.Windows;
+﻿using System;
+using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Navigation;
 using BRPLUSA.Core.Services;
 
@@ -68,7 +70,7 @@ namespace BRPLUSA.Revit.Installers._2018
             InitializeServices();
         }
 
-        private async void InitializeServices()
+        private async Task InitializeServices()
         {
             LoggingService.LogInfo("Starting installation app client");
 
@@ -84,6 +86,13 @@ namespace BRPLUSA.Revit.Installers._2018
         public void Reveal()
         {
             MainWindow.Show();
+        }
+
+        public async Task<bool> GetAppUpdateStatus()
+        {
+            await InitializeServices();
+
+            return AppFor2018HasUpdate;
         }
     }
 }
