@@ -40,6 +40,12 @@ namespace BRPLUSA.Revit.Installers._2018.Services
             return installed;
         }
 
+        public static bool CheckForUpdateTo2018App()
+        {
+            var mgr = new UpdateManager("https://app-brplusa-release.s3.amazonaws.com");
+            return CheckForUpdateTo2018App(mgr);
+        }
+
         public static bool CheckForUpdateTo2018App(UpdateManager mgr)
         {
             return CheckForUpdateTo2018AppAsync(mgr).Result;
