@@ -99,32 +99,40 @@ namespace BRPLUSA.Revit.Client.EndUser.Applications
         {
             try
             {
-                // check if app update is necessary
-                LoggingService.LogInfo("Initializing application to check for product updates");
-                var update = InstallStatusService.CheckForUpdateTo2018App();
+                TaskDialog.Show("WARNING!", "About to check for update...");
 
-                // if so, ask the user if they'd like to update
-                if(!update)
-                    return;
+                var app = new AppInstallClient();
+                var productView = new ProductSelectionView();
+                app.Run(productView);
 
-                const string title = "BR+A Revit Enhancements Update Available";
-                const string msg = "Would you like to update the application?";
+                TaskDialog.Show("WARNING!", "App should be running?");
 
-                var updateBox = new TaskDialog(title)
-                {
-                    CommonButtons = TaskDialogCommonButtons.Yes | TaskDialogCommonButtons.No,
-                    MainContent = msg
-                };
-                var result = updateBox.Show();
+                //// check if app update is necessary
+                //LoggingService.LogInfo("Initializing application to check for product updates");
+                //var update = InstallStatusService.CheckForUpdateTo2018App();
 
-                // if yes, present the app installer and start it automatically
-                if (result == TaskDialogResult.No)
-                    return;
+                //// if so, ask the user if they'd like to update
+                //if(!update)
+                //    return;
 
-                LoggingService.LogInfo("Product update application initialized and ready to run");
-                InstallApp = new AppInstallClient();
-                // InstallApp.Start();
-                LoggingService.LogInfo("Product update application process completed");
+                //const string title = "BR+A Revit Enhancements Update Available";
+                //const string msg = "Would you like to update the application?";
+
+                //var updateBox = new TaskDialog(title)
+                //{
+                //    CommonButtons = TaskDialogCommonButtons.Yes | TaskDialogCommonButtons.No,
+                //    MainContent = msg
+                //};
+                //var result = updateBox.Show();
+
+                //// if yes, present the app installer and start it automatically
+                //if (result == TaskDialogResult.No)
+                //    return;
+
+                //LoggingService.LogInfo("Product update application initialized and ready to run");
+                //InstallApp = new AppInstallClient();
+                //// InstallApp.Start();
+                //LoggingService.LogInfo("Product update application process completed");
             }
 
             catch (Exception e)
