@@ -64,10 +64,10 @@ namespace BRPLUSA.Revit.Installers._2018
             }
         }
 
-        protected override void OnStartup(StartupEventArgs e)
+        protected async override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
-            InitializeServices();
+            await InitializeServices().ConfigureAwait(false);
         }
 
         private async Task InitializeServices()
