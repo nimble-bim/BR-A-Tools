@@ -105,30 +105,29 @@ namespace BRPLUSA.Revit.Client.EndUser.Applications
                 LoggingService.LogInfo("Initializing application to check for product updates");
                 
                 var app = new AppInstallClient(true);
-                await app.GetAppUpdateStatus().ContinueWith((update) =>
+                var update = await app.GetAppUpdateStatus();
+
+                // if so, ask the user if they'd like to update
+                if (!update)
+                    return;
+
+                const string title = "BR+A Revit Enhancements Update Available";
+                const string msg = "Would you like to update the application?";
+
+                var updateBox = new TaskDialog(title)
                 {
-                    // if so, ask the user if they'd like to update
-                    if (!update.Result)
-                        return;
+                    CommonButtons = TaskDialogCommonButtons.Yes | TaskDialogCommonButtons.No,
+                    MainContent = msg
+                };
+                var result = updateBox.Show();
 
-                    const string title = "BR+A Revit Enhancements Update Available";
-                    const string msg = "Would you like to update the application?";
+                // if yes, present the app installer and start it automatically
+                if (result == TaskDialogResult.No)
+                    return;
 
-                    var updateBox = new TaskDialog(title)
-                    {
-                        CommonButtons = TaskDialogCommonButtons.Yes | TaskDialogCommonButtons.No,
-                        MainContent = msg
-                    };
-                    var result = updateBox.Show();
-
-                    // if yes, present the app installer and start it automatically
-                    if (result == TaskDialogResult.No)
-                        return;
-
-                    LoggingService.LogInfo("Product update application initialized and ready to run");
-                    app.Reveal();
-                    LoggingService.LogInfo("Product update application process completed");
-                });
+                LoggingService.LogInfo("Product update application initialized and ready to run");
+                app.Reveal();
+                LoggingService.LogInfo("Product update application process completed");
             }
 
             catch (Exception e)
