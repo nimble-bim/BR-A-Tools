@@ -44,7 +44,7 @@ namespace BRPLUSA.Revit.Installers._2018
 
         public async Task InitializeAppStateAsync()
         {
-            await InstallHandler.InitializeAppStateAsync();
+            await InstallHandler.InitializeAppStateAsync().ConfigureAwait(false);
             SetInstallationStatuses();
         }
 

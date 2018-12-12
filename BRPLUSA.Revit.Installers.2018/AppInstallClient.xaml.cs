@@ -75,12 +75,15 @@ namespace BRPLUSA.Revit.Installers._2018
             LoggingService.LogInfo("Starting installation app client");
 
             Manager = new InstallManager();
-            await Manager.InitializeAppStateAsync();
+            await Manager.InitializeAppStateAsync().ConfigureAwait(false);
 
-            MainWindow = new ProductSelectionView(Manager);
+            Dispatcher.Invoke(() =>
+            {
+                MainWindow = new ProductSelectionView(Manager);
 
-            if (_makeVisible)
-                MainWindow.Show();
+                if (_makeVisible)
+                    MainWindow.Show();
+            });
         }
 
         public void Reveal()

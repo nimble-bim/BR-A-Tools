@@ -32,7 +32,7 @@ namespace BRPLUSA.Revit.Installers._2018.Services
             LoggingService.LogInfo("Checking if our app for Revit 2018 is installed");
 
             var v2018 = RevitAddinLocationProvider.GetRevitAddinFolderLocation(RevitVersion.V2018);
-            var addinFiles = await Task.Run(() => Directory.EnumerateFiles(v2018).ToArray());
+            var addinFiles = await Task.Run(() => Directory.EnumerateFiles(v2018).ToArray()).ConfigureAwait(false);
             var installed = addinFiles.Any(fileName => fileName.Contains("BRPLUSA.addin"));
 
             LoggingService.LogInfo(installed ? "Our app is installed" : "Our app is not installed");
@@ -55,7 +55,7 @@ namespace BRPLUSA.Revit.Installers._2018.Services
         {
             try
             {
-                var info = await GetVersionInformationFromServerAsync(mgr);
+                var info = await GetVersionInformationFromServerAsync(mgr).ConfigureAwait(false);
                 var local = GetLocalVersion(info);
                 var server = GetServerVersion(info);
 
@@ -83,7 +83,7 @@ namespace BRPLUSA.Revit.Installers._2018.Services
         public static async Task<UpdateInfo> GetVersionInformationFromServerAsync(UpdateManager mgr)
         {
             LoggingService.LogInfo("Checking for updated version of app software");
-            var info = await mgr.CheckForUpdate();
+            var info = await mgr.CheckForUpdate().ConfigureAwait(false);
             LoggingService.LogInfo("Check complete!");
 
             return info;
