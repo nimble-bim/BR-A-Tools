@@ -72,12 +72,6 @@ namespace BRPLUSA.Revit.Client.EndUser.Applications
             }
         }
 
-        private void RegisterInstallerEvents(UIControlledApplication app)
-        {
-            UiApplication = app;
-            UiApplication.Idling += CheckUpdateDuringIdling;
-        }
-
         private Result Uninitialize(UIControlledApplication app)
         {
             try
@@ -101,6 +95,12 @@ namespace BRPLUSA.Revit.Client.EndUser.Applications
             app.ControlledApplication.DocumentOpened -= SocketRegistrationService.RegisterServices;
             app.ControlledApplication.DocumentClosed -= UpdaterRegistrationService.DeregisterServices;
             app.ControlledApplication.DocumentClosed -= SocketRegistrationService.DeregisterServices;
+        }
+
+        private void RegisterInstallerEvents(UIControlledApplication app)
+        {
+            UiApplication = app;
+            UiApplication.Idling += CheckUpdateDuringIdling;
         }
 
         private void CheckUpdateDuringIdling(object sender, IdlingEventArgs args)
