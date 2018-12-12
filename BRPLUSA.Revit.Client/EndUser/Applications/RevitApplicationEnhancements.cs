@@ -115,34 +115,45 @@ namespace BRPLUSA.Revit.Client.EndUser.Applications
             try
             {
                 // check if app update is necessary
-                // if so, ask the user if they'd like to update
                 if (!InstallApp.AppFor2018HasUpdate)
                     return;
 
-                const string title = "BR+A Revit Enhancements Update Available";
-                const string msg = "Would you like to update the application?";
-
-                var updateBox = new TaskDialog(title)
-                {
-                    CommonButtons = TaskDialogCommonButtons.Yes | TaskDialogCommonButtons.No,
-                    MainContent = msg
-                };
-                var result = updateBox.Show();
+                // if so, ask the user if they'd like to update
+                var wantsUpdate = PromptUserAboutUpdate();
 
                 // if yes, present the app installer and start it automatically
-                if (result == TaskDialogResult.No)
-                    return;
-
-                LoggingService.LogInfo("Product update application initialized and ready to run");
-                InstallApp.Reveal();
-                InstallApp.Run();
-                LoggingService.LogInfo("Product update application process completed");
+                if(wantsUpdate)
+                    RunUpdateProcess();
             }
 
             catch (Exception e)
             {
                 LoggingService.LogError("Unable to start application update service", e);
             }
+        }
+
+        private bool PromptUserAboutUpdate()
+        {
+            const string title = "BR+A Revit Enhancements Update Available";
+            const string msg = "Would you like to update the application?";
+
+            var updateBox = new TaskDialog(title)
+            {
+                CommonButtons = TaskDialogCommonButtons.Yes | TaskDialogCommonButtons.No,
+                MainContent = msg
+            };
+            var result = updateBox.Show();
+
+            
+            return result == TaskDialogResult.Yes;
+        }
+
+        private void RunUpdateProcess()
+        {
+            LoggingService.LogInfo("Product update application initialized and ready to run");
+            InstallApp.Reveal();
+            InstallApp.Run();
+            LoggingService.LogInfo("Product update application process completed");
         }
 
         public void CreateRibbon(UIControlledApplication app)
