@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using Autodesk.Revit.UI;
+using Autodesk.Revit.UI.Events;
 using BRPLUSA.Core.Services;
 using BRPLUSA.Revit.Client.EndUser.Commands;
 using BRPLUSA.Revit.Client.EndUser.Commands.Mechanical;
@@ -20,6 +22,7 @@ namespace BRPLUSA.Revit.Client.EndUser.Applications
         public BardWebClient Sidebar { get; set; }
         private static SocketService SocketService { get; set; }
         private static AppInstallClient InstallApp { get; set; }
+        private UIControlledApplication UiApplication { get; set; }
 
         public Result OnStartup(UIControlledApplication app)
         {
@@ -38,6 +41,7 @@ namespace BRPLUSA.Revit.Client.EndUser.Applications
                 LoggingService.LogInfo("Starting up application via Revit");
                 ResolveBrowserBinaries();
                 RegisterSideBar(app);
+                RegisterInstallerEvents(app);
                 CreateRibbon(app);
 
                 var backupAuto = new AutoModelBackupService();
@@ -68,6 +72,12 @@ namespace BRPLUSA.Revit.Client.EndUser.Applications
             }
         }
 
+        private void RegisterInstallerEvents(UIControlledApplication app)
+        {
+            UiApplication = app;
+            UiApplication.Idling += CheckUpdateDuringIdling;
+        }
+
         private Result Uninitialize(UIControlledApplication app)
         {
             try
@@ -75,7 +85,6 @@ namespace BRPLUSA.Revit.Client.EndUser.Applications
                 LoggingService.LogInfo("Shutting down application via Revit");
                 HandleServiceDeregistration(app);
                 HandleApplicationUpdate();
-
                 LoggingService.LogInfo("Application shutdown complete!");
                 return Result.Succeeded;
             }
@@ -94,18 +103,20 @@ namespace BRPLUSA.Revit.Client.EndUser.Applications
             app.ControlledApplication.DocumentClosed -= SocketRegistrationService.DeregisterServices;
         }
 
-        private async Task HandleApplicationUpdate()
+        private void CheckUpdateDuringIdling(object sender, IdlingEventArgs args)
+        {
+            LoggingService.LogInfo("Initializing application to check for product updates");
+            UiApplication.Idling -= CheckUpdateDuringIdling;
+            InstallApp = new AppInstallClient(true);
+        }
+
+        private void HandleApplicationUpdate()
         {
             try
             {
                 // check if app update is necessary
-                LoggingService.LogInfo("Initializing application to check for product updates");
-                
-                var app = new AppInstallClient(true);
-                var update = await app.GetAppUpdateStatus().ConfigureAwait(false);
-
                 // if so, ask the user if they'd like to update
-                if (!update)
+                if (!InstallApp.AppFor2018HasUpdate)
                     return;
 
                 const string title = "BR+A Revit Enhancements Update Available";
@@ -123,7 +134,8 @@ namespace BRPLUSA.Revit.Client.EndUser.Applications
                     return;
 
                 LoggingService.LogInfo("Product update application initialized and ready to run");
-                app.Reveal();
+                InstallApp.Reveal();
+                InstallApp.Run();
                 LoggingService.LogInfo("Product update application process completed");
             }
 

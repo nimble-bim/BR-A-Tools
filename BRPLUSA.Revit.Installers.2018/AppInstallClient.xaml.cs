@@ -32,13 +32,11 @@ namespace BRPLUSA.Revit.Installers._2018
     public partial class AppInstallClient : Application
     {
         private bool _makeVisible;
-
+        private InstallManager Manager { get; set; }
         public AppInstallClient(bool startSilent = false) : base()
         {
             _makeVisible = !startSilent;
         }
-
-        private InstallManager Manager { get; set; }
 
         public bool Revit2018Installed
         {
@@ -88,6 +86,7 @@ namespace BRPLUSA.Revit.Installers._2018
 
         public void Reveal()
         {
+            MainWindow.Visibility = Visibility.Visible;
             MainWindow.Show();
         }
 
