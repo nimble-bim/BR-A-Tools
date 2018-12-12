@@ -40,22 +40,16 @@ namespace BRPLUSA.Revit.Installers._2018.Services
             return installed;
         }
 
-        public static bool CheckForUpdateTo2018App()
+        public static bool CheckForUpdateTo2018App(string path)
         {
-            var mgr = new UpdateManager("https://app-brplusa-release.s3.amazonaws.com");
-            return CheckForUpdateTo2018App(mgr);
+            return CheckForUpdateTo2018AppAsync(path).Result;
         }
 
-        public static bool CheckForUpdateTo2018App(UpdateManager mgr)
-        {
-            return CheckForUpdateTo2018AppAsync(mgr).Result;
-        }
-
-        public static async Task<bool> CheckForUpdateTo2018AppAsync(UpdateManager mgr)
+        public static async Task<bool> CheckForUpdateTo2018AppAsync(string path)
         {
             try
             {
-                var info = await GetVersionInformationFromServerAsync(mgr).ConfigureAwait(false);
+                var info = await GetVersionInformationFromServerAsync(path).ConfigureAwait(false);
                 var local = GetLocalVersion(info);
                 var server = GetServerVersion(info);
 
@@ -75,18 +69,16 @@ namespace BRPLUSA.Revit.Installers._2018.Services
             }
         }
 
-        public static UpdateInfo GetVersionInformationFromServer(UpdateManager mgr)
+        public static async Task<UpdateInfo> GetVersionInformationFromServerAsync(string path)
         {
-            return GetVersionInformationFromServerAsync(mgr).Result;
-        }
+            using (var mgr = new UpdateManager(path))
+            {
+                LoggingService.LogInfo("Checking for updated version of app software");
+                var info = await mgr.CheckForUpdate().ConfigureAwait(false);
+                LoggingService.LogInfo("Check complete!");
 
-        public static async Task<UpdateInfo> GetVersionInformationFromServerAsync(UpdateManager mgr)
-        {
-            LoggingService.LogInfo("Checking for updated version of app software");
-            var info = await mgr.CheckForUpdate().ConfigureAwait(false);
-            LoggingService.LogInfo("Check complete!");
-
-            return info;
+                return info;
+            }
         }
 
         public static VersionData GetVersionData(ReleaseEntry info)

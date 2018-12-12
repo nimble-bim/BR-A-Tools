@@ -93,7 +93,7 @@ namespace BRPLUSA.Revit.Installers._2018
 
         public async Task<bool> GetAppUpdateStatus()
         {
-            await InitializeServices();
+            await InitializeServices().ConfigureAwait(false);
 
             return AppFor2018HasUpdate;
         }

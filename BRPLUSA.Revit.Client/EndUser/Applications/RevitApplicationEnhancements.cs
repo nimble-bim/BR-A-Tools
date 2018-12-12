@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading;
 using System.Threading.Tasks;
 using Autodesk.Revit.UI;
 using BRPLUSA.Core.Services;
@@ -9,10 +8,8 @@ using BRPLUSA.Revit.Client.EndUser.Commands.VAVServes;
 using BRPLUSA.Revit.Client.EndUser.Services;
 using BRPLUSA.Revit.Client.UI.Views;
 using BRPLUSA.Revit.Installers._2018;
-using BRPLUSA.Revit.Installers._2018.Services;
 using BRPLUSA.Revit.Services.Registration;
 using BRPLUSA.Revit.Services.Web;
-using Squirrel;
 
 namespace BRPLUSA.Revit.Client.EndUser.Applications
 {
@@ -105,7 +102,7 @@ namespace BRPLUSA.Revit.Client.EndUser.Applications
                 LoggingService.LogInfo("Initializing application to check for product updates");
                 
                 var app = new AppInstallClient(true);
-                var update = await app.GetAppUpdateStatus();
+                var update = await app.GetAppUpdateStatus().ConfigureAwait(false);
 
                 // if so, ask the user if they'd like to update
                 if (!update)

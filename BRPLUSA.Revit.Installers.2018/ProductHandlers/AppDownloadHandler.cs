@@ -9,23 +9,26 @@ namespace BRPLUSA.Revit.Installers._2018.ProductHandlers
 {
     public class AppDownloadHandler
     {
-        private UpdateManager UpdateManager { get; set; }
-        public AppDownloadHandler(UpdateManager mgr)
+        private string UpdatePath { get; set; }
+        public AppDownloadHandler(string path)
         {
-            UpdateManager = mgr;
+            UpdatePath = path;
         }
 
         public async Task DownloadNewReleases(IEnumerable<ReleaseEntry> releases)
         {
             LoggingService.LogInfo("Beginning app release download");
-            try
+            using (var mgr = new UpdateManager(UpdatePath))
             {
-                await UpdateManager.DownloadReleases(releases);
-            }
+                try
+                {
+                    await mgr.DownloadReleases(releases);
+                }
 
-            catch (Exception e)
-            {
-                throw new Exception("Failed to download releases", e);
+                catch (Exception e)
+                {
+                    throw new Exception("Failed to download releases", e);
+                }
             }
 
             LoggingService.LogInfo("App release download complete");

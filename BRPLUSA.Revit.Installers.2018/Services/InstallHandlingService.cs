@@ -7,11 +7,11 @@ using Squirrel;
 
 namespace BRPLUSA.Revit.Installers._2018.Services
 {
-    public class InstallHandlingService : IDisposable
+    public class InstallHandlingService
     {
+        private string UpdatePath { get; set; }
         private string LocalPath { get; set; }
         private string ServerPath { get; set; }
-        private UpdateManager UpdateManager { get; set; }
         private FileSystemHandler FileHandler { get; set; }
         private AppDownloadHandler DownloadHandler { get; set; }
 
@@ -30,10 +30,9 @@ namespace BRPLUSA.Revit.Installers._2018.Services
             ServerPath = "https://app-brplusa-release.s3.amazonaws.com";
             LocalPath = UpdateManager.GetLocalAppDataDirectory() + @"\BRPLUSA\ProductVersions";
 
-            UpdateManager = new UpdateManager(
-                useLocalFiles
-                    ? LocalPath
-                    : ServerPath);
+            UpdatePath = useLocalFiles
+                            ? LocalPath
+                            : ServerPath;
 
             LoggingService.LogInfo(useLocalFiles 
                 ? "Update Manager is using local path" 
@@ -51,8 +50,8 @@ namespace BRPLUSA.Revit.Installers._2018.Services
 
         public async Task InitializeAppStateAsync()
         {
-            DownloadHandler = new AppDownloadHandler(UpdateManager);
-            FileHandler = new FileSystemHandler(UpdateManager);
+            DownloadHandler = new AppDownloadHandler(UpdatePath);
+            FileHandler = new FileSystemHandler(UpdatePath);
 
             Revit2018AppInstalled = await CheckIf2018AppIsInstalledAsync().ConfigureAwait(false);
             Revit2018AppUpdateAvailable = await CheckForUpdateTo2018AppAsync().ConfigureAwait(false);
@@ -75,33 +74,38 @@ namespace BRPLUSA.Revit.Installers._2018.Services
 
         private async Task<bool> CheckForUpdateTo2018AppAsync()
         {
-            return await InstallStatusService.CheckForUpdateTo2018AppAsync(UpdateManager).ConfigureAwait(false);
+            return await InstallStatusService.CheckForUpdateTo2018AppAsync(UpdatePath).ConfigureAwait(false);
         }
 
         public void ConfigureAppInstallation()
         {
-            SquirrelAwareApp.HandleEvents(
-                onInitialInstall: v =>
-                {
-                    UpdateManager.KillAllExecutablesBelongingToPackage();
-                    UpdateManager.RemoveShortcutForThisExe();
-                    UpdateManager.KillAllExecutablesBelongingToPackage();
-                },
-                onAppUpdate: v => {
-                    UpdateManager.RemoveShortcutForThisExe();
-                },
-                onAppUninstall: async v => {
-                    UpdateManager.RemoveShortcutForThisExe();
-                    await UpdateManager.FullUninstall();
+            using (var UpdateManager = new UpdateManager(UpdatePath))
+            {
+                SquirrelAwareApp.HandleEvents(
+                    onInitialInstall: v =>
+                    {
+                        UpdateManager.KillAllExecutablesBelongingToPackage();
+                        UpdateManager.RemoveShortcutForThisExe();
+                        UpdateManager.KillAllExecutablesBelongingToPackage();
+                    },
+                    onAppUpdate: v =>
+                    {
+                        UpdateManager.RemoveShortcutForThisExe();
+                    },
+                    onAppUninstall: async v =>
+                    {
+                        UpdateManager.RemoveShortcutForThisExe();
+                        await UpdateManager.FullUninstall();
                     //FileHandler.CleanUpReplicationDirectory();
                 },
-                onFirstRun: () =>
-                {
-                    UpdateManager.KillAllExecutablesBelongingToPackage();
-                    UpdateManager.RemoveShortcutForThisExe();
-                    UpdateManager.KillAllExecutablesBelongingToPackage();
-                }
-            );
+                    onFirstRun: () =>
+                    {
+                        UpdateManager.KillAllExecutablesBelongingToPackage();
+                        UpdateManager.RemoveShortcutForThisExe();
+                        UpdateManager.KillAllExecutablesBelongingToPackage();
+                    }
+                );
+            }
         }
 
         public async Task<bool> HandleRevit2018Installation()
@@ -109,7 +113,7 @@ namespace BRPLUSA.Revit.Installers._2018.Services
             LoggingService.LogInfo("Beginning app installation...");
             try
             {
-                var info = await InstallStatusService.GetVersionInformationFromServerAsync(UpdateManager);
+                var info = await InstallStatusService.GetVersionInformationFromServerAsync(UpdatePath);
                 await DownloadHandler.DownloadNewReleases(info.ReleasesToApply);
                 var tempLocation = await PushNewReleaseToTempLocation(info);
 
@@ -133,7 +137,12 @@ namespace BRPLUSA.Revit.Installers._2018.Services
             LoggingService.LogInfo("Pushing release to temporary location...");
             try
             {
-                var location = await UpdateManager.ApplyReleases(info);
+                string location;
+
+                using (var mgr = new UpdateManager(UpdatePath))
+                {
+                    location = await mgr.ApplyReleases(info);
+                }
 
                 return location;
             }
@@ -142,13 +151,7 @@ namespace BRPLUSA.Revit.Installers._2018.Services
             {
                 LoggingService.LogError("Failed to apply releases", e);
                 throw new Exception("Failed to apply releases", e);
-                
             }
-        }
-
-        public void Dispose()
-        {
-            UpdateManager.Dispose();
         }
     }
 }
