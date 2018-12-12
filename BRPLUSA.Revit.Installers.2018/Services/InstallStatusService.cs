@@ -40,11 +40,6 @@ namespace BRPLUSA.Revit.Installers._2018.Services
             return installed;
         }
 
-        public static bool CheckForUpdateTo2018App(string path)
-        {
-            return CheckForUpdateTo2018AppAsync(path).Result;
-        }
-
         public static async Task<bool> CheckForUpdateTo2018AppAsync(string path)
         {
             try

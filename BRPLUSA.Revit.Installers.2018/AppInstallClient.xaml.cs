@@ -93,7 +93,15 @@ namespace BRPLUSA.Revit.Installers._2018
 
         public async Task<bool> GetAppUpdateStatus()
         {
-            await InitializeServices().ConfigureAwait(false);
+            try
+            {
+                await InitializeServices().ConfigureAwait(false);
+            }
+
+            catch(Exception e)
+            {
+                LoggingService.LogError("Failed to get update status due to fatal error", e);
+            }
 
             return AppFor2018HasUpdate;
         }

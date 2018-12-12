@@ -43,11 +43,6 @@ namespace BRPLUSA.Revit.Installers._2018.Services
             LoggingService.LogInfo("Completed app installation configuration");
         }
 
-        public void InitializeAppState()
-        {
-            Task.Run(InitializeAppStateAsync);
-        }
-
         public async Task InitializeAppStateAsync()
         {
             DownloadHandler = new AppDownloadHandler(UpdatePath);
@@ -57,19 +52,9 @@ namespace BRPLUSA.Revit.Installers._2018.Services
             Revit2018AppUpdateAvailable = await CheckForUpdateTo2018AppAsync().ConfigureAwait(false);
         }
 
-        private bool CheckIf2018AppIsInstalled()
-        {
-            return CheckIf2018AppIsInstalledAsync().Result;
-        }
-
         private async Task<bool> CheckIf2018AppIsInstalledAsync()
         {
             return await InstallStatusService.CheckIf2018AppIsInstalledAsync().ConfigureAwait(false);
-        }
-
-        private bool CheckForUpdateTo2018App()
-        {
-            return CheckForUpdateTo2018AppAsync().Result;
         }
 
         private async Task<bool> CheckForUpdateTo2018AppAsync()
