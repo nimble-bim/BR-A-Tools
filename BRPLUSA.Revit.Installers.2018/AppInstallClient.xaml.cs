@@ -1,4 +1,7 @@
-﻿using System.Windows;
+﻿using System;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Navigation;
 using BRPLUSA.Core.Services;
 
 namespace BRPLUSA.Revit.Installers._2018
@@ -28,14 +31,78 @@ namespace BRPLUSA.Revit.Installers._2018
     /// </summary>
     public partial class AppInstallClient : Application
     {
-        public AppInstallClient()
+        private bool _makeVisible;
+        private InstallManager Manager { get; set; }
+        public AppInstallClient(bool startSilent = false) : base()
         {
-            Initialize();
+            _makeVisible = !startSilent;
         }
 
-        private void Initialize()
+        public bool Revit2018Installed
+        {
+            get
+            {
+                return Manager.Revit2018Installed;
+            }
+        }
+
+        public bool AppFor2018Installed
+        {
+            get
+            {
+                return Manager.AppFor2018Installed;
+            }
+        }
+
+        public bool AppFor2018HasUpdate
+        {
+            get
+            {
+                return Manager.AppFor2018HasUpdateAvailable;
+            }
+        }
+
+        protected async override void OnStartup(StartupEventArgs e)
+        {
+            base.OnStartup(e);
+            await InitializeServices().ConfigureAwait(false);
+        }
+
+        private async Task InitializeServices()
         {
             LoggingService.LogInfo("Starting installation app client");
+
+            Manager = new InstallManager();
+            await Manager.InitializeAppStateAsync().ConfigureAwait(false);
+
+            Dispatcher.Invoke(() =>
+            {
+                MainWindow = new ProductSelectionView(Manager);
+
+                if (_makeVisible)
+                    MainWindow.Show();
+            });
+        }
+
+        public void Reveal()
+        {
+            MainWindow.Visibility = Visibility.Visible;
+            MainWindow.Show();
+        }
+
+        public async Task<bool> GetAppUpdateStatus()
+        {
+            try
+            {
+                await InitializeServices().ConfigureAwait(false);
+            }
+
+            catch(Exception e)
+            {
+                LoggingService.LogError("Failed to get update status due to fatal error", e);
+            }
+
+            return AppFor2018HasUpdate;
         }
     }
 }

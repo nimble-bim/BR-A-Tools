@@ -36,7 +36,7 @@
 
         public static bool operator <(VersionData v1, VersionData v2)
         {
-            return (v1 > v2) && (v1 != v2);
+            return !(v1 > v2) && (v1 != v2);
         }
     }
 }

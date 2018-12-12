@@ -9,18 +9,18 @@ namespace BRPLUSA.Revit.Installers._2018.ProductHandlers
 {
     public class FileSystemHandler
     {
-        private UpdateManager UpdateManager { get; set; }
+        private string UpdatePath { get; set; }
         private FileInstallHandler InstallHandler { get; set; }
 
-        public FileSystemHandler(UpdateManager mgr)
+        public FileSystemHandler(string path)
         {
-            Initialize(mgr);
+            Initialize(path);
         }
 
-        private void Initialize(UpdateManager mgr)
+        private void Initialize(string path)
         {
             InstallHandler = new FileInstallHandler();
-            UpdateManager = mgr;
+            UpdatePath = path;
         }
 
         public async Task HandleRevit2018Installation(string tempDir, string destDir = null)

@@ -9,7 +9,7 @@ namespace BRPLUSA.Revit.Installers._2018
     /// This holds the status of the installation and manages
     /// the process of installing and upgrading the product
     /// </summary>
-    public class InstallManager : IDisposable
+    public class InstallManager
     {
         public bool Revit2018Installed { get; private set; }
         public bool AppFor2018HasUpdateAvailable { get; private set; }
@@ -28,12 +28,13 @@ namespace BRPLUSA.Revit.Installers._2018
 
             if(Revit2018Installed)
                 InitializeHandlers();
+
             LoggingService.LogInfo("Initialized InstallationManager");
         }
 
         private void DoPreInstallStatusCheck()
         {
-            Revit2018Installed = InstallStatusService.IsRevit2018Installed();
+            Revit2018Installed = InstallStatusService.CheckIfRevit2018Installed();
         }
 
         private void InitializeHandlers()
@@ -41,9 +42,9 @@ namespace BRPLUSA.Revit.Installers._2018
             InstallHandler = new InstallHandlingService();
         }
 
-        public async Task InitializeProductState()
+        public async Task InitializeAppStateAsync()
         {
-            await InstallHandler.InitializeProductState();
+            await InstallHandler.InitializeAppStateAsync().ConfigureAwait(false);
             SetInstallationStatuses();
         }
 
@@ -58,11 +59,6 @@ namespace BRPLUSA.Revit.Installers._2018
             var success = await InstallHandler.HandleRevit2018Installation();
 
             return success;
-        }
-
-        public void Dispose()
-        {
-            InstallHandler?.Dispose();
         }
     }
 }

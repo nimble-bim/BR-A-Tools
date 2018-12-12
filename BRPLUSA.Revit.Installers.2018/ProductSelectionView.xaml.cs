@@ -11,7 +11,7 @@ namespace BRPLUSA.Revit.Installers._2018
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class ProductSelectionView : Window, IDisposable
+    public partial class ProductSelectionView : Window
     {
         private const string _updateAvailable = "Update Available!";
         private const string _updateNotAvailable = "Up to date";
@@ -28,41 +28,37 @@ namespace BRPLUSA.Revit.Installers._2018
         private bool AppFor2018CanInstall { get; set; }
         private bool AppFor2018HasUpdateAvailable { get; set; }
 
-        public ProductSelectionView()
+        public ProductSelectionView(InstallManager mgr)
         {
             InitializeComponent();
-            InitializeServices();
+            InitializeServices(mgr);
         }
 
-        private void InitializeServices()
+        private void InitializeServices(InstallManager mgr)
         {
-            Manager = new InstallManager();
-            Loaded += OnLoaded;
+            Manager = mgr;
+            HandlePreInstallationChecks();
+            ContentRendered += SetInstallationStatuses;
+            //ContentRendered += SetInstallationStatusesAsync;
         }
 
-        private async void OnLoaded(object sender, RoutedEventArgs e)
-        {
-            await InitializeProductState();
-        }
-
-        private async Task InitializeProductState()
-        {
-            await SetInstallationStatuses();
-        }
-
-        private async Task SetInstallationStatuses()
+        private void HandlePreInstallationChecks()
         {
             SetRevit2018InstallStatus(Manager.Revit2018Installed);
 
-            if (!Revit2018Installed)
-            {
-                ShowRevit2018NotInstalled();
+            if (Revit2018Installed)
                 return;
-            }
 
-            await Manager.InitializeProductState();
-            SetAppFor2018InstallStatus(Manager.AppFor2018Installed);
-            SetAppFor2018UpdateAvailability(Manager.AppFor2018HasUpdateAvailable);
+            ShowRevit2018NotInstalled();
+        }
+
+        private void SetInstallationStatuses(object sender, EventArgs e)
+        {
+            Dispatcher.Invoke(() =>
+            {
+                SetAppFor2018InstallStatus(Manager.AppFor2018Installed);
+                SetAppFor2018UpdateAvailability(Manager.AppFor2018HasUpdateAvailable);
+            });
         }
 
         private void SetRevit2018InstallStatus(bool status)
@@ -133,7 +129,6 @@ namespace BRPLUSA.Revit.Installers._2018
         private void ShutdownPage(object sender, RoutedEventArgs e)
         {
             Close();
-            Dispose();
         }
 
         private void OnDragRequest(object sender, MouseButtonEventArgs e)
@@ -170,11 +165,6 @@ namespace BRPLUSA.Revit.Installers._2018
                 ShowAppFor2018InstallationComplete,
                 (err) => ShowAppFor2018InstallationFailed()
                 );
-        }
-
-        public void Dispose()
-        {
-            Manager.Dispose();
         }
     }
 }
