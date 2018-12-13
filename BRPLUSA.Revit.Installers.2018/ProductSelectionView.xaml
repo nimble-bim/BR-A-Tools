@@ -71,7 +71,7 @@
         </Grid>
         
         <Grid Name="AppFooter">
-            <TextBlock HorizontalAlignment="Center" Margin="191,610,188,0" TextWrapping="Wrap" Text="v0.1.09" VerticalAlignment="Top" Height="16" Width="65" Foreground="#FFB9B6B6" FontFamily="Calibri"/>
+            <TextBlock Name="AppVersion" HorizontalAlignment="Center" Margin="191,610,188,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Height="16" Width="65" Foreground="#FFB9B6B6" FontFamily="Calibri"/>
             <Rectangle Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="2" Margin="0,595,0,0" Stroke="#FFC7C7C7" VerticalAlignment="Top" Width="444"/>
         </Grid>
     </Grid>

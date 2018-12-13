@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using BRPLUSA.Core.Services;
+using BRPLUSA.Revit.Installers._2018.Entities;
 using BRPLUSA.Revit.Installers._2018.ProductHandlers;
 using BRPLUSA.Revit.Installers._2018.Providers;
 using Squirrel;
@@ -17,6 +18,7 @@ namespace BRPLUSA.Revit.Installers._2018.Services
 
         public bool Revit2018AppInstalled { get; set; }
         public bool Revit2018AppUpdateAvailable { get; set; }
+        public VersionData AppVersion { get; set; }
 
         public InstallHandlingService(bool useLocalFiles = false)
         {

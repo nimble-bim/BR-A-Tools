@@ -64,11 +64,16 @@ namespace BRPLUSA.Revit.Installers._2018
             Dispatcher.Invoke(() =>
             {
                 SetInstallerHeadlineContent();
+                SetApplicationVersion();
                 SetAppFor2018InstallStatus(Manager.AppFor2018Installed);
                 SetAppFor2018UpdateAvailability(Manager.AppFor2018HasUpdateAvailable);
             });
         }
 
+        private void SetApplicationVersion()
+        {
+            //var version = Manager.AppVersion
+        }
         private void SetInstallerHeadlineContent()
         {
             InstallerHeadline.Text = _installerHeadline;

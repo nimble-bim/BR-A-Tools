@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using BRPLUSA.Core.Services;
+using BRPLUSA.Revit.Installers._2018.Entities;
 using BRPLUSA.Revit.Installers._2018.Services;
 
 namespace BRPLUSA.Revit.Installers._2018
@@ -14,6 +15,7 @@ namespace BRPLUSA.Revit.Installers._2018
         public bool Revit2018Installed { get; private set; }
         public bool AppFor2018HasUpdateAvailable { get; private set; }
         public bool AppFor2018Installed { get; private set; }
+        public VersionData AppVersion { get; private set; }
         private InstallHandlingService InstallHandler { get; set; }
 
         public InstallManager()
@@ -52,6 +54,7 @@ namespace BRPLUSA.Revit.Installers._2018
         {
             AppFor2018Installed = InstallHandler.Revit2018AppInstalled;
             AppFor2018HasUpdateAvailable = InstallHandler.Revit2018AppUpdateAvailable;
+            //AppVersion = InstallHandler.AppVersion
         }
 
         public async Task<bool> HandleRevit2018ApplicationInstallation()
