@@ -61,7 +61,7 @@
 
         <Grid Name="SectionRevit2018">
             <TextBlock Name="Revit2018AppTitle" Text="Revit 2018" HorizontalAlignment="Left" Margin="72,292,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Height="20" Width="124" Foreground="Black" FontSize="20" FontFamily="Myriad Pro"/>
-            <TextBlock Name="Revit2018UpdateStatus" Text="Checking..." HorizontalAlignment="Left" Margin="72,315,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="12" Width="124" Foreground="#FFB9B6B6" FontFamily="Myriad Pro Light" FontSize="10"/>
+            <TextBlock Name="Revit2018UpdateStatus" Text="" HorizontalAlignment="Left" Margin="72,315,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="12" Width="124" Foreground="#FFB9B6B6" FontFamily="Myriad Pro Light" FontSize="10"/>
             <Button Name="ButtonRevit2018AppInstallStatus"  Content="Checking..." HorizontalAlignment="Left" Margin="207,296,0,0" VerticalAlignment="Top" Width="76" Background="#FF339DFF" Foreground="White" BorderBrush="{x:Null}" Height="30" Click="InstallRevit2018"/>
         </Grid>
         
