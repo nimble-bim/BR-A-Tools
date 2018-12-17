@@ -19,6 +19,13 @@ namespace BRPLUSA.Revit.Installers._2018
         private const string _productInstalling = "Installing...";
         private const string _productNeedsInstall = "Install";
         private const string _productCanBeUpgraded = "Upgrade";
+        private const string _installerHeadline =
+            "BR+A's Revit Enhancements are designed to help with a great deal of " +
+            "modeling and engineering tasks. " +
+            "\n" +
+            "\n" +
+            "Use the buttons below to install or upgrade " +
+            "the application and watch your productivity skyrocket!";
 
         private InstallManager Manager { get; set; }
 
@@ -56,9 +63,20 @@ namespace BRPLUSA.Revit.Installers._2018
         {
             Dispatcher.Invoke(() =>
             {
+                SetInstallerHeadlineContent();
+                SetApplicationVersion();
                 SetAppFor2018InstallStatus(Manager.AppFor2018Installed);
                 SetAppFor2018UpdateAvailability(Manager.AppFor2018HasUpdateAvailable);
             });
+        }
+
+        private void SetApplicationVersion()
+        {
+            //var version = Manager.AppVersion
+        }
+        private void SetInstallerHeadlineContent()
+        {
+            InstallerHeadline.Text = _installerHeadline;
         }
 
         private void SetRevit2018InstallStatus(bool status)
@@ -116,14 +134,17 @@ namespace BRPLUSA.Revit.Installers._2018
         private void SetAppFor2018UpdateAvailability(bool status)
         {
             AppFor2018HasUpdateAvailable = status;
-            Revit2018UpdateStatus.Text = status
-                ? _updateAvailable
-                : _updateNotAvailable;
 
             if (AppFor2018Installed)
+            {
                 ButtonRevit2018AppInstallStatus.Content = status
                     ? _productCanBeUpgraded
                     : _productInstalled;
+
+                Revit2018UpdateStatus.Text = status
+                ? _updateAvailable
+                : _updateNotAvailable;
+            }
         }
 
         private void ShutdownPage(object sender, RoutedEventArgs e)
