@@ -204,7 +204,7 @@ namespace BRPLUSA.Revit.Client.EndUser.Applications
             {
                 LoggingService.LogInfo("Attempting to resolve browser binaries");
 
-                AppDomain.CurrentDomain.AssemblyResolve += BardWebClient.Resolver;
+                AppDomain.CurrentDomain.AssemblyResolve += BardWebClient.ResolveCefBinaries;
                 BardWebClient.InitializeCefSharp();
 
                 LoggingService.LogInfo("Browser binary resolution complete");
