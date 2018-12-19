@@ -36,8 +36,9 @@ namespace BRPLUSA.Revit.Client.UI.Views
 
         public void JoinRevitSession(object sender, DocumentOpenedEventArgs args)
         {
-            NavigateTo("https://www.brplusa.com");
+            //NavigateTo("https://www.brplusa.com");
             //NavigateTo($@"http://localhost:4001/?room={Socket.Id}");
+            NavigateTo($@"http://localhost:4422");
             //NavigateTo(Socket.Location);
         }
 
