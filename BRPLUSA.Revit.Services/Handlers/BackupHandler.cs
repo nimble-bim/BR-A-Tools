@@ -16,7 +16,9 @@ namespace BRPLUSA.Revit.Services.Handlers
     {
         public void Execute(UIApplication app)
         {
-            TaskDialog.Show("Done", "Completed task!");
+            //BackupModelLocallyUsingRevit(app.ActiveUIDocument.Document);
+            BackupModelLocally(app.ActiveUIDocument.Document);
+            ShowTaskCompleted();
         }
 
         public string GetName()
@@ -24,10 +26,16 @@ namespace BRPLUSA.Revit.Services.Handlers
             return "Model Backup Handling Service";
         }
 
+        public void ShowTaskCompleted()
+        {
+            TaskDialog.Show("Done", "Completed task!");
+        }
+
         public void BackupModelLocallyUsingRevit(Document doc)
         {
-            var desktop = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
             var modelPath = doc.PathName;
+
+            var desktop = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
             var fileName = Path.GetFileNameWithoutExtension(modelPath);
             var cult = new CultureInfo("nl-NL");
             Thread.CurrentThread.CurrentCulture = cult;
@@ -46,17 +54,20 @@ namespace BRPLUSA.Revit.Services.Handlers
         {
             var modelPath = doc.PathName;
 
-            var desktop = Environment.GetFolderPath(Environment.SpecialFolder.CommonDesktopDirectory);
+            var desktop = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
             var fileName = Path.GetFileNameWithoutExtension(modelPath);
+            var cult = new CultureInfo("nl-NL");
+            Thread.CurrentThread.CurrentCulture = cult;
             var now = DateTime.UtcNow.ToShortDateString() + "_" + DateTime.UtcNow.ToLongTimeString();
-            var backupFilePath = $@"{desktop}\_bim360backups\{fileName}_{now}.rvt";
+            now = now.Replace(":", String.Empty);
+            var backupFilePath = $@"{desktop}\_bim360backups\{now}\{fileName}.rvt";
             var backupFolder = Directory.GetParent(backupFilePath).FullName;
 
             if (!Directory.Exists(backupFolder))
                 Directory.CreateDirectory(backupFolder);
 
 
-            //File.Copy(_localModelPath, backupFilePath);
+            File.Copy(modelPath, backupFilePath);
         }
     }
 }
