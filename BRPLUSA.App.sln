@@ -51,6 +51,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BRPLUSA.Revit.Installers.20
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BRPLUSA.Revit.Installers.2018.Tests", "BRPLUSA.Revit.Installers.2018.Tests\BRPLUSA.Revit.Installers.2018.Tests.csproj", "{123E366A-9B84-4F55-8642-FAEBAACA7C4B}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BRPLUSA.Web", "BRPLUSA.Web", "{5496FE05-A47B-4541-A000-350167F9AFD6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug_Installer|Any CPU = Debug_Installer|Any CPU
