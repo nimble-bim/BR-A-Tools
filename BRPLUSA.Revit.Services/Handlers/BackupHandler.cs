@@ -40,7 +40,7 @@ namespace BRPLUSA.Revit.Services.Handlers
             var cult = new CultureInfo("nl-NL");
             Thread.CurrentThread.CurrentCulture = cult;
             var now = DateTime.UtcNow.ToShortDateString() + "_" + DateTime.UtcNow.ToLongTimeString();
-            now = now.Replace(":", String.Empty);
+            now = now.Replace(":", string.Empty);
             var backupFilePath = $@"{desktop}\_bim360backups\{now}\{fileName}.rvt";
             var backupFolder = Directory.GetParent(backupFilePath).FullName;
 
@@ -59,15 +59,14 @@ namespace BRPLUSA.Revit.Services.Handlers
             var cult = new CultureInfo("nl-NL");
             Thread.CurrentThread.CurrentCulture = cult;
             var now = DateTime.UtcNow.ToShortDateString() + "_" + DateTime.UtcNow.ToLongTimeString();
-            now = now.Replace(":", String.Empty);
+            now = now.Replace(":", string.Empty);
             var backupFilePath = $@"{desktop}\_bim360backups\{now}\{fileName}.rvt";
             var backupFolder = Directory.GetParent(backupFilePath).FullName;
 
             if (!Directory.Exists(backupFolder))
                 Directory.CreateDirectory(backupFolder);
 
-
-            File.Copy(modelPath, backupFilePath);
+             File.Copy(modelPath, backupFilePath);
         }
     }
 }
