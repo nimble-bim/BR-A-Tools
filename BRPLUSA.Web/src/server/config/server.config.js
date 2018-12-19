@@ -1,7 +1,7 @@
 import http from 'http';
 import app from './express.config';
 import { onError, onListening, normalizePort } from './events.config';
-const port = normalizePort(process.env.PORT || '3000');
+const port = normalizePort(process.env.PORT || '4422');
 const server = http.createServer(app);
 
 app.set('port', port);

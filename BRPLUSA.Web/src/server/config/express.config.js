@@ -15,21 +15,22 @@ app.use(CORS());
 app.use(Express.static('public'));
 
 app.get('*', (req, res, next) => {
-  const markup = renderToString(<App />);
-  const template = `    
-  <!DOCTYPE html>
-  <html>
-    <head>
-      <title>SSR with RR</title>
-      <script src="/bundle.js" defer></script>
-    </head>
+  //   const markup = renderToString(<App />);
+  //   const template = `
+  //   <!DOCTYPE html>
+  //   <html>
+  //     <head>
+  //       <title>SSR with RR</title>
+  //       <script src="/client.js" defer></script>
+  //     </head>
 
-    <body>
-      <div id="app">${markup}</div>
-    </body>
-  </html>
-`;
-  res.send(template);
+  //     <body>
+  //       <div id="app">${markup}</div>
+  //     </body>
+  //   </html>
+  // `;
+  //   res.send(template);
+  res.send('Hello');
 });
 
 app.listen(port, () => {
