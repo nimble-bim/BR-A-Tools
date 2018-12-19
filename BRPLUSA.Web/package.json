@@ -4,6 +4,9 @@
   "main": "./dist/app.js",
   "license": "MIT",
   "private": true,
+  "scripts": {
+    "build": "node_modules/webpack-cli/bin/cli.js"
+  },
   "dependencies": {
     "babel-loader": "8.0.4",
     "body-parser": "1.18.3",
