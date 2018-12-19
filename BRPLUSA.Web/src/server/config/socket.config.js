@@ -1,46 +1,53 @@
 import socketIO from 'socket.io';
-import server from './server.config';
-const io = socketIO.listen(server);
 
-const handleConnection = socket => {
+let socketServer;
+let webSocket;
+
+const attachServer = (server) => {
+  socketServer = socketIO.listen(server);
+  socketServer.on('connection', handleIO);
+};
+
+const handleIO = (socket) => {
+  webSocket = socket;
+  handleInitialConnection(webSocket);
+
+  webSocket.on('disconnect', handleDisconnection);
+
+  webSocket.on('AUTHORIZATION_REQUESTED', handleAuthorization);
+
+  webSocket.on('COMMAND_BACKUP', handleBackup);
+
+  webSocket.on('ROOM_CREATE', createRoom);
+};
+
+const handleInitialConnection = (socket) => {
   const clientId = socket.client.id;
 
   console.log('');
   console.log('New client connected!');
   console.log(`Client Id:   ${clientId}`);
-
-  socket.broadcast.emit('AUTHORIZATION_REQUESTED', clientId); // try using this
 };
 
-const handleDisconnect = () => {
-  console.log('user disconnected');
+const handleDisconnection = (id) => {
+  console.log(`${id} disconnected`);
 };
 
-const handleBackup = id => {
+const createRoom = (id) => {
+  console.log(`Attempting to create room for ${id}`);
+};
+
+const handleBackup = (id) => {
   console.log('Handling backup command from Revit', id);
-  io.sockets.emit('back up', id);
+  socketServer.sockets.emit('BACKUP_REQUESTED', id);
 };
 
-const handleAuthorization = (id, socket) => {
-  console.log(id);
+const handleAuthorization = (id) => {
+  console.log(`Authorization requested from ${id}`);
   // do some other auth stuff?
 
-  socket.join(id);
-  socket.broadcast.to(id).emit('AUTHORIZATION_GRANTED', id);
+  webSocket.join(id);
+  socketServer.in(id).emit('AUTHORIZATION_GRANTED', id);
 };
 
-const handleConfirmation = id => {
-  // confirm auth?
-  console.log(`The client: ${id} has been authorized`);
-};
-
-const configureSockets = () => {
-  io.on('connection', handleConnection);
-  io.on('disconnect', handleDisconnect);
-
-  io.on('COMMAND_BACKUP', handleBackup);
-  io.on('AUTHORIZATION_REQUESTED', handleAuthorization);
-  io.on('AUTHORIZATION_GRANTED', handleConfirmation);
-};
-
-export default configureSockets;
+export default attachServer;
