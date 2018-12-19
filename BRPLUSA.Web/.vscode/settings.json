@@ -1,3 +1,7 @@
 {
-    "npm.packageManager": "yarn"
+    "npm.packageManager": "yarn",
+    "prettier.eslintIntegration": true,
+    "prettier.jsxSingleQuote": true,
+    "prettier.singleQuote": true,
+    "editor.formatOnSave": true
 }
