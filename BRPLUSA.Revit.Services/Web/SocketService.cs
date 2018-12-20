@@ -6,18 +6,17 @@ namespace BRPLUSA.Revit.Services.Web
 {
     public class SocketService : ISocketProvider
     {
-        private readonly string url = "https://brplusa-command-center.herokuapp.com/";
         private IO.Options Options { get; set; }
         private Socket Socket { get; set; }
         public string Id { get; private set; }
         public string Location { get; private set; }
 
-        public SocketService()
+        public SocketService(string url)
         {
-            Initialize();
+            Initialize(url);
         }
 
-        private void Initialize()
+        private void Initialize(string url)
         {
             Id = new Guid().ToString();
             Options = new IO.Options()
