@@ -38,7 +38,7 @@ namespace BRPLUSA.Revit.Client.UI.Views
         {
             //NavigateTo("https://www.brplusa.com");
             //NavigateTo($@"http://localhost:4001/?room={Socket.Id}");
-            NavigateTo($@"http://localhost:4422");
+            NavigateTo($@"https://brplusa-command-center.herokuapp.com/");
             //NavigateTo(Socket.Location);
         }
 

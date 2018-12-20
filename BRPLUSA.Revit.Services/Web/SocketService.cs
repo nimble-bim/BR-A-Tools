@@ -6,7 +6,7 @@ namespace BRPLUSA.Revit.Services.Web
 {
     public class SocketService : ISocketProvider
     {
-        private readonly string url = "http://localhost:4422";
+        private readonly string url = "https://brplusa-command-center.herokuapp.com/";
         private IO.Options Options { get; set; }
         private Socket Socket { get; set; }
         public string Id { get; private set; }
