@@ -18,7 +18,7 @@ namespace BRPLUSA.Revit.Services.Web
 
         private void Initialize(string url)
         {
-            Id = new Guid().ToString();
+            Id = Guid.NewGuid().ToString();
             Options = new IO.Options()
             {
                 IgnoreServerCertificateValidation = true,
