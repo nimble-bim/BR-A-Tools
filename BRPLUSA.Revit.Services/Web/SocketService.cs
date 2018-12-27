@@ -9,7 +9,8 @@ namespace BRPLUSA.Revit.Services.Web
         private IO.Options Options { get; set; }
         private Socket Socket { get; set; }
         public string Id { get; private set; }
-        public string Location { get; private set; }
+        public string ClientUri { get; private set; }
+        public string ServerUri { get; private set; }
 
         public SocketService(string url)
         {
@@ -19,6 +20,8 @@ namespace BRPLUSA.Revit.Services.Web
         private void Initialize(string url)
         {
             Id = Guid.NewGuid().ToString();
+            ClientUri = $"{url}/?id={Id}";
+            ServerUri = "http://localhost:4422";
             Options = new IO.Options()
             {
                 IgnoreServerCertificateValidation = true,
@@ -26,7 +29,7 @@ namespace BRPLUSA.Revit.Services.Web
                 ForceNew = true
             };
 
-            Socket = IO.Socket(url, Options);
+            Socket = IO.Socket(ServerUri, Options);
             SetSockets();
         }
 

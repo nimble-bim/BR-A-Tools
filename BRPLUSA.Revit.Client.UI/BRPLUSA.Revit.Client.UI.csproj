@@ -101,6 +101,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\BRPLUSA.Core\BRPLUSA.Core.csproj">
+      <Project>{EC0E8D93-3D21-482A-9F97-E7E5D2F8A192}</Project>
+      <Name>BRPLUSA.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\BRPLUSA.Revit.Core\BRPLUSA.Revit.Core.csproj">
       <Project>{E46B68F5-F133-4E41-8CA6-975B6B854357}</Project>
       <Name>BRPLUSA.Revit.Core</Name>

@@ -22,15 +22,19 @@ namespace BRPLUSA.Revit.Services.Registration
             _services.Add(serv);
         }
 
-        public static ISocketProvider InitializeSocketService(string url = "https://brplusa-command-center.herokuapp.com/")
+        public static ISocketProvider InitializeSocketService(bool productionMode = true)
         {
+            var url = productionMode 
+                ? "https://brplusa-command-center.herokuapp.com/" 
+                : "http://localhost:3000";
+
             // TODO: upgrade to factory at some point
             return new SocketService(url);
         }
 
         public static void RegisterServices(object sender, DocumentOpenedEventArgs args)
         {
-            var sock = InitializeSocketService();
+            var sock = InitializeSocketService(false);
 
             foreach (var serv in _services)
             {

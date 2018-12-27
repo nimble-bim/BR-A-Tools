@@ -2,8 +2,12 @@
 using System.IO;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using System.Windows.Controls;
+using Autodesk.Revit.DB;
 using Autodesk.Revit.DB.Events;
 using Autodesk.Revit.UI;
+using BRPLUSA.Core.Services;
+using BRPLUSA.Revit.Core.Interfaces;
 using BRPLUSA.Revit.Services.Web;
 using CefSharp;
 using CefSharp.Wpf;
@@ -13,20 +17,23 @@ namespace BRPLUSA.Revit.Client.UI.Views
     /// <summary>
     /// Interaction logic for BardWebClient.xaml
     /// </summary>
-    public partial class BardWebClient : IDockablePaneProvider
+    public partial class BardWebClient : Page, IDockablePaneProvider, ISocketConsumer
     {
         public static DockablePaneId Id => new DockablePaneId(new Guid());
-        private static UIControlledApplication App { get; set; }
-        private SocketService Socket { get; set; }
+        public static UIControlledApplication App { get; private set; }
+        private ISocketProvider Socket { get; set; }
 
-        public BardWebClient()
+        public BardWebClient(UIControlledApplication app)
         {
-            InitializeComponent();
-        }
-
-        public BardWebClient(SocketService service) : this()
-        {
-            Socket = service;
+            try
+            {
+                InitializeComponent();
+                App = app;
+            }
+            catch(Exception e)
+            {
+                LoggingService.LogError("Could not initialize the WebClient", e);
+            }
         }
 
         public void NavigateTo(string url)
@@ -34,17 +41,10 @@ namespace BRPLUSA.Revit.Client.UI.Views
             Browser.Load(url);
         }
 
-        public void JoinRevitSession(object sender, DocumentOpenedEventArgs args)
-        {
-            //NavigateTo("https://www.brplusa.com");
-            //NavigateTo($@"http://localhost:4001/?room={Socket.Id}");
-            NavigateTo($@"https://brplusa-command-center.herokuapp.com/");
-            //NavigateTo(Socket.Location);
-        }
-
         public void SetupDockablePane(DockablePaneProviderData data)
         {
             data.FrameworkElement = this;
+            data.VisibleByDefault = true;
             data.InitialState = new DockablePaneState
             {
                 DockPosition = DockPosition.Tabbed,
@@ -52,18 +52,28 @@ namespace BRPLUSA.Revit.Client.UI.Views
             };
         }
 
-        public void ShowSidebar(object sender, DocumentOpenedEventArgs e)
+        public void JoinRevitSession(object sender, DocumentOpenedEventArgs args)
+        {
+            NavigateTo(Socket.ClientUri);
+        }
+
+        public void ShowSidebar(object sender, DocumentOpenedEventArgs args)
         {
             var pane = App.GetDockablePane(Id);
             pane.Show();
-            App.ControlledApplication.DocumentOpened -= ShowSidebar;
+            args.Document.Application.DocumentOpened -= ShowSidebar;
         }
 
-        public void RegisterEvents(UIControlledApplication app)
+        public void Register(ISocketProvider service, Document doc)
         {
-            App = app;
-            App.ControlledApplication.DocumentOpened += ShowSidebar;
-            App.ControlledApplication.DocumentOpened += JoinRevitSession;
+            Socket = service;
+            //doc.Application.DocumentOpened += JoinRevitSession;
+            //doc.Application.DocumentOpened += ShowSidebar;
+        }
+
+        public void Deregister()
+        {
+            App.ControlledApplication.DocumentOpened -= JoinRevitSession;
         }
 
         [MethodImpl(MethodImplOptions.NoInlining)]
