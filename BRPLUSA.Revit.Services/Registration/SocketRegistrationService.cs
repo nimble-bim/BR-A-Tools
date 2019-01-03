@@ -24,17 +24,17 @@ namespace BRPLUSA.Revit.Services.Registration
 
         public static ISocketProvider InitializeSocketService(bool productionMode = true)
         {
-            var url = productionMode 
-                ? "https://brplusa-command-center.herokuapp.com/" 
+            var clientUrl = productionMode 
+                ? "https://cmd-center-client.herokuapp.com/"
                 : "http://localhost:3000";
 
             // TODO: upgrade to factory at some point
-            return new SocketService(url);
+            return new SocketService(clientUrl);
         }
 
         public static void RegisterServices(object sender, DocumentOpenedEventArgs args)
         {
-            var sock = InitializeSocketService(false);
+            var sock = InitializeSocketService();
 
             foreach (var serv in _services)
             {

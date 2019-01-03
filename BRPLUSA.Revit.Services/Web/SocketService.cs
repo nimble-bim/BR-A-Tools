@@ -17,11 +17,14 @@ namespace BRPLUSA.Revit.Services.Web
             Initialize(url);
         }
 
-        private void Initialize(string url)
+        private void Initialize(string clientUrl, bool inProduction = true)
         {
+            var production = "https://cmd-center-api.herokuapp.com/";
+            var debug = "http://localhost:4422";
+
             Id = Guid.NewGuid().ToString();
-            ClientUri = $"{url}/?id={Id}";
-            ServerUri = "http://localhost:4422";
+            ClientUri = $"{clientUrl}/?id={Id}";
+            ServerUri = inProduction ? production : debug;
             Options = new IO.Options()
             {
                 IgnoreServerCertificateValidation = true,
