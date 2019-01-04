@@ -20,10 +20,10 @@ namespace BRPLUSA.Revit.Services.Web
         private void Initialize(string clientUrl, bool inProduction = true)
         {
             var production = "https://cmd-center-api.herokuapp.com/";
-            var debug = "http://localhost:4422";
+            var debug = "http://localhost:4422/";
 
             Id = Guid.NewGuid().ToString();
-            ClientUri = $"{clientUrl}/?id={Id}";
+            ClientUri = $"{clientUrl}?id={Id}";
             ServerUri = inProduction ? production : debug;
             Options = new IO.Options()
             {

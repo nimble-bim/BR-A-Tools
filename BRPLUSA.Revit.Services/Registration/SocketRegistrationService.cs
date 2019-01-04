@@ -26,7 +26,7 @@ namespace BRPLUSA.Revit.Services.Registration
         {
             var clientUrl = productionMode 
                 ? "https://cmd-center-client.herokuapp.com/"
-                : "http://localhost:3000";
+                : "http://localhost:3000/";
 
             // TODO: upgrade to factory at some point
             return new SocketService(clientUrl);
