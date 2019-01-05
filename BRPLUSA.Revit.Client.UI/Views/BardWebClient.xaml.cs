@@ -55,6 +55,7 @@ namespace BRPLUSA.Revit.Client.UI.Views
         public void JoinRevitSession(object sender, DocumentOpenedEventArgs args)
         {
             NavigateTo(Socket.ClientUri);
+            Browser.ShowDevTools();
         }
 
         public void ShowSidebar(object sender, DocumentOpenedEventArgs args)
@@ -83,7 +84,7 @@ namespace BRPLUSA.Revit.Client.UI.Views
             var settings = new CefSettings();
 
             settings.SetOffScreenRenderingBestPerformanceArgs();
-
+            
             // Set BrowserSubProcessPath based on app bitness at runtime
             settings.BrowserSubprocessPath = Path.Combine(location,
                 Environment.Is64BitProcess ? "x64" : "x86",

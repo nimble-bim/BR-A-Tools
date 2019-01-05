@@ -29,12 +29,12 @@ namespace BRPLUSA.Revit.Services.Registration
                 : "http://localhost:3000/";
 
             // TODO: upgrade to factory at some point
-            return new SocketService(clientUrl);
+            return new SocketService(clientUrl, productionMode);
         }
 
         public static void RegisterServices(object sender, DocumentOpenedEventArgs args)
         {
-            var sock = InitializeSocketService();
+            var sock = InitializeSocketService(false);
 
             foreach (var serv in _services)
             {

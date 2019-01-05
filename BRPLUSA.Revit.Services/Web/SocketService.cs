@@ -1,5 +1,6 @@
 ﻿using System;
 using BRPLUSA.Revit.Core.Interfaces;
+using Newtonsoft.Json.Linq;
 using Quobject.SocketIoClientDotNet.Client;
 
 namespace BRPLUSA.Revit.Services.Web
@@ -8,13 +9,13 @@ namespace BRPLUSA.Revit.Services.Web
     {
         private IO.Options Options { get; set; }
         private Socket Socket { get; set; }
-        public string Id { get; private set; }
+        public string RevitId { get; private set; }
         public string ClientUri { get; private set; }
         public string ServerUri { get; private set; }
 
-        public SocketService(string url)
+        public SocketService(string url, bool productionMode)
         {
-            Initialize(url);
+            Initialize(url, productionMode);
         }
 
         private void Initialize(string clientUrl, bool inProduction = true)
@@ -22,17 +23,18 @@ namespace BRPLUSA.Revit.Services.Web
             var production = "https://cmd-center-api.herokuapp.com/";
             var debug = "http://localhost:4422/";
 
-            Id = Guid.NewGuid().ToString();
-            ClientUri = $"{clientUrl}?id={Id}";
+            RevitId = Guid.NewGuid().ToString();
             ServerUri = inProduction ? production : debug;
+            Socket = IO.Socket(ServerUri, Options);
+            var revitsocketid = Socket.Io().EngineSocket.Id;
+            ClientUri = $"{clientUrl}?revitappid={RevitId}&revitsocketid={revitsocketid}";
             Options = new IO.Options()
             {
                 IgnoreServerCertificateValidation = true,
                 AutoConnect = true,
                 ForceNew = true
             };
-
-            Socket = IO.Socket(ServerUri, Options);
+            
             SetSockets();
         }
 
@@ -40,8 +42,13 @@ namespace BRPLUSA.Revit.Services.Web
         {
             Socket.On(Socket.EVENT_CONNECT, () =>
             {
-                Console.WriteLine("Connected to a new client");
-                Socket.Emit("ROOM_CREATE", Id);
+                var id = new
+                {
+                    revit = RevitId,
+                    socket = Socket.Io().EngineSocket.Id,
+                };
+
+                Socket.Emit("REVIT_CONNECTION_START", JObject.FromObject(id));
             });
         }
 
