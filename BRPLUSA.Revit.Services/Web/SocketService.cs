@@ -27,7 +27,7 @@ namespace BRPLUSA.Revit.Services.Web
             ServerUri = inProduction ? production : debug;
             Socket = IO.Socket(ServerUri, Options);
             var revitsocketid = Socket.Io().EngineSocket.Id;
-            ClientUri = $"{clientUrl}?revitappid={RevitId}&revitsocketid={revitsocketid}";
+            ClientUri = $"{clientUrl}?revitappid={RevitId}&debug=true";
             Options = new IO.Options()
             {
                 IgnoreServerCertificateValidation = true,
