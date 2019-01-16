@@ -1,4 +1,5 @@
 ﻿using System;
+using BRPLUSA.Core.Services;
 using BRPLUSA.Revit.Core.Interfaces;
 using Newtonsoft.Json.Linq;
 using Quobject.SocketIoClientDotNet.Client;
@@ -25,16 +26,19 @@ namespace BRPLUSA.Revit.Services.Web
 
             RevitId = Guid.NewGuid().ToString();
             ServerUri = inProduction ? production : debug;
-            Socket = IO.Socket(ServerUri, Options);
-            var revitsocketid = Socket.Io().EngineSocket.Id;
-            ClientUri = $"{clientUrl}?revitappid={RevitId}&debug=true";
+            ClientUri = inProduction
+                ? $"{clientUrl}?revitappid={RevitId}"
+                : $"{clientUrl}?revitappid={RevitId}&debug=true";
+
             Options = new IO.Options()
             {
                 IgnoreServerCertificateValidation = true,
                 AutoConnect = true,
                 ForceNew = true
             };
-            
+
+            Socket = IO.Socket(ServerUri, Options);
+
             SetSockets();
         }
 
@@ -48,13 +52,34 @@ namespace BRPLUSA.Revit.Services.Web
                     socket = Socket.Io().EngineSocket.Id,
                 };
 
+                LoggingService.LogInfo($"Connected to socket server for Revit document: {id.revit}");
+
                 Socket.Emit("REVIT_CONNECTION_START", JObject.FromObject(id));
+            });
+
+            Socket.On(Socket.EVENT_CONNECT_ERROR, (err) =>
+            {
+                LoggingService.LogError($"There was an error connecting back to the server: {err}", null);
+            });
+
+            Socket.On(Socket.EVENT_DISCONNECT, (info) =>
+            {
+                LoggingService.LogInfo($"Disconnected from socket server");
+                LoggingService.LogInfo($"More information: ${info}");
+            });
+
+            Socket.On(Socket.EVENT_RECONNECTING, (info) =>
+            {
+                LoggingService.LogInfo($"Trying to reconnect to the socket server");
+                LoggingService.LogInfo($"More information: ${info}");
             });
         }
 
         public void AddSocketEvent(string eventName, Action callback)
         {
+            LoggingService.LogInfo($"Attempting to add socket event called: {eventName}");
             Socket.On(eventName, callback);
+            LoggingService.LogInfo($"Added socket event called: {eventName}");
         }
     }
 }

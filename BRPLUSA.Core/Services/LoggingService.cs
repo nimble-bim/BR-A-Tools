@@ -105,7 +105,7 @@ namespace BRPLUSA.Core.Services
         {
             Logger.Error(e, msg);
 
-            var inner = e.InnerException;
+            var inner = e?.InnerException;
 
             if(inner != null)
                 LogError(inner.Message, inner);
