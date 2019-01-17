@@ -28,5 +28,12 @@
     <Grid>
         <Rectangle Name="MainBackground"  Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="880" Margin="0" Stroke="Black" VerticalAlignment="Top" Width="390"/>
         <Label Content="Home Page" HorizontalAlignment="Left" Margin="32,22,0,0" VerticalAlignment="Top" Height="33" Width="318"/>
+        <Button Content="Backup Now" HorizontalAlignment="Left" Margin="134,286,0,0" VerticalAlignment="Top" Width="128" Style="{ DynamicResource MaterialDesignRaisedLightButton }"/>
+
+        <StackPanel Margin="16">
+            <TextBlock Style="{StaticResource MaterialDesignHeadlineTextBlock}">Colour Zones</TextBlock>
+            <TextBlock TextWrapping="Wrap" MaxWidth="800" Margin="0 16 0 0" Style="{StaticResource MaterialDesignSubheadingTextBlock}">The ColorZone control allows you to  easily define striking blocks of colour to give your application extra clarity and style, whilst still remaining within the bounds of your Material Design palette.</TextBlock>
+            <TextBlock Margin="0 16 0 0" FontSize="10">Invert the basic paper/body colours.</TextBlock>
+        </StackPanel>
     </Grid>
 </Page>

@@ -29,7 +29,7 @@ namespace BRPLUSA.Revit.Client.UI
         public BardWpfClient()
         {
             InitializeComponent();
-            InitializeResources()
+            InitializeResources();
         }
 
         private void InitializeResources()
