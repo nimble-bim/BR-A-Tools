@@ -9,6 +9,7 @@ using BRPLUSA.Revit.Client.EndUser.Commands;
 using BRPLUSA.Revit.Client.EndUser.Commands.Mechanical;
 using BRPLUSA.Revit.Client.EndUser.Commands.VAVServes;
 using BRPLUSA.Revit.Client.EndUser.Services;
+using BRPLUSA.Revit.Client.UI;
 using BRPLUSA.Revit.Client.UI.Views;
 using BRPLUSA.Revit.Installers._2018;
 using BRPLUSA.Revit.Services.Registration;
@@ -39,19 +40,18 @@ namespace BRPLUSA.Revit.Client.EndUser.Applications
             try
             {
                 LoggingService.LogInfo("Starting up application via Revit");
-                ResolveBrowserBinaries();
+                //ResolveBrowserBinaries();
 
                 var backupAuto = new AutoModelBackupService();
                 var backupManual = new ManualModelBackupService();
-                var sidebar = new BardWebClient(app);
+                var sidebar = new BardWpfClient();
 
                 UpdaterRegistrationService.AddRegisterableServices(
                     backupAuto
                     );
 
                 SocketRegistrationService.AddRegisterableServices(
-                    backupManual,
-                    sidebar
+                    backupManual
                     );
 
                 CreateRibbon(app);
@@ -224,17 +224,17 @@ namespace BRPLUSA.Revit.Client.EndUser.Applications
             }
         }
 
-        private void RegisterSideBar(UIControlledApplication app, BardWebClient sidebar)
+        private void RegisterSideBar(UIControlledApplication app, BardWpfClient sidebar)
         {
             try
             {
                 LoggingService.LogInfo("Attempting to register Bard Client sidebar with Revit");
                 
                 app.RegisterDockablePane(BardWebClient.Id, "BR+A Revit Helper", sidebar);
-                app.ControlledApplication.DocumentOpened += sidebar.JoinRevitSession;
+                //app.ControlledApplication.DocumentOpened += sidebar.JoinRevitSession;
                 app.ControlledApplication.DocumentOpened += sidebar.ShowSidebar;
 
-                LoggingService.LogInfo("Browser binary resolution complete");
+                LoggingService.LogInfo("Sidebar registered with client");
             }
 
             catch (Exception e)

@@ -78,6 +78,9 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BardWpfClient.xaml.cs">
+      <DependentUpon>BardWpfClient.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Services\ElementPresenter.cs" />
     <Compile Include="Views\BardWebClient.xaml.cs">
       <DependentUpon>BardWebClient.xaml</DependentUpon>
@@ -91,6 +94,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Page Include="BardWpfClient.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\BardWebClient.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

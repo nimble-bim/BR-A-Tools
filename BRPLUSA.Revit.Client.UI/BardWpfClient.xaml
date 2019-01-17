@@ -1,0 +1,14 @@
+﻿<Page x:Class="BRPLUSA.Revit.Client.UI.BardWpfClient"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:BRPLUSA.Revit.Client.UI"
+             mc:Ignorable="d" 
+             d:DesignHeight="900" d:DesignWidth="400">
+    <Grid>
+        <Rectangle Name="MainBackground"  Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="880" Margin="0" Stroke="Black" VerticalAlignment="Top" Width="390"/>
+        <Label Content="Some Project" HorizontalAlignment="Left" Margin="32,22,0,0" VerticalAlignment="Top" Height="33" Width="318"/>
+        <Button Name="Btn_Command_Backup" Content="Backup Now" HorizontalAlignment="Left" Margin="132,105,0,0" VerticalAlignment="Top" Width="75"/>
+    </Grid>
+</Page>
