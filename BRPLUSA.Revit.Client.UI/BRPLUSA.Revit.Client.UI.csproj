@@ -56,6 +56,12 @@
     <Reference Include="AdWindows">
       <HintPath>..\References\Revit\2018\AdWindows.dll</HintPath>
     </Reference>
+    <Reference Include="MaterialDesignColors, Version=1.0.0.14576, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MaterialDesignColors.1.1.1\lib\net45\MaterialDesignColors.dll</HintPath>
+    </Reference>
+    <Reference Include="MaterialDesignThemes.Wpf, Version=2.5.0.1205, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MaterialDesignThemes.2.5.0.1205\lib\net45\MaterialDesignThemes.Wpf.dll</HintPath>
+    </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="RevitAPI">
@@ -63,6 +69,9 @@
     </Reference>
     <Reference Include="RevitAPIUI">
       <HintPath>..\References\Revit\2018\RevitAPIUI.dll</HintPath>
+    </Reference>
+    <Reference Include="ShowMeTheXAML, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ShowMeTheXAML.1.0.12\lib\net45\ShowMeTheXAML.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -81,6 +90,9 @@
     <Compile Include="BardWpfClient.xaml.cs">
       <DependentUpon>BardWpfClient.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\ModelBackupPage.xaml.cs">
+      <DependentUpon>ModelBackupPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Services\ElementPresenter.cs" />
     <Compile Include="Views\BardWebClient.xaml.cs">
       <DependentUpon>BardWebClient.xaml</DependentUpon>
@@ -95,6 +107,10 @@
   </ItemGroup>
   <ItemGroup>
     <Page Include="BardWpfClient.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\ModelBackupPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -137,7 +153,9 @@
     <Error Condition="!Exists('..\packages\CefSharp.Common.67.0.0\build\CefSharp.Common.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\CefSharp.Common.67.0.0\build\CefSharp.Common.targets'))" />
     <Error Condition="!Exists('..\packages\CefSharp.Wpf.67.0.0\build\CefSharp.Wpf.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\CefSharp.Wpf.67.0.0\build\CefSharp.Wpf.props'))" />
     <Error Condition="!Exists('..\packages\CefSharp.Wpf.67.0.0\build\CefSharp.Wpf.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\CefSharp.Wpf.67.0.0\build\CefSharp.Wpf.targets'))" />
+    <Error Condition="!Exists('..\packages\ShowMeTheXAML.MSBuild.1.0.12\build\net45\ShowMeTheXAML.MSBuild.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\ShowMeTheXAML.MSBuild.1.0.12\build\net45\ShowMeTheXAML.MSBuild.targets'))" />
   </Target>
   <Import Project="..\packages\CefSharp.Common.67.0.0\build\CefSharp.Common.targets" Condition="Exists('..\packages\CefSharp.Common.67.0.0\build\CefSharp.Common.targets')" />
   <Import Project="..\packages\CefSharp.Wpf.67.0.0\build\CefSharp.Wpf.targets" Condition="Exists('..\packages\CefSharp.Wpf.67.0.0\build\CefSharp.Wpf.targets')" />
+  <Import Project="..\packages\ShowMeTheXAML.MSBuild.1.0.12\build\net45\ShowMeTheXAML.MSBuild.targets" Condition="Exists('..\packages\ShowMeTheXAML.MSBuild.1.0.12\build\net45\ShowMeTheXAML.MSBuild.targets')" />
 </Project>

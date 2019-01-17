@@ -29,13 +29,10 @@ namespace BRPLUSA.Revit.Client.UI
         public BardWpfClient()
         {
             InitializeComponent();
-            InitializeCommands();
+            
         }
 
-        private void InitializeCommands()
-        {
-            Btn_Command_Backup.Click += (obj, e) => ModelBackupService.HandleBackupRequest();
-        }
+
 
         public void SetupDockablePane(DockablePaneProviderData data)
         {
