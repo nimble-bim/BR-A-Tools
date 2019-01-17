@@ -29,10 +29,13 @@ namespace BRPLUSA.Revit.Client.UI
         public BardWpfClient()
         {
             InitializeComponent();
-            
+            InitializeResources()
         }
 
-
+        private void InitializeResources()
+        {
+            
+        }
 
         public void SetupDockablePane(DockablePaneProviderData data)
         {
