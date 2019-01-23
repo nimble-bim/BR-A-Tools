@@ -1,7 +1,7 @@
 ﻿using Autodesk.Revit.Attributes;
 using Autodesk.Revit.UI;
 using BRPLUSA.Revit.Client.Base;
-using BRPLUSA.Revit.Client.UI.Views;
+using BRPLUSA.Revit.Client.UI.Viewers;
 
 namespace BRPLUSA.Revit.Client.EndUser.Commands
 {

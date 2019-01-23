@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Diagnostics;
+using System.IO;
+using System.Reflection;
 using Autodesk.Revit.UI;
 using Autodesk.Revit.UI.Events;
 using BRPLUSA.Core.Services;
@@ -7,6 +10,7 @@ using BRPLUSA.Revit.Client.EndUser.Commands.Mechanical;
 using BRPLUSA.Revit.Client.EndUser.Commands.VAVServes;
 using BRPLUSA.Revit.Client.EndUser.Services;
 using BRPLUSA.Revit.Client.UI.Viewers;
+using BRPLUSA.Revit.Client.WPF;
 using BRPLUSA.Revit.Installers._2018;
 using BRPLUSA.Revit.Services.Registration;
 using BRPLUSA.Revit.Services.Web;
@@ -36,12 +40,11 @@ namespace BRPLUSA.Revit.Client.EndUser.Applications
             try
             {
                 LoggingService.LogInfo("Starting up application via Revit");
-                //ResolveBrowserBinaries();
+                ResolveBrowserBinaries();
+                ResolveUIBinaries();
 
                 var backupAuto = new AutoModelBackupService();
                 var backupManual = new ManualModelBackupService();
-                //var sidebar = new MainWindow();
-                //sidebar.Show();
                 var sidebar = new BardWpfClient();
 
                 UpdaterRegistrationService.AddRegisterableServices(
@@ -217,6 +220,33 @@ namespace BRPLUSA.Revit.Client.EndUser.Applications
             catch (Exception e)
             {
                 var ex = new Exception("Fatal error! Failed to resolve browser binaries", e);
+
+                throw ex;
+            }
+        }
+
+        public void ResolveUIBinaries()
+        {
+            try
+            {
+                AppDomain.CurrentDomain.AssemblyResolve += (sender, args) =>
+                {
+                    if (!args.Name.StartsWith("Dragablz"))
+                        return null;
+
+                    string assName = args.Name.Split(new[] { ',' }, 2)[0] + ".dll";
+                    var location = Path.GetDirectoryName(typeof(RevitApplicationEnhancements).Assembly.Location);
+                    var path = Path.Combine(location, assName);
+
+                    return File.Exists(path)
+                        ? Assembly.LoadFile(path)
+                        : null;
+                };
+            }
+
+            catch(Exception e)
+            {
+                var ex = new Exception("Fatal error! Failed to resolve UI binaries", e);
 
                 throw ex;
             }

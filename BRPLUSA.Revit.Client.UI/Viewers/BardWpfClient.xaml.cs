@@ -17,15 +17,15 @@ namespace BRPLUSA.Revit.Client.UI.Viewers
         public BardWpfClient()
         {
             InitializeComponent();
-            InitializeResources();
+            //InitializeResources();
         }
 
         private void InitializeResources()
         {
-            Btn_Backup.Click += (sender, args) =>
-            {
-                ContentDisplay.Children.Add(new BackupPageContent());
-            };
+            //Btn_Backup.Click += (sender, args) =>
+            //{
+            //    ContentDisplay.Children.Add(new BackupPageContent());
+            //};
         }
 
         public void SetupDockablePane(DockablePaneProviderData data)
