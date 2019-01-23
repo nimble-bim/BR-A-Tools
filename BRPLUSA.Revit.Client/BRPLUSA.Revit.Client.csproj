@@ -163,6 +163,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\BRPLUSA.Autodesk.Revit.WPF\BRPLUSA.Autodesk.Revit.WPF.csproj">
+      <Project>{1D760BFB-B57C-49A2-BAA3-CD07C4F50AC8}</Project>
+      <Name>BRPLUSA.Autodesk.Revit.WPF</Name>
+    </ProjectReference>
     <ProjectReference Include="..\BRPLUSA.Domain.Core\BRPLUSA.Domain.Core.csproj">
       <Project>{123711A9-C92E-4F15-8BD0-B1222A2D5F0B}</Project>
       <Name>BRPLUSA.Domain.Core</Name>

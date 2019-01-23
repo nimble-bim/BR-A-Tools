@@ -2,16 +2,18 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
+using Autodesk.Revit.Attributes;
 using Autodesk.Revit.DB;
 using Autodesk.Revit.DB.Mechanical;
 using Autodesk.Revit.UI;
+using RevitApplication = Autodesk.Revit.ApplicationServices.Application;
 
 namespace BRPLUSA.Revit.Client.EndUser.Commands.VAVServes
 {
     //Create Systems for VAV Boxes
-    [Autodesk.Revit.Attributes.Transaction(Autodesk.Revit.Attributes.TransactionMode.Manual)]
-    [Autodesk.Revit.Attributes.Regeneration(Autodesk.Revit.Attributes.RegenerationOption.Manual)]
-    [Autodesk.Revit.Attributes.Journaling(Autodesk.Revit.Attributes.JournalingMode.NoCommandData)]
+    [Transaction(TransactionMode.Manual)]
+    [Regeneration(RegenerationOption.Manual)]
+    [Journaling(JournalingMode.NoCommandData)]
     public class ShowRoomsServedByVAV : IExternalCommand
     {
         string log = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + "\\log.txt";
@@ -19,9 +21,9 @@ namespace BRPLUSA.Revit.Client.EndUser.Commands.VAVServes
         string equipTagParamName = "BR+A HVAC Tag";
         string spaceServedByParamName = "ServedBy";
 
-        public Result Execute(Autodesk.Revit.UI.ExternalCommandData commandData, ref string message, ElementSet elements)
+        public Result Execute(ExternalCommandData commandData, ref string message, ElementSet elements)
         {
-            Autodesk.Revit.ApplicationServices.Application app;
+            RevitApplication app;
             Document doc;
             UIDocument uiDoc;
 
