@@ -1,13 +1,12 @@
 ﻿using System;
 using Autodesk.Revit.UI;
 using Autodesk.Revit.UI.Events;
-using BRPLUSA.Autodesk.Revit.WPF;
 using BRPLUSA.Core.Services;
 using BRPLUSA.Revit.Client.EndUser.Commands;
 using BRPLUSA.Revit.Client.EndUser.Commands.Mechanical;
 using BRPLUSA.Revit.Client.EndUser.Commands.VAVServes;
 using BRPLUSA.Revit.Client.EndUser.Services;
-using BRPLUSA.Revit.Client.UI.Views;
+using BRPLUSA.Revit.Client.UI.Viewers;
 using BRPLUSA.Revit.Installers._2018;
 using BRPLUSA.Revit.Services.Registration;
 using BRPLUSA.Revit.Services.Web;
@@ -41,9 +40,9 @@ namespace BRPLUSA.Revit.Client.EndUser.Applications
 
                 var backupAuto = new AutoModelBackupService();
                 var backupManual = new ManualModelBackupService();
-                var sidebar = new MainWindow();
-                sidebar.Show();
-                //var sidebar = new BardWpfClient();
+                //var sidebar = new MainWindow();
+                //sidebar.Show();
+                var sidebar = new BardWpfClient();
 
                 UpdaterRegistrationService.AddRegisterableServices(
                     backupAuto
@@ -55,7 +54,7 @@ namespace BRPLUSA.Revit.Client.EndUser.Applications
 
                 CreateRibbon(app);
                 RegisterAppEvents(app);
-                //RegisterSideBar(app, sidebar);
+                RegisterSideBar(app, sidebar);
                 RegisterInstallerEvents(app);
 
                 LoggingService.LogInfo("Application loaded successfully");
@@ -223,15 +222,15 @@ namespace BRPLUSA.Revit.Client.EndUser.Applications
             }
         }
 
-        private void RegisterSideBar(UIControlledApplication app, MainWindow sidebar)
+        private void RegisterSideBar(UIControlledApplication app, BardWpfClient sidebar)
         {
             try
             {
                 LoggingService.LogInfo("Attempting to register Bard Client sidebar with Revit");
-                
-                //app.RegisterDockablePane(MainWindow.Id, "BR+A Revit Helper", sidebar);
-                ////app.ControlledApplication.DocumentOpened += sidebar.JoinRevitSession;
-                //app.ControlledApplication.DocumentOpened += sidebar.ShowSidebar;
+
+                app.RegisterDockablePane(BardWpfClient.Id, "BR+A Revit Helper", sidebar);
+                //app.ControlledApplication.DocumentOpened += sidebar.JoinRevitSession;
+                app.ControlledApplication.DocumentOpened += sidebar.ShowSidebar;
 
                 LoggingService.LogInfo("Sidebar registered with client");
             }

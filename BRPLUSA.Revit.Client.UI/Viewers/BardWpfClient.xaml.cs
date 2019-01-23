@@ -1,22 +1,10 @@
 ﻿using Autodesk.Revit.DB.Events;
 using Autodesk.Revit.UI;
-using BRPLUSA.Revit.Services.Updates;
+using BRPLUSA.Revit.Client.WPF.Pages;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
-namespace BRPLUSA.Revit.Client.UI
+namespace BRPLUSA.Revit.Client.UI.Viewers
 {
     /// <summary>
     /// Interaction logic for BardWpfClient.xaml
@@ -34,7 +22,10 @@ namespace BRPLUSA.Revit.Client.UI
 
         private void InitializeResources()
         {
-            
+            Btn_Backup.Click += (sender, args) =>
+            {
+                ContentDisplay.Children.Add(new BackupPageContent());
+            };
         }
 
         public void SetupDockablePane(DockablePaneProviderData data)

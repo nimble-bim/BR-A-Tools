@@ -12,7 +12,7 @@ using BRPLUSA.Revit.Services.Web;
 using CefSharp;
 using CefSharp.Wpf;
 
-namespace BRPLUSA.Revit.Client.UI.Views
+namespace BRPLUSA.Revit.Client.UI.Viewers
 {
     /// <summary>
     /// Interaction logic for BardWebClient.xaml

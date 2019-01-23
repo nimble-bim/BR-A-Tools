@@ -9,14 +9,14 @@ using Autodesk.Revit.UI.Events;
 using BRPLUSA.Revit.Client.UI.Views;
 using BRPLUSA.Revit.Core.Exceptions;
 using BRPLUSA.Revit.Services.Elements;
-using View = Autodesk.Revit.DB.View;
+using RevitView = Autodesk.Revit.DB.View;
 
 namespace BRPLUSA.Revit.Client.UI.Services
 {
     public static class ElementPresenter
     {
         private static Element Element { get; set; }
-        private static Stack<View> Views { get; set; }
+        private static Stack<RevitView> Views { get; set; }
         private static UIApplication Application { get; set; }
 
         public static QuickElementData RequestElementData()
@@ -78,11 +78,11 @@ namespace BRPLUSA.Revit.Client.UI.Services
             return (Level) level;
         }
 
-        public static void RequestViewChange(UIApplication app, IEnumerable<View> views)
+        public static void RequestViewChange(UIApplication app, IEnumerable<RevitView> views)
         {
             Application = app;
             Application.Idling += ChangeView;
-            Views = new Stack<View>(views);
+            Views = new Stack<RevitView>(views);
         }
 
         private static void ChangeView(object sender, IdlingEventArgs args)
@@ -105,11 +105,11 @@ namespace BRPLUSA.Revit.Client.UI.Services
 
         private static bool ChangeView(Element elem)
         {
-            var ownerView = (Autodesk.Revit.DB.View)elem.Document.GetElement(elem.OwnerViewId);
+            var ownerView = (RevitView)elem.Document.GetElement(elem.OwnerViewId);
             return ChangeView(ownerView);
         }
 
-        private static bool ChangeView(Autodesk.Revit.DB.View view)
+        private static bool ChangeView(RevitView view)
         {
             try
             {

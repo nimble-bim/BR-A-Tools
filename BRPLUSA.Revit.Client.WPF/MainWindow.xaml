@@ -1,0 +1,21 @@
+﻿<Window x:Class="BRPLUSA.Revit.Client.WPF.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:dragablz="clr-namespace:Dragablz;assembly=Dragablz"
+        Title="Material Design Demo" Height="350" Width="525"
+        >
+        <dragablz:TabablzControl>
+            <dragablz:TabablzControl.InterTabController>
+                <dragablz:InterTabController />
+            </dragablz:TabablzControl.InterTabController>
+            <TabItem Header="HELLO">
+                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">Hello World</TextBlock>
+            </TabItem>
+            <TabItem Header="MATERIAL">
+                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">Material Design</TextBlock>
+            </TabItem>
+            <TabItem Header="DESIGN">
+                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">Looks Quite Nice</TextBlock>
+            </TabItem>
+        </dragablz:TabablzControl>
+</Window>

@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace BRPLUSA.Autodesk.Revit.WPF.Properties
+namespace BRPLUSA.Revit.Client.WPF.Properties
 {
 
 
@@ -44,7 +44,7 @@ namespace BRPLUSA.Autodesk.Revit.WPF.Properties
             {
                 if ((resourceMan == null))
                 {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("BRPLUSA.Autodesk.Revit.WPF.Properties.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("BRPLUSA.Revit.Client.WPF.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

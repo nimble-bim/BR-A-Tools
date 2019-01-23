@@ -56,12 +56,6 @@
     <Reference Include="AdWindows">
       <HintPath>..\References\Revit\2018\AdWindows.dll</HintPath>
     </Reference>
-    <Reference Include="MaterialDesignColors, Version=1.0.0.14576, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\MaterialDesignColors.1.1.1\lib\net45\MaterialDesignColors.dll</HintPath>
-    </Reference>
-    <Reference Include="MaterialDesignThemes.Wpf, Version=2.5.0.1205, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\MaterialDesignThemes.2.5.0.1205\lib\net45\MaterialDesignThemes.Wpf.dll</HintPath>
-    </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="RevitAPI">
@@ -69,9 +63,6 @@
     </Reference>
     <Reference Include="RevitAPIUI">
       <HintPath>..\References\Revit\2018\RevitAPIUI.dll</HintPath>
-    </Reference>
-    <Reference Include="ShowMeTheXAML, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\ShowMeTheXAML.1.0.12\lib\net45\ShowMeTheXAML.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -87,36 +78,29 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BardWpfClient.xaml.cs">
-      <DependentUpon>BardWpfClient.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Pages\ModelBackupPage.xaml.cs">
-      <DependentUpon>ModelBackupPage.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Services\ElementPresenter.cs" />
-    <Compile Include="Views\BardWebClient.xaml.cs">
+    <Compile Include="Viewers\BardWebClient.xaml.cs">
       <DependentUpon>BardWebClient.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Views\SearchSelectionBox.cs">
+    <Compile Include="Viewers\BardWpfClient.xaml.cs">
+      <DependentUpon>BardWpfClient.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Viewers\SearchSelectionBox.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Views\SearchSelectionBox.Designer.cs">
+    <Compile Include="Viewers\SearchSelectionBox.Designer.cs">
       <DependentUpon>SearchSelectionBox.cs</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Page Include="BardWpfClient.xaml">
+    <Page Include="Viewers\BardWebClient.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Pages\ModelBackupPage.xaml">
-      <SubType>Designer</SubType>
+    <Page Include="Viewers\BardWpfClient.xaml">
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\BardWebClient.xaml">
       <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
@@ -128,6 +112,10 @@
       <Project>{EC0E8D93-3D21-482A-9F97-E7E5D2F8A192}</Project>
       <Name>BRPLUSA.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\BRPLUSA.Revit.Client.WPF\BRPLUSA.Revit.Client.WPF.csproj">
+      <Project>{69D8F543-C854-4419-ABD2-6BAD38B67966}</Project>
+      <Name>BRPLUSA.Revit.Client.WPF</Name>
+    </ProjectReference>
     <ProjectReference Include="..\BRPLUSA.Revit.Core\BRPLUSA.Revit.Core.csproj">
       <Project>{E46B68F5-F133-4E41-8CA6-975B6B854357}</Project>
       <Name>BRPLUSA.Revit.Core</Name>
@@ -138,7 +126,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Views\SearchSelectionBox.resx">
+    <EmbeddedResource Include="Viewers\SearchSelectionBox.resx">
       <DependentUpon>SearchSelectionBox.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>

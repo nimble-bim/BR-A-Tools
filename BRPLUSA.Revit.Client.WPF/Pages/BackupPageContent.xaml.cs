@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace BRPLUSA.Autodesk.Revit.WPF.Views
+namespace BRPLUSA.Revit.Client.WPF.Pages
 {
     /// <summary>
-    /// Interaction logic for BackupFragment.xaml
+    /// Interaction logic for BackupPageContent.xaml
     /// </summary>
-    public partial class BackupFragment : UserControl
+    public partial class BackupPageContent : UserControl
     {
-        public BackupFragment()
+        public BackupPageContent()
         {
             InitializeComponent();
         }

@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace BRPLUSA.Autodesk.Revit.WPF.Properties
+namespace BRPLUSA.Revit.Client.WPF.Properties
 {
 
 

@@ -163,10 +163,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\BRPLUSA.Autodesk.Revit.WPF\BRPLUSA.Autodesk.Revit.WPF.csproj">
-      <Project>{1D760BFB-B57C-49A2-BAA3-CD07C4F50AC8}</Project>
-      <Name>BRPLUSA.Autodesk.Revit.WPF</Name>
-    </ProjectReference>
     <ProjectReference Include="..\BRPLUSA.Domain.Core\BRPLUSA.Domain.Core.csproj">
       <Project>{123711A9-C92E-4F15-8BD0-B1222A2D5F0B}</Project>
       <Name>BRPLUSA.Domain.Core</Name>
@@ -182,6 +178,10 @@
     <ProjectReference Include="..\BRPLUSA.Revit.Client.UI\BRPLUSA.Revit.Client.UI.csproj">
       <Project>{977957b1-037f-4eb9-ba45-4c48f805c3c5}</Project>
       <Name>BRPLUSA.Revit.Client.UI</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BRPLUSA.Revit.Client.WPF\BRPLUSA.Revit.Client.WPF.csproj">
+      <Project>{69d8f543-c854-4419-abd2-6bad38b67966}</Project>
+      <Name>BRPLUSA.Revit.Client.WPF</Name>
     </ProjectReference>
     <ProjectReference Include="..\BRPLUSA.Revit.Core\BRPLUSA.Revit.Core.csproj">
       <Project>{E46B68F5-F133-4E41-8CA6-975B6B854357}</Project>
