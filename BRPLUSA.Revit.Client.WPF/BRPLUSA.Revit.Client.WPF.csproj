@@ -78,6 +78,7 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Commands\BackupModelCommand.cs" />
     <Compile Include="Services\ElementPresenter.cs" />
     <Compile Include="Viewers\BardWpfClient.xaml.cs">
       <DependentUpon>BardWpfClient.xaml</DependentUpon>
@@ -88,6 +89,8 @@
     <Compile Include="Viewers\SearchSelectionBox.Designer.cs">
       <DependentUpon>SearchSelectionBox.cs</DependentUpon>
     </Compile>
+    <Compile Include="ViewModels\BackupPageViewModel.cs" />
+    <Compile Include="ViewModels\ViewModelBase.cs" />
     <None Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

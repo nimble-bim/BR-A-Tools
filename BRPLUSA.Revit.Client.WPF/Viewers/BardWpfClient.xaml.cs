@@ -25,16 +25,6 @@ namespace BRPLUSA.Revit.Client.WPF.Viewers
             {
                 LoggingService.LogError("Couldn't initialize WPF Component", e);
             }
-
-            //InitializeResources();
-        }
-
-        private void InitializeResources()
-        {
-            //Btn_Backup.Click += (sender, args) =>
-            //{
-            //    ContentDisplay.Children.Add(new BackupPageContent());
-            //};
         }
 
         public void SetupDockablePane(DockablePaneProviderData data)
