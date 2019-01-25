@@ -5,6 +5,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
         mc:Ignorable="d" 
         xmlns:dragablz="clr-namespace:Dragablz;assembly=Dragablz"
+        xmlns:pages="clr-namespace:BRPLUSA.Revit.Client.WPF.Pages"
         TextElement.FontWeight="Regular"
         TextElement.FontSize="13"
         TextOptions.TextFormattingMode="Ideal" 
@@ -52,13 +53,13 @@
         <dragablz:TabablzControl.InterTabController>
             <dragablz:InterTabController />
         </dragablz:TabablzControl.InterTabController>
-        <TabItem Header="HELLO">
-            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">Hello World</TextBlock>
-        </TabItem>
-        <TabItem Header="MATERIAL">
+        <TabItem Header="Home">
             <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">Material Design</TextBlock>
         </TabItem>
-        <TabItem Header="DESIGN">
+        <TabItem Header="Backup">
+            <pages:BackupPageContent />
+        </TabItem>
+        <TabItem Header="View Extents">
             <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">Looks Quite Nice</TextBlock>
         </TabItem>
     </dragablz:TabablzControl>
