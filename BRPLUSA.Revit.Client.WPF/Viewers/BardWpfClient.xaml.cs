@@ -2,6 +2,7 @@
 using System.Windows.Controls;
 using Autodesk.Revit.DB.Events;
 using Autodesk.Revit.UI;
+using BRPLUSA.Core.Services;
 
 namespace BRPLUSA.Revit.Client.WPF.Viewers
 {
@@ -15,7 +16,16 @@ namespace BRPLUSA.Revit.Client.WPF.Viewers
 
         public BardWpfClient()
         {
-            InitializeComponent();
+            try
+            {
+                InitializeComponent();
+            }
+
+            catch (Exception e)
+            {
+                LoggingService.LogError("Couldn't initialize WPF Component", e);
+            }
+
             //InitializeResources();
         }
 

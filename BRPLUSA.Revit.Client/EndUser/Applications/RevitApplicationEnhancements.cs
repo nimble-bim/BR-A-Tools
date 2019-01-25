@@ -231,7 +231,7 @@ namespace BRPLUSA.Revit.Client.EndUser.Applications
             {
                 AppDomain.CurrentDomain.AssemblyResolve += (sender, args) =>
                 {
-                    if (!args.Name.StartsWith("Dragablz"))
+                    if (!args.Name.StartsWith("Dragablz") && !args.Name.StartsWith("MaterialDesign"))
                         return null;
 
                     string assName = args.Name.Split(new[] { ',' }, 2)[0] + ".dll";
