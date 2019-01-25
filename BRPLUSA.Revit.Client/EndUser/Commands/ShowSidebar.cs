@@ -1,7 +1,6 @@
 ﻿using Autodesk.Revit.Attributes;
 using Autodesk.Revit.UI;
 using BRPLUSA.Revit.Client.Base;
-using BRPLUSA.Revit.Client.UI.Viewers;
 
 namespace BRPLUSA.Revit.Client.EndUser.Commands
 {
@@ -11,12 +10,12 @@ namespace BRPLUSA.Revit.Client.EndUser.Commands
     {
         protected override Result Work()
         {
-            var dash = CurrentApplication.GetDockablePane(BardWebClient.Id);
+            //var dash = CurrentApplication.GetDockablePane(BardWebClient.Id);
 
-            if (dash.IsShown())
-                dash.Hide();
-            else
-                dash.Show();
+            //if (dash.IsShown())
+            //    dash.Hide();
+            //else
+            //    dash.Show();
 
             return Result.Succeeded;
         }

@@ -2,7 +2,7 @@
 using Autodesk.Revit.Attributes;
 using Autodesk.Revit.UI;
 using BRPLUSA.Revit.Client.Base;
-using BRPLUSA.Revit.Client.UI.Services;
+using BRPLUSA.Revit.Client.WPF.Services;
 using BRPLUSA.Revit.Core.Exceptions;
 using BRPLUSA.Revit.Services.Elements;
 

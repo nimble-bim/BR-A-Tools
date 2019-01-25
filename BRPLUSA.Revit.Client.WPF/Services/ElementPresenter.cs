@@ -6,12 +6,12 @@ using Autodesk.Revit.DB;
 using Autodesk.Revit.DB.Electrical;
 using Autodesk.Revit.UI;
 using Autodesk.Revit.UI.Events;
-using BRPLUSA.Revit.Client.UI.Views;
+using BRPLUSA.Revit.Client.WPF.Viewers;
 using BRPLUSA.Revit.Core.Exceptions;
 using BRPLUSA.Revit.Services.Elements;
 using RevitView = Autodesk.Revit.DB.View;
 
-namespace BRPLUSA.Revit.Client.UI.Services
+namespace BRPLUSA.Revit.Client.WPF.Services
 {
     public static class ElementPresenter
     {

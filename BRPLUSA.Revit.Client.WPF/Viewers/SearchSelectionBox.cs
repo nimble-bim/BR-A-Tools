@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 
-namespace BRPLUSA.Revit.Client.UI.Views
+namespace BRPLUSA.Revit.Client.WPF.Viewers
 {
     public partial class SearchSelectionBox : Form
     {

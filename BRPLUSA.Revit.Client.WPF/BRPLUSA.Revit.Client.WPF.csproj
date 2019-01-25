@@ -39,6 +39,9 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AdWindows">
+      <HintPath>..\References\Revit\2018\AdWindows.dll</HintPath>
+    </Reference>
     <Reference Include="Dragablz, Version=0.0.3.203, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Dragablz.0.0.3.203\lib\net45\Dragablz.dll</HintPath>
     </Reference>
@@ -48,11 +51,19 @@
     <Reference Include="MaterialDesignThemes.Wpf, Version=2.5.0.1205, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\MaterialDesignThemes.2.5.0.1205\lib\net45\MaterialDesignThemes.Wpf.dll</HintPath>
     </Reference>
+    <Reference Include="RevitAPI">
+      <HintPath>..\References\Revit\2018\RevitAPI.dll</HintPath>
+    </Reference>
+    <Reference Include="RevitAPIUI">
+      <HintPath>..\References\Revit\2018\RevitAPIUI.dll</HintPath>
+    </Reference>
     <Reference Include="ShowMeTheXAML, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\ShowMeTheXAML.1.0.12\lib\net45\ShowMeTheXAML.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -67,6 +78,16 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Services\ElementPresenter.cs" />
+    <Compile Include="Viewers\BardWpfClient.xaml.cs">
+      <DependentUpon>BardWpfClient.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Viewers\SearchSelectionBox.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Viewers\SearchSelectionBox.Designer.cs">
+      <DependentUpon>SearchSelectionBox.cs</DependentUpon>
+    </Compile>
     <None Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -86,6 +107,10 @@
     <Page Include="Pages\BackupPageContent.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Viewers\BardWpfClient.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
   <ItemGroup>
@@ -109,6 +134,9 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Viewers\SearchSelectionBox.resx">
+      <DependentUpon>SearchSelectionBox.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -118,6 +146,15 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\BRPLUSA.Revit.Core\BRPLUSA.Revit.Core.csproj">
+      <Project>{E46B68F5-F133-4E41-8CA6-975B6B854357}</Project>
+      <Name>BRPLUSA.Revit.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BRPLUSA.Revit.Services\BRPLUSA.Revit.Services.csproj">
+      <Project>{AD967B1C-DF2E-4690-8B0E-958596FF3C4E}</Project>
+      <Name>BRPLUSA.Revit.Services</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

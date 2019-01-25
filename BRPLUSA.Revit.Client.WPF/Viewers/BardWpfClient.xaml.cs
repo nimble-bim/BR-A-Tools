@@ -1,10 +1,9 @@
-﻿using Autodesk.Revit.DB.Events;
-using Autodesk.Revit.UI;
-using BRPLUSA.Revit.Client.WPF.Pages;
-using System;
+﻿using System;
 using System.Windows.Controls;
+using Autodesk.Revit.DB.Events;
+using Autodesk.Revit.UI;
 
-namespace BRPLUSA.Revit.Client.UI.Viewers
+namespace BRPLUSA.Revit.Client.WPF.Viewers
 {
     /// <summary>
     /// Interaction logic for BardWpfClient.xaml

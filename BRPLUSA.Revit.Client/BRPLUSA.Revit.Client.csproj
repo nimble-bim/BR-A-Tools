@@ -184,10 +184,6 @@
       <Project>{B56FEBB5-8F1A-4B67-AD47-9201F7BE49AA}</Project>
       <Name>BRPLUSA.Database</Name>
     </ProjectReference>
-    <ProjectReference Include="..\BRPLUSA.Revit.Client.UI\BRPLUSA.Revit.Client.UI.csproj">
-      <Project>{977957b1-037f-4eb9-ba45-4c48f805c3c5}</Project>
-      <Name>BRPLUSA.Revit.Client.UI</Name>
-    </ProjectReference>
     <ProjectReference Include="..\BRPLUSA.Revit.Client.WPF\BRPLUSA.Revit.Client.WPF.csproj">
       <Project>{69d8f543-c854-4419-abd2-6bad38b67966}</Project>
       <Name>BRPLUSA.Revit.Client.WPF</Name>

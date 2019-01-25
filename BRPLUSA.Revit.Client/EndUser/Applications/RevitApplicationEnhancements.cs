@@ -9,8 +9,8 @@ using BRPLUSA.Revit.Client.EndUser.Commands;
 using BRPLUSA.Revit.Client.EndUser.Commands.Mechanical;
 using BRPLUSA.Revit.Client.EndUser.Commands.VAVServes;
 using BRPLUSA.Revit.Client.EndUser.Services;
-using BRPLUSA.Revit.Client.UI.Viewers;
 using BRPLUSA.Revit.Client.WPF;
+using BRPLUSA.Revit.Client.WPF.Viewers;
 using BRPLUSA.Revit.Installers._2018;
 using BRPLUSA.Revit.Services.Registration;
 using BRPLUSA.Revit.Services.Web;
@@ -207,22 +207,22 @@ namespace BRPLUSA.Revit.Client.EndUser.Applications
 
         public void ResolveBrowserBinaries()
         {
-            try
-            {
-                LoggingService.LogInfo("Attempting to resolve browser binaries");
+            //try
+            //{
+            //    LoggingService.LogInfo("Attempting to resolve browser binaries");
 
-                AppDomain.CurrentDomain.AssemblyResolve += BardWebClient.ResolveCefBinaries;
-                BardWebClient.InitializeCefSharp();
+            //    AppDomain.CurrentDomain.AssemblyResolve += BardWebClient.ResolveCefBinaries;
+            //    BardWebClient.InitializeCefSharp();
 
-                LoggingService.LogInfo("Browser binary resolution complete");
-            }
+            //    LoggingService.LogInfo("Browser binary resolution complete");
+            //}
 
-            catch (Exception e)
-            {
-                var ex = new Exception("Fatal error! Failed to resolve browser binaries", e);
+            //catch (Exception e)
+            //{
+            //    var ex = new Exception("Fatal error! Failed to resolve browser binaries", e);
 
-                throw ex;
-            }
+            //    throw ex;
+            //}
         }
 
         public void ResolveUIBinaries()
