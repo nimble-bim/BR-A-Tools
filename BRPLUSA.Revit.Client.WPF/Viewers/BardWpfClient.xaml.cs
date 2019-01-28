@@ -9,10 +9,16 @@ namespace BRPLUSA.Revit.Client.WPF.Viewers
     /// <summary>
     /// Interaction logic for BardWpfClient.xaml
     /// </summary>
-    public partial class BardWpfClient : Page, IDockablePaneProvider
+    public partial class BardWpfClient : Page, IRevitClient
     {
-        public static DockablePaneId Id => new DockablePaneId(new Guid());
+        private static DockablePaneId _id;
+        public DockablePaneId Id => _id;
         public static UIControlledApplication App { get; private set; }
+
+        static BardWpfClient()
+        {
+            _id = new DockablePaneId(Guid.NewGuid());
+        }
 
         public BardWpfClient()
         {
@@ -44,5 +50,11 @@ namespace BRPLUSA.Revit.Client.WPF.Viewers
             pane.Show();
             args.Document.Application.DocumentOpened -= ShowSidebar;
         }
+    }
+
+    public interface IRevitClient : IDockablePaneProvider
+    {
+        DockablePaneId Id { get; }
+        void ShowSidebar(object sender, DocumentOpenedEventArgs args);
     }
 }

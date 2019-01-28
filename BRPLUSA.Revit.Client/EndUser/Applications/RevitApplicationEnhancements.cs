@@ -24,6 +24,7 @@ namespace BRPLUSA.Revit.Client.EndUser.Applications
         private static SocketService SocketService { get; set; }
         private static AppInstallClient InstallApp { get; set; }
         private UIControlledApplication UiApplication { get; set; }
+        private IRevitClient Client { get; set; }
 
         public Result OnStartup(UIControlledApplication app)
         {
@@ -40,12 +41,12 @@ namespace BRPLUSA.Revit.Client.EndUser.Applications
             try
             {
                 LoggingService.LogInfo("Starting up application via Revit");
-                ResolveBrowserBinaries();
+                //ResolveBrowserBinaries();
                 ResolveUIBinaries();
 
                 var backupAuto = new AutoModelBackupService();
                 var backupManual = new ManualModelBackupService();
-                var sidebar = new BardWpfClient();
+                Client = new BardWpfClient();
 
                 UpdaterRegistrationService.AddRegisterableServices(
                     backupAuto
@@ -57,7 +58,7 @@ namespace BRPLUSA.Revit.Client.EndUser.Applications
 
                 CreateRibbon(app);
                 RegisterAppEvents(app);
-                RegisterSideBar(app, sidebar);
+                RegisterSideBar(app, Client);
                 RegisterInstallerEvents(app);
 
                 LoggingService.LogInfo("Application loaded successfully");
@@ -252,13 +253,13 @@ namespace BRPLUSA.Revit.Client.EndUser.Applications
             }
         }
 
-        private void RegisterSideBar(UIControlledApplication app, BardWpfClient sidebar)
+        private void RegisterSideBar(UIControlledApplication app, IRevitClient sidebar)
         {
             try
             {
                 LoggingService.LogInfo("Attempting to register Bard Client sidebar with Revit");
 
-                app.RegisterDockablePane(BardWpfClient.Id, "BR+A Revit Helper", sidebar);
+                app.RegisterDockablePane(sidebar.Id, "BR+A Revit Helper", sidebar);
                 //app.ControlledApplication.DocumentOpened += sidebar.JoinRevitSession;
                 app.ControlledApplication.DocumentOpened += sidebar.ShowSidebar;
 
@@ -267,7 +268,7 @@ namespace BRPLUSA.Revit.Client.EndUser.Applications
 
             catch (Exception e)
             {
-                throw new Exception("Failed to resolve browser binaries", e);
+                throw new Exception("Failed to register BR+A Sidebar", e);
             }
         }
     }

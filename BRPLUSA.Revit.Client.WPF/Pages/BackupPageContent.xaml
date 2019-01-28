@@ -48,7 +48,6 @@
             Height="31" Width="145" 
             TextAlignment="Center"/>
         <Button 
-            Click="{Binding InitiateModelBackup}"
             Background="{StaticResource ButtonColor}" 
             Content="Backup Now" 
             HorizontalAlignment="Left" 
@@ -56,6 +55,7 @@
             VerticalAlignment="Top" 
             Width="145" Height="55" 
             FontSize="18" 
-            Foreground="Gray" />
+            Foreground="Gray" 
+            />
     </Grid>
 </UserControl>
