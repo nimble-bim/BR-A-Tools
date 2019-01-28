@@ -46,7 +46,7 @@ namespace BRPLUSA.Revit.Client.EndUser.Applications
 
                 var backupAuto = new AutoModelBackupService();
                 var backupManual = new ManualModelBackupService();
-                Client = new BardWpfClient();
+                Client = InitializationService.InitializeUIServices();
 
                 UpdaterRegistrationService.AddRegisterableServices(
                     backupAuto
