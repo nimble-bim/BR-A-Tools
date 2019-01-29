@@ -82,6 +82,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Commands\BackupModelCommand.cs" />
+    <Compile Include="Commands\RelayCommand.cs" />
     <Compile Include="InitializationService.cs" />
     <Compile Include="Services\ElementPresenter.cs" />
     <Compile Include="Viewers\BardWpfClient.xaml.cs">

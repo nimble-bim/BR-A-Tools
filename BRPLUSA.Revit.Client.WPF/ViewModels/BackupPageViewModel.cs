@@ -1,4 +1,5 @@
-﻿using BRPLUSA.Revit.Client.WPF.Commands;
+﻿using System.Windows.Input;
+using BRPLUSA.Revit.Client.WPF.Commands;
 
 namespace BRPLUSA.Revit.Client.WPF.ViewModels
 {
@@ -6,6 +7,7 @@ namespace BRPLUSA.Revit.Client.WPF.ViewModels
     {
         private string _projectName;
         private string _projectDescription;
+        private ICommand _command;
 
         public string ProjectName
         {
@@ -17,6 +19,16 @@ namespace BRPLUSA.Revit.Client.WPF.ViewModels
         {
             get => _projectDescription;
             set => SetProperty(ref _projectDescription, value);
+        }
+
+        public ICommand Executable
+        {
+            get => _command;
+        }
+
+        public BackupPageViewModel(BackupModelCommand cmd)
+        {
+            _command = cmd.CommandToExecute;
         }
     }
 }

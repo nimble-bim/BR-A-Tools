@@ -9,9 +9,9 @@ namespace BRPLUSA.Revit.Services.Updaters
 {
     public class ModelBackupService
     {
-        private static Document Document { get; set; }
-        private static ExternalEvent BackupEvent { get; set; }
-        private static ISocketProvider SocketService { get; set; }
+        private Document Document { get; set; }
+        private  ExternalEvent BackupEvent { get; set; }
+        private  ISocketProvider SocketService { get; set; }
 
         public ModelBackupService(Document doc)
         {
@@ -64,12 +64,12 @@ namespace BRPLUSA.Revit.Services.Updaters
             SocketService.AddSocketEvent("BACKUP_REQUESTED", HandleBackupRequest);
         }
 
-        public static void RegisterBackupEventHandler()
+        public  void RegisterBackupEventHandler()
         {
             BackupEvent = ExternalEvent.Create(new BackupHandler());
         }
 
-        public static void HandleBackupRequest()
+        public  void HandleBackupRequest()
         {
             LoggingService.LogInfo("Received model backup requested");
             BackupEvent.Raise();

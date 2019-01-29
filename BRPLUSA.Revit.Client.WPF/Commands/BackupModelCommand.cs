@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using BRPLUSA.Revit.Services.Updaters;
 
 namespace BRPLUSA.Revit.Client.WPF.Commands
 {
@@ -13,6 +13,7 @@ namespace BRPLUSA.Revit.Client.WPF.Commands
     {
         private ICommand _backupCommand;
         private readonly Action _execute;
+        private ModelBackupService _service;
 
         public ICommand CommandToExecute
         {
@@ -25,40 +26,10 @@ namespace BRPLUSA.Revit.Client.WPF.Commands
             }
         }
 
-        public BackupModelCommand(Action toTake)
+        public BackupModelCommand(ModelBackupService service)
         {
-            _execute = toTake;
-        }
-    }
-
-    public class RelayCommand : ICommand
-    {
-        private readonly Action<object> _execute;
-        private readonly Predicate<object> _canExecute;
-
-        public RelayCommand(Action<object> execute, Predicate<object> canExecute)
-        {
-            _execute = execute ?? throw new ArgumentNullException(nameof(execute));
-            _canExecute = canExecute;
-        }
-
-        public RelayCommand(Action<object> execute) : this(execute, null) { }
-
-        [DebuggerStepThrough]
-        public bool CanExecute(object parameters)
-        {
-            return _canExecute?.Invoke(parameters) ?? true;
-        }
-
-        public event EventHandler CanExecuteChanged
-        {
-            add => CommandManager.RequerySuggested += value;
-            remove => CommandManager.RequerySuggested -= value;
-        }
-
-        public void Execute(object parameters)
-        {
-            _execute(parameters);
+            service = _service;
+            _execute = () => _service.HandleBackupRequest();
         }
     }
 }

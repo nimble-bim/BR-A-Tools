@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using BRPLUSA.Revit.Client.WPF.ViewModels;
 
 namespace BRPLUSA.Revit.Client.WPF.Pages
 {
@@ -23,6 +24,11 @@ namespace BRPLUSA.Revit.Client.WPF.Pages
         public BackupPageContent()
         {
             InitializeComponent();
+        }
+
+        public BackupPageContent(BackupPageViewModel vm) : this()
+        {
+            DataContext = vm;
         }
     }
 }
