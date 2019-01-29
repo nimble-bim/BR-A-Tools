@@ -43,6 +43,7 @@ namespace BRPLUSA.Revit.Client.EndUser.Applications
                 LoggingService.LogInfo("Starting up application via Revit");
                 //ResolveBrowserBinaries();
                 ResolveUIBinaries();
+                ResolveOwnBinaries();
 
                 var container = InitializationService.InitializeUIServices();
                 Client = container.GetInstance<BardWpfClient>();
@@ -248,6 +249,33 @@ namespace BRPLUSA.Revit.Client.EndUser.Applications
             }
 
             catch(Exception e)
+            {
+                var ex = new Exception("Fatal error! Failed to resolve UI binaries", e);
+
+                throw ex;
+            }
+        }
+
+        public void ResolveOwnBinaries()
+        {
+            try
+            {
+                AppDomain.CurrentDomain.AssemblyResolve += (sender, args) =>
+                {
+                    if (!args.Name.StartsWith("BRPLUSA"))
+                        return null;
+
+                    string assName = args.Name.Split(new[] { ',' }, 2)[0] + ".dll";
+                    var location = Path.GetDirectoryName(typeof(RevitApplicationEnhancements).Assembly.Location);
+                    var path = Path.Combine(location, assName);
+
+                    return File.Exists(path)
+                        ? Assembly.LoadFile(path)
+                        : null;
+                };
+            }
+
+            catch (Exception e)
             {
                 var ex = new Exception("Fatal error! Failed to resolve UI binaries", e);
 

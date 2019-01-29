@@ -12,8 +12,7 @@ namespace BRPLUSA.Revit.Client.WPF.Commands
     public class BackupModelCommand
     {
         private ICommand _backupCommand;
-        private readonly Action _execute;
-        private ModelBackupService _service;
+        private readonly ManualModelBackupService _service;
 
         public ICommand CommandToExecute
         {
@@ -21,15 +20,14 @@ namespace BRPLUSA.Revit.Client.WPF.Commands
             {
                 return _backupCommand 
                        ?? (_backupCommand = new RelayCommand(
-                           param => _execute()
+                           param => _service.HandleBackupRequest()
                        ));
             }
         }
 
-        public BackupModelCommand(ModelBackupService service)
+        public BackupModelCommand(ManualModelBackupService service)
         {
-            service = _service;
-            _execute = () => _service.HandleBackupRequest();
+            _service = service;
         }
     }
 }

@@ -3,6 +3,8 @@ using System.Windows.Controls;
 using Autodesk.Revit.DB.Events;
 using Autodesk.Revit.UI;
 using BRPLUSA.Core.Services;
+using BRPLUSA.Revit.Client.WPF.Pages;
+using BRPLUSA.Revit.Client.WPF.ViewModels;
 
 namespace BRPLUSA.Revit.Client.WPF.Viewers
 {
@@ -14,6 +16,7 @@ namespace BRPLUSA.Revit.Client.WPF.Viewers
         private static DockablePaneId _id;
         public DockablePaneId Id => _id;
         public static UIControlledApplication App { get; private set; }
+        public BackupPageContent Page { get; private set; }
 
         static BardWpfClient()
         {
@@ -32,6 +35,21 @@ namespace BRPLUSA.Revit.Client.WPF.Viewers
                 LoggingService.LogError("Couldn't initialize WPF Component", e);
             }
         }
+
+        //public BardWpfClient(BackupPageContent page)
+        //{
+        //    try
+        //    {
+        //        InitializeComponent();
+        //        Page = page;
+        //    }
+
+        //    catch (Exception e)
+        //    {
+        //        LoggingService.LogError("Couldn't initialize WPF Component", e);
+        //        throw e;
+        //    }
+        //}
 
         public void SetupDockablePane(DockablePaneProviderData data)
         {

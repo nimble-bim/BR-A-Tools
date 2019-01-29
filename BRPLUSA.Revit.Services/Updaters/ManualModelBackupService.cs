@@ -12,6 +12,11 @@ namespace BRPLUSA.Revit.Services.Updaters
             BackupService = service;
         }
 
+        public void HandleBackupRequest()
+        {
+            BackupService.HandleBackupRequest();
+        }
+
         //public void Register(ISocketProvider service, Document doc)
         //{
         //    //BackupService.RegisterManualBackup(doc);
