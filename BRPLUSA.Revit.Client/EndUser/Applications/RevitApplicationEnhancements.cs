@@ -8,11 +8,11 @@ using BRPLUSA.Core.Services;
 using BRPLUSA.Revit.Client.EndUser.Commands;
 using BRPLUSA.Revit.Client.EndUser.Commands.Mechanical;
 using BRPLUSA.Revit.Client.EndUser.Commands.VAVServes;
-using BRPLUSA.Revit.Client.EndUser.Services;
 using BRPLUSA.Revit.Client.WPF;
 using BRPLUSA.Revit.Client.WPF.Viewers;
 using BRPLUSA.Revit.Installers._2018;
 using BRPLUSA.Revit.Services.Registration;
+using BRPLUSA.Revit.Services.Updaters;
 using BRPLUSA.Revit.Services.Web;
 
 namespace BRPLUSA.Revit.Client.EndUser.Applications

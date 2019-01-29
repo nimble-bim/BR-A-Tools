@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Autodesk.Revit.DB;
-using RevitSpace = Autodesk.Revit.DB.Mechanical.Space;
-using Autodesk.Revit.UI;
-using BRPLUSA.Revit.Client.Base;
-
-namespace BRPLUSA.Revit.Client.EndUser.Services
+﻿namespace BRPLUSA.Revit.Services.Updaters
 {
     //public class SpatialPropertyUpdater : BaseRegisterableUpdater
     //{

@@ -1,8 +1,7 @@
 ﻿using Autodesk.Revit.DB;
 using BRPLUSA.Revit.Core.Interfaces;
-using BRPLUSA.Revit.Services.Updates;
 
-namespace BRPLUSA.Revit.Client.EndUser.Services
+namespace BRPLUSA.Revit.Services.Updaters
 {
     public class ManualModelBackupService : ISocketConsumer
     {
