@@ -44,9 +44,11 @@ namespace BRPLUSA.Revit.Client.EndUser.Applications
                 //ResolveBrowserBinaries();
                 ResolveUIBinaries();
 
-                var backupAuto = new AutoModelBackupService();
-                var backupManual = new ManualModelBackupService();
-                Client = InitializationService.InitializeUIServices();
+                var container = InitializationService.InitializeUIServices();
+                Client = container.GetInstance<BardWpfClient>();
+
+                var backupAuto = container.GetInstance<AutoModelBackupService>();
+                var backupManual = container.GetInstance<ManualModelBackupService>();
 
                 UpdaterRegistrationService.AddRegisterableServices(
                     backupAuto

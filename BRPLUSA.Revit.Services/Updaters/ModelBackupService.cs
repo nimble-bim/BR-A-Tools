@@ -10,8 +10,8 @@ namespace BRPLUSA.Revit.Services.Updaters
     public class ModelBackupService
     {
         private Document Document { get; set; }
-        private  ExternalEvent BackupEvent { get; set; }
-        private  ISocketProvider SocketService { get; set; }
+        private ExternalEvent BackupEvent { get; set; }
+        private ISocketProvider SocketService { get; set; }
 
         public ModelBackupService(Document doc)
         {
