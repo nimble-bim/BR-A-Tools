@@ -3,24 +3,23 @@ using BRPLUSA.Revit.Core.Interfaces;
 
 namespace BRPLUSA.Revit.Services.Updaters
 {
-    public class ManualModelBackupService : ISocketConsumer
+    public class ManualModelBackupService
     {
         private ModelBackupService BackupService { get; set; }
 
-        private void Initialize(Document doc, ISocketProvider service)
+        public ManualModelBackupService(ModelBackupService service)
         {
-            BackupService = new ModelBackupService(doc, service);
+            BackupService = service;
         }
 
-        public void Register(ISocketProvider service, Document doc)
-        {
-            Initialize(doc, service);
-            BackupService.RegisterManualBackup(doc);
-        }
+        //public void Register(ISocketProvider service, Document doc)
+        //{
+        //    //BackupService.RegisterManualBackup(doc);
+        //}
 
-        public void Deregister()
-        {
-            BackupService.DeregisterManualBackup();
-        }
+        //public void Deregister()
+        //{
+        //    BackupService.DeregisterManualBackup();
+        //}
     }
 }

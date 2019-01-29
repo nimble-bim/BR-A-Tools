@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using BRPLUSA.Revit.Client.WPF.Viewers;
+using BRPLUSA.Revit.Services.Handlers;
 using BRPLUSA.Revit.Services.Updaters;
 using SimpleInjector;
 
@@ -18,6 +19,9 @@ namespace BRPLUSA.Revit.Client.WPF
             container.Register<IRevitClient, BardWpfClient>();
             container.Register<AutoModelBackupService>();
             container.Register<ManualModelBackupService>();
+
+            container.Register<BackupHandler>();
+            container.Register<ModelBackupService>();
 
             return container;
         }

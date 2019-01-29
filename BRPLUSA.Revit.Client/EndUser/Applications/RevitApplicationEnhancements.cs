@@ -54,9 +54,9 @@ namespace BRPLUSA.Revit.Client.EndUser.Applications
                     backupAuto
                     );
 
-                SocketRegistrationService.AddRegisterableServices(
-                    backupManual
-                    );
+                //SocketRegistrationService.AddRegisterableServices(
+                //    backupManual
+                //    );
 
                 CreateRibbon(app);
                 RegisterAppEvents(app);

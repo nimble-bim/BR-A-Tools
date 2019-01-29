@@ -6,21 +6,36 @@ namespace BRPLUSA.Revit.Services.Updaters
     public class AutoModelBackupService : BaseRegisterableService
     {
         private ModelBackupService BackupService { get; set; }
+        private Document Document { get; set; }
 
-        private void Initialize(Document doc)
+        public AutoModelBackupService(ModelBackupService service)
         {
-            BackupService = new ModelBackupService(doc);
+            BackupService = service;
         }
 
         public override void Register(Document doc)
         {
-            Initialize(doc);
-            BackupService.RegisterAutoBackup();
+            Document = doc;
+            RegisterAutoBackup();
         }
 
         public override void Deregister()
         {
-            BackupService.DeregisterAutoBackup();
+            DeregisterAutoBackup();
+        }
+
+        public void RegisterAutoBackup()
+        {
+            var mPath = Document.GetWorksharingCentralModelPath();
+            var central = ModelPathUtils.ConvertModelPathToUserVisiblePath(mPath);
+
+            if (BackupService.IsFromBIM360(central))
+                Document.Application.DocumentSynchronizedWithCentral += BackupService.RequestModelBackup;
+        }
+
+        public void DeregisterAutoBackup()
+        {
+            Document.Application.DocumentSynchronizedWithCentral -= BackupService.RequestModelBackup;
         }
     }
 }
