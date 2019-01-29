@@ -141,12 +141,8 @@
     <Compile Include="EndUser\Commands\VAVServes\SystemTracing.cs" />
     <Compile Include="EndUser\Commands\VAVServes\TracedSpace.cs" />
     <Compile Include="EndUser\Commands\VAVServes\Util.cs" />
-    <Compile Include="EndUser\Services\AutoModelBackupService.cs" />
-    <Compile Include="EndUser\Services\ManualModelBackupService.cs" />
-    <Compile Include="EndUser\Services\WorksharingMonitorUpdater.cs" />
     <Compile Include="Base\BaseRegisterableUpdater.cs" />
     <Compile Include="EndUser\Applications\RevitApplicationEnhancements.cs" />
-    <Compile Include="EndUser\Services\SpatialPropertyUpdater.cs" />
     <Compile Include="EndUser\Commands\LinkSpaces.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

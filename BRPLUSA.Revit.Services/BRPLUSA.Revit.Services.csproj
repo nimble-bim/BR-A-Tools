@@ -150,7 +150,11 @@
     <Compile Include="Registration\SocketRegistrationService.cs" />
     <Compile Include="Spaces\SpacePropertyService.cs" />
     <Compile Include="Spaces\SpaceVentilationService.cs" />
-    <Compile Include="Updates\ModelBackupService.cs" />
+    <Compile Include="Updaters\AutoModelBackupService.cs" />
+    <Compile Include="Updaters\ManualModelBackupService.cs" />
+    <Compile Include="Updaters\ModelBackupService.cs" />
+    <Compile Include="Updaters\SpatialPropertyUpdater.cs" />
+    <Compile Include="Updaters\WorksharingMonitorUpdater.cs" />
     <Compile Include="Utilities\RevitXYZUtils.cs" />
     <Compile Include="Utilities\VentilationParameterUtility.cs" />
     <Compile Include="Web\SocketService.cs" />

@@ -18,15 +18,5 @@ namespace BRPLUSA.Revit.Client.WPF.ViewModels
             get => _projectDescription;
             set => SetProperty(ref _projectDescription, value);
         }
-
-        public void Thing()
-        {
-            var cmd = new BackupModelCommand(OtherThing);
-        }
-
-        public void OtherThing()
-        {
-
-        }
     }
 }

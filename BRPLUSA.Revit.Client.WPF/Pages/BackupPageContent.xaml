@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:viewModels="clr-namespace:BRPLUSA.Revit.Client.WPF.ViewModels"
              mc:Ignorable="d" 
+             d:DataContext="{d:DesignInstance viewModels:BackupPageViewModel}"
              d:DesignHeight="900" d:DesignWidth="400">
     <UserControl.Resources>
         <ResourceDictionary>
@@ -13,11 +14,10 @@
             </ResourceDictionary.MergedDictionaries>
             <SolidColorBrush x:Key="BackgroundColor" Color="#E6E6E6"/>
             <SolidColorBrush x:Key="ButtonColor" Color="#ff6347"/>
-            <viewModels:BackupPageViewModel x:Key="BackupPage" />
         </ResourceDictionary>
     </UserControl.Resources>
 
-    <Grid Background="{StaticResource BackgroundColor}" DataContext="{StaticResource BackupPage}">
+    <Grid Background="{StaticResource BackgroundColor}">
         <TextBlock 
             Text="{
                 Binding

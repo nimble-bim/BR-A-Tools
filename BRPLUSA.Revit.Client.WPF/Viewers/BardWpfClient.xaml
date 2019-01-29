@@ -6,6 +6,7 @@
         mc:Ignorable="d" 
         xmlns:dragablz="clr-namespace:Dragablz;assembly=Dragablz"
         xmlns:pages="clr-namespace:BRPLUSA.Revit.Client.WPF.Pages"
+        xmlns:viewModels="clr-namespace:BRPLUSA.Revit.Client.WPF.ViewModels"
         TextElement.FontWeight="Regular"
         TextElement.FontSize="13"
         TextOptions.TextFormattingMode="Ideal" 
@@ -42,11 +43,18 @@
 
                 <!--Include the Dragablz Material Design style-->
                 <ResourceDictionary Source="pack://application:,,,/Dragablz;component/Themes/materialdesign.xaml"/>
+
+                <ResourceDictionary>
+                    <DataTemplate DataType="{x:Type viewModels:BackupPageViewModel}">
+                        <pages:BackupPageContent />
+                    </DataTemplate>
+                </ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
                          
             <!--tell Dragablz tab control to use the Material Design theme-->
             <Style TargetType="{x:Type dragablz:TabablzControl}" BasedOn="{StaticResource MaterialDesignTabablzControlStyle}" />
         </ResourceDictionary>
+        
     </Page.Resources>
 
     <dragablz:TabablzControl Background="{StaticResource PrimaryHueDarkForegroundBrush}">
@@ -57,7 +65,7 @@
             <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">Material Design</TextBlock>
         </TabItem>
         <TabItem Header="Backup">
-            <pages:BackupPageContent />
+            
         </TabItem>
         <TabItem Header="View Extents">
             <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">Looks Quite Nice</TextBlock>
