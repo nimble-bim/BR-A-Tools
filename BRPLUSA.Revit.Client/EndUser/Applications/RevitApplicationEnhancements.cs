@@ -41,9 +41,8 @@ namespace BRPLUSA.Revit.Client.EndUser.Applications
             try
             {
                 LoggingService.LogInfo("Starting up application via Revit");
-                //ResolveBrowserBinaries();
-                ResolveUIBinaries();
-                ResolveOwnBinaries();
+                BinaryResolver.ResolveUIBinaries();
+                BinaryResolver.ResolveOwnBinaries();
 
                 var container = InitializationService.InitializeUIServices();
                 Client = container.GetInstance<BardWpfClient>();
@@ -206,80 +205,6 @@ namespace BRPLUSA.Revit.Client.EndUser.Applications
             catch (Exception e)
             {
                 throw new Exception("Failed to create application ribbon within Revit", e);
-            }
-        }
-
-        public void ResolveBrowserBinaries()
-        {
-            //try
-            //{
-            //    LoggingService.LogInfo("Attempting to resolve browser binaries");
-
-            //    AppDomain.CurrentDomain.AssemblyResolve += BardWebClient.ResolveCefBinaries;
-            //    BardWebClient.InitializeCefSharp();
-
-            //    LoggingService.LogInfo("Browser binary resolution complete");
-            //}
-
-            //catch (Exception e)
-            //{
-            //    var ex = new Exception("Fatal error! Failed to resolve browser binaries", e);
-
-            //    throw ex;
-            //}
-        }
-
-        public void ResolveUIBinaries()
-        {
-            try
-            {
-                AppDomain.CurrentDomain.AssemblyResolve += (sender, args) =>
-                {
-                    if (!args.Name.StartsWith("Dragablz") && !args.Name.StartsWith("MaterialDesign"))
-                        return null;
-
-                    string assName = args.Name.Split(new[] { ',' }, 2)[0] + ".dll";
-                    var location = Path.GetDirectoryName(typeof(RevitApplicationEnhancements).Assembly.Location);
-                    var path = Path.Combine(location, assName);
-
-                    return File.Exists(path)
-                        ? Assembly.LoadFile(path)
-                        : null;
-                };
-            }
-
-            catch(Exception e)
-            {
-                var ex = new Exception("Fatal error! Failed to resolve UI binaries", e);
-
-                throw ex;
-            }
-        }
-
-        public void ResolveOwnBinaries()
-        {
-            try
-            {
-                AppDomain.CurrentDomain.AssemblyResolve += (sender, args) =>
-                {
-                    if (!args.Name.StartsWith("BRPLUSA"))
-                        return null;
-
-                    string assName = args.Name.Split(new[] { ',' }, 2)[0] + ".dll";
-                    var location = Path.GetDirectoryName(typeof(RevitApplicationEnhancements).Assembly.Location);
-                    var path = Path.Combine(location, assName);
-
-                    return File.Exists(path)
-                        ? Assembly.LoadFile(path)
-                        : null;
-                };
-            }
-
-            catch (Exception e)
-            {
-                var ex = new Exception("Fatal error! Failed to resolve UI binaries", e);
-
-                throw ex;
             }
         }
 
