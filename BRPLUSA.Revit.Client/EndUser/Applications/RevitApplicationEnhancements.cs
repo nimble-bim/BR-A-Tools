@@ -17,9 +17,6 @@ namespace BRPLUSA.Revit.Client.EndUser.Applications
     public class RevitApplicationEnhancements : IExternalApplication
     {
         private static SocketService SocketService { get; set; }
-        private InstallRegistrationService InstallApp { get; set; }
-        private IRevitClient Client { get; set; }
-        private UIControlledApplication UiApplication { get; set; }
 
         public Result OnStartup(UIControlledApplication app)
         {
@@ -40,8 +37,7 @@ namespace BRPLUSA.Revit.Client.EndUser.Applications
                 BinaryResolver.ResolveOwnBinaries();
 
                 var container = InitializationService.InitializeUIServices();
-                Client = container.GetInstance<BardWpfClient>();
-
+                var client = container.GetInstance<BardWpfClient>();
                 var backupAuto = container.GetInstance<AutoModelBackupService>();
                 var backupManual = container.GetInstance<ManualModelBackupService>();
 
@@ -49,14 +45,10 @@ namespace BRPLUSA.Revit.Client.EndUser.Applications
                     backupAuto
                     );
 
-                //SocketRegistrationService.AddRegisterableServices(
-                //    backupManual
-                //    );
-
                 CreateRibbon(app);
-                RegisterAppEvents(app);
-                RegisterSideBar(app, Client);
-                InstallApp = new InstallRegistrationService(app);
+                HandleServiceRegistration(app);
+                RegisterSideBar(app, client);
+                InstallRegistrationService.RegisterInstallerEvents(app);
 
                 LoggingService.LogInfo("Application loaded successfully");
                 return Result.Succeeded;
@@ -75,7 +67,7 @@ namespace BRPLUSA.Revit.Client.EndUser.Applications
             {
                 LoggingService.LogInfo("Shutting down application via Revit");
                 HandleServiceDeregistration(app);
-                InstallApp?.HandleApplicationUpdate();
+                InstallRegistrationService.HandleApplicationUpdate();
                 LoggingService.LogInfo("Application shutdown complete!");
                 return Result.Succeeded;
             }
@@ -86,7 +78,7 @@ namespace BRPLUSA.Revit.Client.EndUser.Applications
             }
         }
 
-        private void RegisterAppEvents(UIControlledApplication app)
+        private void HandleServiceRegistration(UIControlledApplication app)
         {
             app.ControlledApplication.DocumentOpened += UpdaterRegistrationService.RegisterServices;
             app.ControlledApplication.DocumentOpened += SocketRegistrationService.RegisterServices;

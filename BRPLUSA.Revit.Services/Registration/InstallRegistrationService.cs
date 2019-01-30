@@ -6,30 +6,25 @@ using BRPLUSA.Revit.Installers._2018;
 
 namespace BRPLUSA.Revit.Services.Registration
 {
-    public class InstallRegistrationService
+    public static class InstallRegistrationService
     {
         private static AppInstallClient InstallApp { get; set; }
-        private UIControlledApplication UiApplication { get; set; }
+        private static UIControlledApplication UiApplication { get; set; }
 
-        public InstallRegistrationService(UIControlledApplication app)
-        {
-            RegisterInstallerEvents(app);
-        }
-
-        private void RegisterInstallerEvents(UIControlledApplication app)
+        public static void RegisterInstallerEvents(UIControlledApplication app)
         {
             UiApplication = app;
             UiApplication.Idling += CheckUpdateDuringIdling;
         }
 
-        private void CheckUpdateDuringIdling(object sender, IdlingEventArgs args)
+        private static void CheckUpdateDuringIdling(object sender, IdlingEventArgs args)
         {
             LoggingService.LogInfo("Initializing application to check for product updates");
             UiApplication.Idling -= CheckUpdateDuringIdling;
             InstallApp = new AppInstallClient(true);
         }
 
-        public void HandleApplicationUpdate()
+        public static void HandleApplicationUpdate()
         {
             try
             {
@@ -51,7 +46,7 @@ namespace BRPLUSA.Revit.Services.Registration
             }
         }
 
-        private bool PromptUserAboutUpdate()
+        private static bool PromptUserAboutUpdate()
         {
             const string title = "BR+A Revit Enhancements Update Available";
             const string msg = "Would you like to update the application?";
@@ -67,7 +62,7 @@ namespace BRPLUSA.Revit.Services.Registration
             return result == TaskDialogResult.Yes;
         }
 
-        private void RunUpdateProcess()
+        private static void RunUpdateProcess()
         {
             LoggingService.LogInfo("Product update application initialized and ready to run");
             InstallApp.Reveal();
