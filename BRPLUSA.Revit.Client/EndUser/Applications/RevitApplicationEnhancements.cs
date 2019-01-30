@@ -8,7 +8,6 @@ using BRPLUSA.Revit.Client.WPF;
 using BRPLUSA.Revit.Client.WPF.Viewers;
 using BRPLUSA.Revit.Services.Registration;
 using BRPLUSA.Revit.Services.Updaters;
-using BRPLUSA.Revit.Services.Web;
 
 namespace BRPLUSA.Revit.Client.EndUser.Applications
 {
@@ -16,8 +15,6 @@ namespace BRPLUSA.Revit.Client.EndUser.Applications
     // https://blogs.msdn.microsoft.com/devops/2013/10/16/switching-to-managed-compatibility-mode-in-visual-studio-2013/
     public class RevitApplicationEnhancements : IExternalApplication
     {
-        private static SocketService SocketService { get; set; }
-
         public Result OnStartup(UIControlledApplication app)
         {
             return Initialize(app);

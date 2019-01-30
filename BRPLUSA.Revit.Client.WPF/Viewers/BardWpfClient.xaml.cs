@@ -3,8 +3,6 @@ using System.Windows.Controls;
 using Autodesk.Revit.DB.Events;
 using Autodesk.Revit.UI;
 using BRPLUSA.Core.Services;
-using BRPLUSA.Revit.Client.WPF.Pages;
-using BRPLUSA.Revit.Client.WPF.ViewModels;
 
 namespace BRPLUSA.Revit.Client.WPF.Viewers
 {
