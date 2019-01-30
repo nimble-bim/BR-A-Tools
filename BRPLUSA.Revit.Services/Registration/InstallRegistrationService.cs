@@ -16,14 +16,6 @@ namespace BRPLUSA.Revit.Services.Registration
             UiApplication = app;
             UiApplication.Idling += CheckUpdateDuringIdling;
         }
-
-        private static void CheckUpdateDuringIdling(object sender, IdlingEventArgs args)
-        {
-            LoggingService.LogInfo("Initializing application to check for product updates");
-            UiApplication.Idling -= CheckUpdateDuringIdling;
-            InstallApp = new AppInstallClient(true);
-        }
-
         public static void HandleApplicationUpdate()
         {
             try
@@ -44,6 +36,13 @@ namespace BRPLUSA.Revit.Services.Registration
             {
                 LoggingService.LogError("Unable to start application update service", e);
             }
+        }
+
+        private static void CheckUpdateDuringIdling(object sender, IdlingEventArgs args)
+        {
+            LoggingService.LogInfo("Initializing application to check for product updates");
+            UiApplication.Idling -= CheckUpdateDuringIdling;
+            InstallApp = new AppInstallClient(true);
         }
 
         private static bool PromptUserAboutUpdate()
