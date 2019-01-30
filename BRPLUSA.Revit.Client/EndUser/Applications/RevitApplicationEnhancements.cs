@@ -1,16 +1,11 @@
 ﻿using System;
-using System.Diagnostics;
-using System.IO;
-using System.Reflection;
 using Autodesk.Revit.UI;
-using Autodesk.Revit.UI.Events;
 using BRPLUSA.Core.Services;
 using BRPLUSA.Revit.Client.EndUser.Commands;
 using BRPLUSA.Revit.Client.EndUser.Commands.Mechanical;
 using BRPLUSA.Revit.Client.EndUser.Commands.VAVServes;
 using BRPLUSA.Revit.Client.WPF;
 using BRPLUSA.Revit.Client.WPF.Viewers;
-using BRPLUSA.Revit.Installers._2018;
 using BRPLUSA.Revit.Services.Registration;
 using BRPLUSA.Revit.Services.Updaters;
 using BRPLUSA.Revit.Services.Web;
@@ -22,9 +17,9 @@ namespace BRPLUSA.Revit.Client.EndUser.Applications
     public class RevitApplicationEnhancements : IExternalApplication
     {
         private static SocketService SocketService { get; set; }
-        private static AppInstallClient InstallApp { get; set; }
-        private UIControlledApplication UiApplication { get; set; }
+        private InstallRegistrationService InstallApp { get; set; }
         private IRevitClient Client { get; set; }
+        private UIControlledApplication UiApplication { get; set; }
 
         public Result OnStartup(UIControlledApplication app)
         {
@@ -61,7 +56,7 @@ namespace BRPLUSA.Revit.Client.EndUser.Applications
                 CreateRibbon(app);
                 RegisterAppEvents(app);
                 RegisterSideBar(app, Client);
-                RegisterInstallerEvents(app);
+                InstallApp = new InstallRegistrationService(app);
 
                 LoggingService.LogInfo("Application loaded successfully");
                 return Result.Succeeded;
@@ -80,7 +75,7 @@ namespace BRPLUSA.Revit.Client.EndUser.Applications
             {
                 LoggingService.LogInfo("Shutting down application via Revit");
                 HandleServiceDeregistration(app);
-                HandleApplicationUpdate();
+                InstallApp?.HandleApplicationUpdate();
                 LoggingService.LogInfo("Application shutdown complete!");
                 return Result.Succeeded;
             }
@@ -105,65 +100,6 @@ namespace BRPLUSA.Revit.Client.EndUser.Applications
             app.ControlledApplication.DocumentOpened -= SocketRegistrationService.RegisterServices;
             app.ControlledApplication.DocumentClosed -= UpdaterRegistrationService.DeregisterServices;
             app.ControlledApplication.DocumentClosed -= SocketRegistrationService.DeregisterServices;
-        }
-
-        private void RegisterInstallerEvents(UIControlledApplication app)
-        {
-            UiApplication = app;
-            UiApplication.Idling += CheckUpdateDuringIdling;
-        }
-
-        private void CheckUpdateDuringIdling(object sender, IdlingEventArgs args)
-        {
-            LoggingService.LogInfo("Initializing application to check for product updates");
-            UiApplication.Idling -= CheckUpdateDuringIdling;
-            InstallApp = new AppInstallClient(true);
-        }
-
-        private void HandleApplicationUpdate()
-        {
-            try
-            {
-                // check if app update is necessary
-                if (!InstallApp.AppFor2018HasUpdate)
-                    return;
-
-                // if so, ask the user if they'd like to update
-                var wantsUpdate = PromptUserAboutUpdate();
-
-                // if yes, present the app installer and start it automatically
-                if(wantsUpdate)
-                    RunUpdateProcess();
-            }
-
-            catch (Exception e)
-            {
-                LoggingService.LogError("Unable to start application update service", e);
-            }
-        }
-
-        private bool PromptUserAboutUpdate()
-        {
-            const string title = "BR+A Revit Enhancements Update Available";
-            const string msg = "Would you like to update the application?";
-
-            var updateBox = new TaskDialog(title)
-            {
-                CommonButtons = TaskDialogCommonButtons.Yes | TaskDialogCommonButtons.No,
-                MainContent = msg
-            };
-            var result = updateBox.Show();
-
-            
-            return result == TaskDialogResult.Yes;
-        }
-
-        private void RunUpdateProcess()
-        {
-            LoggingService.LogInfo("Product update application initialized and ready to run");
-            InstallApp.Reveal();
-            InstallApp.Run();
-            LoggingService.LogInfo("Product update application process completed");
         }
 
         public void CreateRibbon(UIControlledApplication app)
