@@ -23,6 +23,7 @@ namespace BRPLUSA.Revit.Client.EndUser.Applications
         private static SocketService SocketService { get; set; }
         private static AppInstallClient InstallApp { get; set; }
         private UIControlledApplication UiApplication { get; set; }
+        private BardWebClient Sidebar { get; set; }
 
         public Result OnStartup(UIControlledApplication app)
         {
@@ -43,20 +44,20 @@ namespace BRPLUSA.Revit.Client.EndUser.Applications
 
                 var backupAuto = new AutoModelBackupService();
                 var backupManual = new ManualModelBackupService();
-                var sidebar = new BardWebClient(app);
+                Sidebar = new BardWebClient(app);
 
                 UpdaterRegistrationService.AddRegisterableServices(
                     backupAuto
-                    );
+                );
 
                 SocketRegistrationService.AddRegisterableServices(
                     backupManual,
-                    sidebar
-                    );
+                    Sidebar
+                );
 
                 CreateRibbon(app);
                 RegisterAppEvents(app);
-                RegisterSideBar(app, sidebar);
+                RegisterSideBar(app, Sidebar);
                 RegisterInstallerEvents(app);
 
                 LoggingService.LogInfo("Application loaded successfully");
@@ -84,6 +85,11 @@ namespace BRPLUSA.Revit.Client.EndUser.Applications
             {
                 LoggingService.LogError("Failure to shut down correctly", e);
                 return Result.Failed;
+            }
+
+            finally
+            {
+                Sidebar?.Dispose();
             }
         }
 
