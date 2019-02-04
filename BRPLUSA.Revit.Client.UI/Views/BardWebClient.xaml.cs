@@ -17,9 +17,9 @@ namespace BRPLUSA.Revit.Client.UI.Views
     /// <summary>
     /// Interaction logic for BardWebClient.xaml
     /// </summary>
-    public partial class BardWebClient : Page, IDockablePaneProvider, ISocketConsumer, IDisposable
+    public partial class BardWebClient : Page, IWebClient
     {
-        public static DockablePaneId Id => new DockablePaneId(new Guid());
+        public static DockablePaneId Id => new DockablePaneId(Guid.NewGuid());
         public static UIControlledApplication App { get; private set; }
         private ISocketProvider Socket { get; set; }
 
@@ -120,7 +120,15 @@ namespace BRPLUSA.Revit.Client.UI.Views
 
         public void Dispose()
         {
+            Cef.Shutdown();
             Browser?.Dispose();
+            Socket.Dispose();
         }
+    }
+
+    public interface IWebClient : IDisposable, ISocketConsumer, IDockablePaneProvider
+    {
+        void JoinRevitSession(object sender, DocumentOpenedEventArgs args);
+        void ShowSidebar(object sender, DocumentOpenedEventArgs args);
     }
 }

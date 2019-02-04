@@ -10,7 +10,7 @@ namespace BRPLUSA.Revit.Installers._2018
     /// This holds the status of the installation and manages
     /// the process of installing and upgrading the product
     /// </summary>
-    public class InstallManager
+    public class InstallManager : IDisposable
     {
         public bool Revit2018Installed { get; private set; }
         public bool AppFor2018HasUpdateAvailable { get; private set; }
@@ -62,6 +62,11 @@ namespace BRPLUSA.Revit.Installers._2018
             var success = await InstallHandler.HandleRevit2018Installation();
 
             return success;
+        }
+
+        public void Dispose()
+        {
+            InstallHandler = null;
         }
     }
 }

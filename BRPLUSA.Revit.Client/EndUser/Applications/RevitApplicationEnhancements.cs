@@ -20,10 +20,9 @@ namespace BRPLUSA.Revit.Client.EndUser.Applications
     // https://blogs.msdn.microsoft.com/devops/2013/10/16/switching-to-managed-compatibility-mode-in-visual-studio-2013/
     public class RevitApplicationEnhancements : IExternalApplication
     {
-        private static SocketService SocketService { get; set; }
         private static AppInstallClient InstallApp { get; set; }
         private UIControlledApplication UiApplication { get; set; }
-        private BardWebClient Sidebar { get; set; }
+        private IWebClient Sidebar { get; set; }
 
         public Result OnStartup(UIControlledApplication app)
         {
@@ -78,7 +77,6 @@ namespace BRPLUSA.Revit.Client.EndUser.Applications
                 LoggingService.LogInfo("Shutting down application via Revit");
                 HandleServiceDeregistration(app);
                 HandleApplicationUpdate();
-                LoggingService.LogInfo("Application shutdown complete!");
                 return Result.Succeeded;
             }
             catch (Exception e)
@@ -89,7 +87,11 @@ namespace BRPLUSA.Revit.Client.EndUser.Applications
 
             finally
             {
+                LoggingService.LogInfo("Disposing sidebar to prevent memory leaks and allow proper socket connection later");
+                InstallApp.Dispose();
                 Sidebar?.Dispose();
+                LoggingService.LogInfo("Sidebar disposed!");
+                LoggingService.LogInfo("Application shutdown complete!");
             }
         }
 
@@ -230,7 +232,7 @@ namespace BRPLUSA.Revit.Client.EndUser.Applications
             }
         }
 
-        private void RegisterSideBar(UIControlledApplication app, BardWebClient sidebar)
+        private void RegisterSideBar(UIControlledApplication app, IWebClient sidebar)
         {
             try
             {

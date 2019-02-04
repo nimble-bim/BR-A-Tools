@@ -29,7 +29,7 @@ namespace BRPLUSA.Revit.Installers._2018
     /// *
     /// *
     /// </summary>
-    public partial class AppInstallClient : Application
+    public partial class AppInstallClient : Application, IDisposable
     {
         private bool _makeVisible;
         private InstallManager Manager { get; set; }
@@ -62,7 +62,7 @@ namespace BRPLUSA.Revit.Installers._2018
             }
         }
 
-        protected async override void OnStartup(StartupEventArgs e)
+        protected override async void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
             await InitializeServices().ConfigureAwait(false);
@@ -103,6 +103,11 @@ namespace BRPLUSA.Revit.Installers._2018
             }
 
             return AppFor2018HasUpdate;
+        }
+
+        public void Dispose()
+        {
+            Manager.Dispose();
         }
     }
 }
