@@ -76,6 +76,14 @@ namespace BRPLUSA.Revit.Services.Web
                 LoggingService.LogInfo($"Trying to reconnect to the socket server");
                 LoggingService.LogInfo($"More information: ${info}");
             });
+
+            Socket.On(Socket.EVENT_CONNECT_TIMEOUT, () => { LoggingService.LogInfo("Connection timed out"); });
+
+            Socket.On(Socket.EVENT_ERROR, (err) =>
+            {
+                LoggingService.LogInfo("An error occurred on the Revit client connection side");
+                LoggingService.LogInfo($"Failure: {err}");
+            });
         }
 
         public void AddSocketEvent(string eventName, Action callback)

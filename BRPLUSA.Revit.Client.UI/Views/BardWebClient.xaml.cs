@@ -55,7 +55,7 @@ namespace BRPLUSA.Revit.Client.UI.Views
         public void JoinRevitSession(object sender, DocumentOpenedEventArgs args)
         {
             NavigateTo(Socket.ClientUri);
-            Browser.ShowDevTools();
+            //Browser.ShowDevTools(); for DEBUG ONLY
         }
 
         public void ShowSidebar(object sender, DocumentOpenedEventArgs args)
@@ -68,8 +68,6 @@ namespace BRPLUSA.Revit.Client.UI.Views
         public void Register(ISocketProvider service, Document doc)
         {
             Socket = service;
-            //doc.Application.DocumentOpened += JoinRevitSession;
-            //doc.Application.DocumentOpened += ShowSidebar;
         }
 
         public void Deregister()
