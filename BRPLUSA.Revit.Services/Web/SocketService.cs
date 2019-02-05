@@ -25,6 +25,9 @@ namespace BRPLUSA.Revit.Services.Web
             var debug = "http://localhost:4422/";
 
             RevitId = Guid.NewGuid().ToString();
+            //ServerUri = debug;
+            //ClientUri = $"{clientUrl}?revitappid={RevitId}&debug=true";
+
             ServerUri = inProduction ? production : debug;
             ClientUri = inProduction
                 ? $"{clientUrl}?revitappid={RevitId}"
@@ -34,7 +37,7 @@ namespace BRPLUSA.Revit.Services.Web
             {
                 IgnoreServerCertificateValidation = true,
                 AutoConnect = true,
-                ForceNew = true
+                //ForceNew = true
             };
 
             Socket = IO.Socket(ServerUri, Options);
