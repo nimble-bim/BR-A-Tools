@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Quobject.SocketIoClientDotNet.Parser
 {
@@ -80,13 +81,10 @@ namespace Quobject.SocketIoClientDotNet.Parser
             return args;
         }
 
-        public static JArray Args2JArray(IEnumerable<object> _args)
+        public static JArray Args2JArray(IEnumerable<object> args)
         {
-            var jsonArgs = new JArray();
-            foreach (var o in _args)
-            {
-                jsonArgs.Add(o);
-            }
+            var jsonArgs = JArray.FromObject(args);
+
             return jsonArgs;
         }
 

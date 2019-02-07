@@ -74,6 +74,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\BRPLUSA.Core\BRPLUSA.Core.csproj">
+      <Project>{EC0E8D93-3D21-482A-9F97-E7E5D2F8A192}</Project>
+      <Name>BRPLUSA.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SuperSocket.ClientEngine\SuperSocket.ClientEngine.Net45.csproj">
       <Project>{8bbfbe4a-b91a-4dcc-92d5-fb0436e2544f}</Project>
       <Name>SuperSocket.ClientEngine.Net45</Name>

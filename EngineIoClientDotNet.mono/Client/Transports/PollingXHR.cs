@@ -310,63 +310,52 @@ namespace EngineIoClientDotNet.Client.Transports
 
                     Task.Run(() =>
                     {
-                        try
+                        var log2 = LogManager.GetLogger(Global.CallerName());
+                        log2.Info("Task.Run Create start");
+                        using (var res = Xhr.GetResponse())
                         {
-                            var log2 = LogManager.GetLogger(Global.CallerName());
-                            log2.Info("Task.Run Create start");
-                            using (var res = Xhr.GetResponse())
+                            log.Info("Xhr.GetResponse ");
+
+                            var responseHeaders = new Dictionary<string, string>();
+                            for (int i = 0; i < res.Headers.Count; i++)
                             {
-                                log.Info("Xhr.GetResponse ");
+                                responseHeaders.Add(res.Headers.Keys[i], res.Headers[i]);
+                            }
 
-                                var responseHeaders = new Dictionary<string, string>();
-                                for (int i = 0; i < res.Headers.Count; i++)
+                            OnResponseHeaders(responseHeaders);
+
+                            var contentType = res.Headers["Content-Type"];
+
+                            using (var resStream = res.GetResponseStream())
+                            {
+                                Debug.Assert(resStream != null, "resStream != null");
+                                if (contentType.Equals("application/octet-stream",
+                                    StringComparison.OrdinalIgnoreCase))
                                 {
-                                    responseHeaders.Add(res.Headers.Keys[i], res.Headers[i]);
-                                }
-
-                                OnResponseHeaders(responseHeaders);
-
-                                var contentType = res.Headers["Content-Type"];
-
-
-
-                                using (var resStream = res.GetResponseStream())
-                                {
-                                    Debug.Assert(resStream != null, "resStream != null");
-                                    if (contentType.Equals("application/octet-stream",
-                                        StringComparison.OrdinalIgnoreCase))
+                                    var buffer = new byte[16 * 1024];
+                                    using (var ms = new MemoryStream())
                                     {
-                                        var buffer = new byte[16 * 1024];
-                                        using (var ms = new MemoryStream())
+                                        int read;
+                                        while ((read = resStream.Read(buffer, 0, buffer.Length)) > 0)
                                         {
-                                            int read;
-                                            while ((read = resStream.Read(buffer, 0, buffer.Length)) > 0)
-                                            {
-                                                ms.Write(buffer, 0, read);
-                                            }
-
-                                            var a = ms.ToArray();
-                                            OnData(a);
+                                            ms.Write(buffer, 0, read);
                                         }
+
+                                        var a = ms.ToArray();
+                                        OnData(a);
                                     }
-                                    else
+                                }
+                                else
+                                {
+                                    using (var sr = new StreamReader(resStream))
                                     {
-                                        using (var sr = new StreamReader(resStream))
-                                        {
-                                            OnData(sr.ReadToEnd());
-                                        }
+                                        OnData(sr.ReadToEnd());
                                     }
                                 }
                             }
-
-                            log2.Info("Task.Run Create finish");
                         }
 
-                        catch (WebException e)
-                        {
-                            log.Error("Error reaching the server", e);
-                            OnError(e);
-                        }
+                        log2.Info("Task.Run Create finish");
 
                     }).Wait();
 
