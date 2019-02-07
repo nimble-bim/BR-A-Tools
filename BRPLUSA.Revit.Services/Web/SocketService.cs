@@ -47,22 +47,12 @@ namespace BRPLUSA.Revit.Services.Web
 
         private void SetSockets()
         {
-            Socket.On(Socket.EVENT_CONNECT, () =>
-            {
-                var id = new
-                {
-                    revit = RevitId,
-                    socket = Socket.Io().EngineSocket.Id,
-                };
-
-                LoggingService.LogInfo($"Connected to socket server for Revit document: {id.revit}");
-
-                Socket.Emit("REVIT_CONNECTION_START", JObject.FromObject(id));
-            });
+            Socket.On(Socket.EVENT_CONNECT, HandleConnection);
 
             Socket.On(Socket.EVENT_CONNECT_ERROR, (err) =>
             {
                 LoggingService.LogError($"There was an error connecting back to the server: {err}", null);
+                //HandleConnection();
             });
 
             Socket.On(Socket.EVENT_DISCONNECT, (info) =>
@@ -84,6 +74,21 @@ namespace BRPLUSA.Revit.Services.Web
                 LoggingService.LogInfo("An error occurred on the Revit client connection side");
                 LoggingService.LogInfo($"Failure: {err}");
             });
+        }
+
+        private void HandleConnection()
+        {
+            var id = new
+            {
+                revit = RevitId,
+                socket = Socket.Io().EngineSocket.Id,
+            };
+
+            LoggingService.LogInfo($"Connected to socket server for Revit document: {id.revit}");
+            LoggingService.LogInfo($"Using socket: {id.socket}");
+
+            Socket.Emit("REVIT_CONNECTION_START", id);
+            //Socket.Send("REVIT_CONNECTION_START", JObject.FromObject(id)); fails to send correctly
         }
 
         public void AddSocketEvent(string eventName, Action callback)
