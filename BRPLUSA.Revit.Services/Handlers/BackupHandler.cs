@@ -17,7 +17,7 @@ namespace BRPLUSA.Revit.Services.Handlers
         public void Execute(UIApplication app)
         {
             //BackupModelLocallyUsingRevit(app.ActiveUIDocument.Document);
-            BackupModelLocally(app.ActiveUIDocument.Document);
+            //BackupModelLocally(app.ActiveUIDocument.Document);
             ShowTaskCompleted();
         }
 
