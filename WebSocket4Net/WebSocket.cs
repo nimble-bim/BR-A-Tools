@@ -1,14 +1,10 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.Net;
-using System.Reflection;
-using System.Text;
 using System.Threading;
-using SuperSocket.ClientEngine;
 using SuperSocket.ClientEngine.Common;
 using SuperSocket.ClientEngine.Core;
+using WebSocket4Net.Command;
 using WebSocket4Net.Common;
 using WebSocket4Net.Protocol;
 
@@ -16,45 +12,90 @@ namespace WebSocket4Net
 {
     public partial class WebSocket : IDisposable
     {
-        internal TcpClientSession Client { get; private set; }
+        protected const string UserAgentKey = "User-Agent";
+
+        public const int DefaultReceiveBufferSize = 4096;
+
+        private const string m_UriScheme = "ws";
+
+        private const string m_UriPrefix = m_UriScheme + "://";
+
+        private const string m_SecureUriScheme = "wss";
+        private const int m_SecurePort = 44301;
+
+        private const string m_SecureUriPrefix = m_SecureUriScheme + "://";
+
+        private const string m_NotOpenSendingMessage = "You must send data by websocket after websocket is opened!";
+
+        private static readonly ProtocolProcessorFactory m_ProtocolProcessorFactory;
+
+        private EventHandler m_Closed;
+
+        private ClosedEventArgs m_ClosedArgs;
+
+        private readonly Dictionary<string, ICommand<WebSocket, WebSocketCommandInfo>> m_CommandDict
+            = new Dictionary<string, ICommand<WebSocket, WebSocketCommandInfo>>(StringComparer.OrdinalIgnoreCase);
+
+        private EventHandler<DataReceivedEventArgs> m_DataReceived;
+
+        private bool m_Disposed;
+
+        private EventHandler<ErrorEventArgs> m_Error;
+
+        private string m_LastPingRequest;
+
+        private EventHandler<MessageReceivedEventArgs> m_MessageReceived;
+
+        private EventHandler m_Opened;
 
 
         private EndPoint m_RemoteEndPoint;
 
+
+        private int m_StateCode;
+
         /// <summary>
-        /// Gets the version of the websocket protocol.
+        ///     It is used for ping/pong and closing handshake checking
+        /// </summary>
+        private Timer m_WebSocketTimer;
+
+        static WebSocket()
+        {
+            m_ProtocolProcessorFactory = new ProtocolProcessorFactory(new Rfc6455Processor(),
+                new DraftHybi10Processor(), new DraftHybi00Processor());
+        }
+
+        internal TcpClientSession Client { get; private set; }
+
+        /// <summary>
+        ///     Gets the version of the websocket protocol.
         /// </summary>
         public WebSocketVersion Version { get; private set; }
 
         /// <summary>
-        /// Gets the last active time of the websocket.
+        ///     Gets the last active time of the websocket.
         /// </summary>
         public DateTime LastActiveTime { get; internal set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether [enable auto send ping].
+        ///     Gets or sets a value indicating whether [enable auto send ping].
         /// </summary>
         /// <value>
-        ///   <c>true</c> if [enable auto send ping]; otherwise, <c>false</c>.
+        ///     <c>true</c> if [enable auto send ping]; otherwise, <c>false</c>.
         /// </value>
         public bool EnableAutoSendPing { get; set; }
 
         /// <summary>
-        /// Gets or sets the interval of ping auto sending, in seconds.
+        ///     Gets or sets the interval of ping auto sending, in seconds.
         /// </summary>
         /// <value>
-        /// The auto send ping internal.
+        ///     The auto send ping internal.
         /// </value>
         public int AutoSendPingInterval { get; set; }
 
-        protected const string UserAgentKey = "User-Agent";
-
         internal IProtocolProcessor ProtocolProcessor { get; private set; }
 
-        public bool SupportBinary
-        {
-            get { return ProtocolProcessor.SupportBinary; }
-        }
+        public bool SupportBinary => ProtocolProcessor.SupportBinary;
 
         internal Uri TargetUri { get; private set; }
 
@@ -66,58 +107,21 @@ namespace WebSocket4Net
 
         internal List<KeyValuePair<string, string>> CustomHeaderItems { get; private set; }
 
-        public const int DefaultReceiveBufferSize = 4096;
+        internal int StateCode => m_StateCode;
 
-
-        private int m_StateCode;
-
-        internal int StateCode
-        {
-            get { return m_StateCode; }
-        }
-
-        public WebSocketState State
-        {
-            get { return (WebSocketState)m_StateCode; }
-        }
+        public WebSocketState State => (WebSocketState) m_StateCode;
 
         public bool Handshaked { get; private set; }
 
         public IProxyConnector Proxy { get; set; }
 
-        private EndPoint m_HttpConnectProxy;
-
-        internal EndPoint HttpConnectProxy
-        {
-            get { return m_HttpConnectProxy; }
-        }
+        internal EndPoint HttpConnectProxy { get; private set; }
 
         protected IClientCommandReader<WebSocketCommandInfo> CommandReader { get; private set; }
 
-        private Dictionary<string, ICommand<WebSocket, WebSocketCommandInfo>> m_CommandDict
-            = new Dictionary<string, ICommand<WebSocket, WebSocketCommandInfo>>(StringComparer.OrdinalIgnoreCase);
-
-        private static ProtocolProcessorFactory m_ProtocolProcessorFactory;
-
         internal bool NotSpecifiedVersion { get; private set; }
 
-        /// <summary>
-        /// It is used for ping/pong and closing handshake checking
-        /// </summary>
-        private Timer m_WebSocketTimer;
-
         internal string LastPongResponse { get; set; }
-
-        private string m_LastPingRequest;
-
-        private const string m_UriScheme = "ws";
-
-        private const string m_UriPrefix = m_UriScheme + "://";
-
-        private const string m_SecureUriScheme = "wss";
-        private const int m_SecurePort = 443;
-
-        private const string m_SecureUriPrefix = m_SecureUriScheme + "://";
 
         internal string HandshakeHost { get; private set; }
 
@@ -129,7 +133,7 @@ namespace WebSocket4Net
 
 #if !SILVERLIGHT
         /// <summary>
-        /// set/get the local bind endpoint
+        ///     set/get the local bind endpoint
         /// </summary>
         public EndPoint LocalEndPoint
         {
@@ -151,35 +155,16 @@ namespace WebSocket4Net
         }
 #endif
 
-#if !SILVERLIGHT
-
-        private SecurityOption m_Security;
-
-        /// <summary>
-        /// get the websocket's security options
-        /// </summary>
-        public SecurityOption Security
+        public int ReceiveBufferSize
         {
-            get
-            {
-                if (m_Security != null)
-                    return m_Security;
-
-                var secureClient = Client as SslStreamTcpSession;
-
-                if (secureClient == null)
-                    return m_Security = new SecurityOption();
-
-                return m_Security = secureClient.Security;
-            }
+            get => Client.ReceiveBufferSize;
+            set => Client.ReceiveBufferSize = value;
         }
-#endif
 
-        private bool m_Disposed = false;
-
-        static WebSocket()
+        public void Dispose()
         {
-            m_ProtocolProcessorFactory = new ProtocolProcessorFactory(new Rfc6455Processor(), new DraftHybi10Processor(), new DraftHybi00Processor());
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
         private EndPoint ResolveUri(string uri, int defaultPort, out int port)
@@ -206,7 +191,7 @@ namespace WebSocket4Net
             return remoteEndPoint;
         }
 
-        TcpClientSession CreateClient(string uri)
+        private TcpClientSession CreateClient(string uri)
         {
             int port;
             var targetEndPoint = m_RemoteEndPoint = ResolveUri(uri, 80, out port);
@@ -222,11 +207,11 @@ namespace WebSocket4Net
 
 #if !NETFX_CORE
 
-        TcpClientSession CreateSecureClient(string uri)
+        private TcpClientSession CreateSecureClient(string uri)
         {
-            int hostPos = uri.IndexOf('/', m_SecureUriPrefix.Length);
+            var hostPos = uri.IndexOf('/', m_SecureUriPrefix.Length);
 
-            if (hostPos < 0)//wss://localhost or wss://localhost:xxxx
+            if (hostPos < 0) //wss://localhost or wss://localhost:xxxx
             {
                 hostPos = uri.IndexOf(':', m_SecureUriPrefix.Length, uri.Length - m_SecureUriPrefix.Length);
 
@@ -235,27 +220,21 @@ namespace WebSocket4Net
                 else
                     uri = uri + "/";
             }
-            else if (hostPos == m_SecureUriPrefix.Length)//wss://
+            else if (hostPos == m_SecureUriPrefix.Length) //wss://
             {
                 throw new ArgumentException("Invalid uri", "uri");
             }
-            else//wss://xxx/xxx
+            else //wss://xxx/xxx
             {
-                int colonPos = uri.IndexOf(':', m_SecureUriPrefix.Length, hostPos - m_SecureUriPrefix.Length);
+                var colonPos = uri.IndexOf(':', m_SecureUriPrefix.Length, hostPos - m_SecureUriPrefix.Length);
 
-                if (colonPos < 0)
-                {
-                    uri = uri.Substring(0, hostPos) + ":" + m_SecurePort + uri.Substring(hostPos);
-                }
+                if (colonPos < 0) uri = uri.Substring(0, hostPos) + ":" + m_SecurePort + uri.Substring(hostPos);
             }
 
             int port;
             var targetEndPoint = m_RemoteEndPoint = ResolveUri(uri, m_SecurePort, out port);
 
-            if (m_HttpConnectProxy != null)
-            {
-                m_RemoteEndPoint = m_HttpConnectProxy;
-            }
+            if (HttpConnectProxy != null) m_RemoteEndPoint = HttpConnectProxy;
 
             if (port == m_SecurePort)
                 HandshakeHost = TargetUri.Host;
@@ -266,7 +245,9 @@ namespace WebSocket4Net
         }
 #endif
 
-        private void Initialize(string uri, string subProtocol, List<KeyValuePair<string, string>> cookies, List<KeyValuePair<string, string>> customHeaderItems, string userAgent, string origin, WebSocketVersion version, EndPoint httpConnectProxy, int receiveBufferSize)
+        private void Initialize(string uri, string subProtocol, List<KeyValuePair<string, string>> cookies,
+            List<KeyValuePair<string, string>> customHeaderItems, string userAgent, string origin,
+            WebSocketVersion version, EndPoint httpConnectProxy, int receiveBufferSize)
         {
             if (version == WebSocketVersion.None)
             {
@@ -292,29 +273,28 @@ namespace WebSocket4Net
             if (customHeaderItems != null && customHeaderItems.Count > 0)
                 CustomHeaderItems = customHeaderItems;
 
-            var handshakeCmd = new Command.Handshake();
+            var handshakeCmd = new Handshake();
             m_CommandDict.Add(handshakeCmd.Name, handshakeCmd);
-            var textCmd = new Command.Text();
+            var textCmd = new Text();
             m_CommandDict.Add(textCmd.Name, textCmd);
-            var dataCmd = new Command.Binary();
+            var dataCmd = new Binary();
             m_CommandDict.Add(dataCmd.Name, dataCmd);
-            var closeCmd = new Command.Close();
+            var closeCmd = new Close();
             m_CommandDict.Add(closeCmd.Name, closeCmd);
-            var pingCmd = new Command.Ping();
+            var pingCmd = new Ping();
             m_CommandDict.Add(pingCmd.Name, pingCmd);
-            var pongCmd = new Command.Pong();
+            var pongCmd = new Pong();
             m_CommandDict.Add(pongCmd.Name, pongCmd);
-            var badRequestCmd = new Command.BadRequest();
+            var badRequestCmd = new BadRequest();
             m_CommandDict.Add(badRequestCmd.Name, badRequestCmd);
-            
+
             m_StateCode = WebSocketStateConst.None;
 
             SubProtocol = subProtocol;
 
             Items = new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase);
 
-            m_HttpConnectProxy = httpConnectProxy;
-
+            HttpConnectProxy = httpConnectProxy;
 
 
             TcpClientSession client;
@@ -348,14 +328,14 @@ namespace WebSocket4Net
             EnableAutoSendPing = true;
         }
 
-        void client_DataReceived(object sender, DataEventArgs e)
+        private void client_DataReceived(object sender, DataEventArgs e)
         {
             OnDataReceived(e.Data, e.Offset, e.Length);
         }
 
         partial void OnInternalError();
 
-        void client_Error(object sender, ErrorEventArgs e)
+        private void client_Error(object sender, ErrorEventArgs e)
         {
             OnError(e);
             //Also fire close event if the connection fail to connect
@@ -365,12 +345,12 @@ namespace WebSocket4Net
         partial void OnInternalClosed();
 
 
-        void client_Closed(object sender, EventArgs e)
+        private void client_Closed(object sender, EventArgs e)
         {
             OnClosed();
         }
 
-        void client_Connected(object sender, EventArgs e)
+        private void client_Connected(object sender, EventArgs e)
         {
             OnConnected();
         }
@@ -382,14 +362,8 @@ namespace WebSocket4Net
             if (processor == null)
                 return false;
 
-            this.ProtocolProcessor = processor;
+            ProtocolProcessor = processor;
             return true;
-        }
-
-        public int ReceiveBufferSize
-        {
-            get { return Client.ReceiveBufferSize; }
-            set { Client.ReceiveBufferSize = value; }
         }
 
         public void Open()
@@ -421,7 +395,7 @@ namespace WebSocket4Net
             return processor;
         }
 
-        void OnConnected()
+        private void OnConnected()
         {
             CommandReader = ProtocolProcessor.CreateHandshakeReader(this);
 
@@ -443,11 +417,12 @@ namespace WebSocket4Net
                 if (AutoSendPingInterval <= 0)
                     AutoSendPingInterval = 60;
 
-                m_WebSocketTimer = new Timer(OnPingTimerCallback, ProtocolProcessor, AutoSendPingInterval * 1000, AutoSendPingInterval * 1000);
+                m_WebSocketTimer = new Timer(OnPingTimerCallback, ProtocolProcessor, AutoSendPingInterval * 1000,
+                    AutoSendPingInterval * 1000);
             }
 
             OnInternalOpened();
-            
+
             var opened = m_Opened;
 
             if (opened != null)
@@ -462,10 +437,6 @@ namespace WebSocket4Net
             var protocolProcessor = state as IProtocolProcessor;
 
             if (!string.IsNullOrEmpty(m_LastPingRequest) && !m_LastPingRequest.Equals(LastPongResponse))
-            {
-                // have not got last response
-                // Verify that the remote endpoint is still responsive 
-                // by sending an un-solicited PONG frame:
                 try
                 {
                     protocolProcessor.SendPong(this, "");
@@ -475,7 +446,6 @@ namespace WebSocket4Net
                     OnError(e);
                     return;
                 }
-            }
 
             m_LastPingRequest = DateTime.Now.ToString();
 
@@ -489,20 +459,16 @@ namespace WebSocket4Net
             }
         }
 
-        private EventHandler m_Opened;
-
         public event EventHandler Opened
         {
-            add { m_Opened += value; }
-            remove { m_Opened -= value; }
+            add => m_Opened += value;
+            remove => m_Opened -= value;
         }
-
-        private EventHandler<MessageReceivedEventArgs> m_MessageReceived;
 
         public event EventHandler<MessageReceivedEventArgs> MessageReceived
         {
-            add { m_MessageReceived += value; }
-            remove { m_MessageReceived -= value; }
+            add => m_MessageReceived += value;
+            remove => m_MessageReceived -= value;
         }
 
         internal void FireMessageReceived(string message)
@@ -513,12 +479,10 @@ namespace WebSocket4Net
             m_MessageReceived(this, new MessageReceivedEventArgs(message));
         }
 
-        private EventHandler<DataReceivedEventArgs> m_DataReceived;
-
         public event EventHandler<DataReceivedEventArgs> DataReceived
         {
-            add { m_DataReceived += value; }
-            remove { m_DataReceived -= value; }
+            add => m_DataReceived += value;
+            remove => m_DataReceived -= value;
         }
 
         internal void FireDataReceived(byte[] data)
@@ -528,8 +492,6 @@ namespace WebSocket4Net
 
             m_DataReceived(this, new DataReceivedEventArgs(data));
         }
-
-        private const string m_NotOpenSendingMessage = "You must send data by websocket after websocket is opened!";
 
         private bool EnsureWebSocketOpen()
         {
@@ -566,15 +528,14 @@ namespace WebSocket4Net
             ProtocolProcessor.SendData(this, segments);
         }
 
-        private ClosedEventArgs m_ClosedArgs;
-
         private void OnClosed()
         {
             OnInternalClosed();
 
             var fireBaseClose = false;
 
-            if (m_StateCode == WebSocketStateConst.Closing || m_StateCode == WebSocketStateConst.Open || m_StateCode == WebSocketStateConst.Connecting)
+            if (m_StateCode == WebSocketStateConst.Closing || m_StateCode == WebSocketStateConst.Open ||
+                m_StateCode == WebSocketStateConst.Connecting)
                 fireBaseClose = true;
 
             m_StateCode = WebSocketStateConst.Closed;
@@ -595,19 +556,20 @@ namespace WebSocket4Net
 
         public void Close(int statusCode, string reason)
         {
-            m_ClosedArgs = new ClosedEventArgs((short)statusCode, reason);
+            m_ClosedArgs = new ClosedEventArgs((short) statusCode, reason);
 
             //The websocket never be opened
             if (Interlocked.CompareExchange(ref m_StateCode, WebSocketStateConst.Closed, WebSocketStateConst.None)
-                    == WebSocketStateConst.None)
+                == WebSocketStateConst.None)
             {
                 OnClosed();
                 return;
             }
 
             //The websocket is connecting or in handshake
-            if (Interlocked.CompareExchange(ref m_StateCode, WebSocketStateConst.Closing, WebSocketStateConst.Connecting)
-                    == WebSocketStateConst.Connecting)
+            if (Interlocked.CompareExchange(ref m_StateCode, WebSocketStateConst.Closing,
+                    WebSocketStateConst.Connecting)
+                == WebSocketStateConst.Connecting)
             {
                 var client = Client;
 
@@ -634,10 +596,7 @@ namespace WebSocket4Net
             }
             catch (Exception e)
             {
-                if (Client != null)
-                {
-                    OnError(e);
-                }
+                if (Client != null) OnError(e);
             }
         }
 
@@ -668,10 +627,7 @@ namespace WebSocket4Net
         {
             ICommand<WebSocket, WebSocketCommandInfo> command;
 
-            if (m_CommandDict.TryGetValue(commandInfo.Key, out command))
-            {
-                command.ExecuteCommand(this, commandInfo);
-            }
+            if (m_CommandDict.TryGetValue(commandInfo.Key, out command)) command.ExecuteCommand(this, commandInfo);
         }
 
         private void OnDataReceived(byte[] data, int offset, int length)
@@ -685,7 +641,7 @@ namespace WebSocket4Net
                 if (CommandReader.NextCommandReader != null)
                     CommandReader = CommandReader.NextCommandReader;
 
-                if (commandInfo != null)                
+                if (commandInfo != null)
                     ExecuteCommand(commandInfo);
 
                 if (left <= 0)
@@ -701,12 +657,10 @@ namespace WebSocket4Net
             OnError(error);
         }
 
-        private EventHandler m_Closed;
-
         public event EventHandler Closed
         {
-            add { m_Closed += value; }
-            remove { m_Closed -= value; }
+            add => m_Closed += value;
+            remove => m_Closed -= value;
         }
 
         private void ClearTimer()
@@ -738,12 +692,10 @@ namespace WebSocket4Net
                 handler(this, m_ClosedArgs ?? EventArgs.Empty);
         }
 
-        private EventHandler<ErrorEventArgs> m_Error;
-
         public event EventHandler<ErrorEventArgs> Error
         {
-            add { m_Error += value; }
-            remove { m_Error -= value; }
+            add => m_Error += value;
+            remove => m_Error -= value;
         }
 
         private void OnError(ErrorEventArgs e)
@@ -761,12 +713,6 @@ namespace WebSocket4Net
         private void OnError(Exception e)
         {
             OnError(new ErrorEventArgs(e));
-        }
-
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
         }
 
         protected virtual void Dispose(bool disposing)
@@ -801,5 +747,29 @@ namespace WebSocket4Net
         {
             Dispose(false);
         }
+
+#if !SILVERLIGHT
+
+        private SecurityOption m_Security;
+
+        /// <summary>
+        ///     get the websocket's security options
+        /// </summary>
+        public SecurityOption Security
+        {
+            get
+            {
+                if (m_Security != null)
+                    return m_Security;
+
+                var secureClient = Client as SslStreamTcpSession;
+
+                if (secureClient == null)
+                    return m_Security = new SecurityOption();
+
+                return m_Security = secureClient.Security;
+            }
+        }
+#endif
     }
 }
