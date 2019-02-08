@@ -260,3 +260,5 @@ paket-files/
 __pycache__/
 *.pyc
 /BRPLUSA.Installers.Revit/BRplusaA_V001.zip
+SuperSocket.ClientEngine/
+SuperSocket.ProtoBase/

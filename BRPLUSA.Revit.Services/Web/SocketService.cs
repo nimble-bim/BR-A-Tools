@@ -25,6 +25,9 @@ namespace BRPLUSA.Revit.Services.Web
             var debug = "http://localhost:4422/";
 
             RevitId = Guid.NewGuid().ToString();
+            //ServerUri = debug;
+            //ClientUri = $"{clientUrl}?revitappid={RevitId}&debug=true";
+
             ServerUri = inProduction ? production : debug;
             ClientUri = inProduction
                 ? $"{clientUrl}?revitappid={RevitId}"
@@ -34,32 +37,24 @@ namespace BRPLUSA.Revit.Services.Web
             {
                 IgnoreServerCertificateValidation = true,
                 AutoConnect = true,
-                ForceNew = true
+                //ForceNew = true
             };
 
             Socket = IO.Socket(ServerUri, Options);
 
             SetSockets();
+
+            //Socket.Connect();
         }
 
         private void SetSockets()
         {
-            Socket.On(Socket.EVENT_CONNECT, () =>
-            {
-                var id = new
-                {
-                    revit = RevitId,
-                    socket = Socket.Io().EngineSocket.Id,
-                };
-
-                LoggingService.LogInfo($"Connected to socket server for Revit document: {id.revit}");
-
-                Socket.Emit("REVIT_CONNECTION_START", JObject.FromObject(id));
-            });
+            Socket.On(Socket.EVENT_CONNECT, HandleConnection);
 
             Socket.On(Socket.EVENT_CONNECT_ERROR, (err) =>
             {
                 LoggingService.LogError($"There was an error connecting back to the server: {err}", null);
+                //HandleConnection();
             });
 
             Socket.On(Socket.EVENT_DISCONNECT, (info) =>
@@ -73,6 +68,29 @@ namespace BRPLUSA.Revit.Services.Web
                 LoggingService.LogInfo($"Trying to reconnect to the socket server");
                 LoggingService.LogInfo($"More information: ${info}");
             });
+
+            Socket.On(Socket.EVENT_CONNECT_TIMEOUT, () => { LoggingService.LogInfo("Connection timed out"); });
+
+            Socket.On(Socket.EVENT_ERROR, (err) =>
+            {
+                LoggingService.LogInfo("An error occurred on the Revit client connection side");
+                LoggingService.LogInfo($"Failure: {err}");
+            });
+        }
+
+        private void HandleConnection()
+        {
+            var id = new
+            {
+                revit = RevitId,
+                socket = Socket.Io().EngineSocket.Id,
+            };
+
+            LoggingService.LogInfo($"Connected to socket server for Revit document: {id.revit}");
+            LoggingService.LogInfo($"Using socket: {id.socket}");
+
+            Socket.Emit("REVIT_CONNECTION_START", id);
+            //Socket.Send("REVIT_CONNECTION_START", JObject.FromObject(id)); fails to send correctly
         }
 
         public void AddSocketEvent(string eventName, Action callback)
