@@ -24,8 +24,8 @@ namespace BRPLUSA.Revit.Services.Registration
 
         public static void RegisterServices(object sender, DocumentOpenedEventArgs args)
         {
-            var sock = InitializeSocketService(false);
-            //var sock = InitializeSocketService();
+            //var sock = InitializeSocketService(false); // for debugging locally
+            var sock = InitializeSocketService();
 
             foreach (var serv in _services)
             {

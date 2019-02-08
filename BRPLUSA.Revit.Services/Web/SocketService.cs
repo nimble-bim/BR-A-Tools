@@ -43,6 +43,8 @@ namespace BRPLUSA.Revit.Services.Web
             Socket = IO.Socket(ServerUri, Options);
 
             SetSockets();
+
+            //Socket.Connect();
         }
 
         private void SetSockets()
