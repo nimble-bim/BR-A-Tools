@@ -9,5 +9,5 @@ using System.Diagnostics.CodeAnalysis;
 [assembly: AssemblyCopyright("Copyright © www.supersocket.net 2018")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
-[assembly: AssemblyVersion("0.15.2.11")]
-[assembly: AssemblyFileVersion("0.15.2.11")]
+//[assembly: AssemblyVersion("0.15.2.11")]
+//[assembly: AssemblyFileVersion("0.15.2.11")]
