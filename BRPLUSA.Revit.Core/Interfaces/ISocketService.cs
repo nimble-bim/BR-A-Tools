@@ -2,8 +2,9 @@
 
 namespace BRPLUSA.Revit.Core.Interfaces
 {
-    public interface ISocketProvider
+    public interface ISocketProvider : IDisposable
     {
         void AddSocketEvent(string eventName, Action callback);
+        string ClientUri { get; }
     }
 }

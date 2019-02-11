@@ -1,48 +1,104 @@
 ﻿using System;
+using BRPLUSA.Core.Services;
 using BRPLUSA.Revit.Core.Interfaces;
+using Newtonsoft.Json.Linq;
 using Quobject.SocketIoClientDotNet.Client;
 
 namespace BRPLUSA.Revit.Services.Web
 {
     public class SocketService : ISocketProvider
     {
-        private readonly string url = "http://localhost:4422";
         private IO.Options Options { get; set; }
         private Socket Socket { get; set; }
-        public string Id { get; private set; }
-        public string Location { get; private set; }
+        public string RevitId { get; private set; }
+        public string ClientUri { get; private set; }
+        public string ServerUri { get; private set; }
 
-        public SocketService()
+        public SocketService(string url, bool productionMode)
         {
-            Initialize();
+            Initialize(url, productionMode);
         }
 
-        private void Initialize()
+        private void Initialize(string clientUrl, bool inProduction = true)
         {
-            Id = new Guid().ToString();
-            Options = new IO.Options()
+            var production = "https://cmd-center-api.herokuapp.com/";
+            var debug = "http://localhost:4422/";
+
+            RevitId = Guid.NewGuid().ToString();
+            //ServerUri = debug;
+            //ClientUri = $"{clientUrl}?revitappid={RevitId}&debug=true";
+
+            ServerUri = inProduction ? production : debug;
+            ClientUri = inProduction
+                ? $"{clientUrl}?revitappid={RevitId}"
+                : $"{clientUrl}?revitappid={RevitId}&debug=true";
+
+            Options = new IO.Options
             {
                 IgnoreServerCertificateValidation = true,
                 AutoConnect = true,
-                ForceNew = true
             };
 
-            Socket = IO.Socket(url, Options);
+            Socket = IO.Socket(ServerUri, Options);
+
             SetSockets();
         }
 
         private void SetSockets()
         {
-            Socket.On(Socket.EVENT_CONNECT, () =>
+            Socket.On(Socket.EVENT_CONNECT, HandleConnection);
+
+            Socket.On(Socket.EVENT_CONNECT_ERROR, (err) =>
             {
-                Console.WriteLine("Connected to a new client");
-                Socket.Emit("ROOM_CREATE", Id);
+                LoggingService.LogError($"There was an error connecting back to the server: {err}", null);
+                //HandleConnection();
             });
+
+            Socket.On(Socket.EVENT_DISCONNECT, (info) =>
+            {
+                LoggingService.LogInfo($"Disconnected from socket server");
+                LoggingService.LogInfo($"More information: ${info}");
+            });
+
+            Socket.On(Socket.EVENT_RECONNECTING, (info) =>
+            {
+                LoggingService.LogInfo($"Trying to reconnect to the socket server");
+                LoggingService.LogInfo($"More information: ${info}");
+            });
+
+            Socket.On(Socket.EVENT_CONNECT_TIMEOUT, () => { LoggingService.LogInfo("Connection timed out"); });
+
+            Socket.On(Socket.EVENT_ERROR, (err) =>
+            {
+                LoggingService.LogInfo("An error occurred on the Revit client connection side");
+                LoggingService.LogInfo($"Failure: {err}");
+            });
+        }
+
+        private void HandleConnection()
+        {
+            var id = new
+            {
+                revit = RevitId,
+                socket = Socket.Io().EngineSocket.Id,
+            };
+
+            LoggingService.LogInfo($"Connected to socket server for Revit document: {id.revit}");
+            LoggingService.LogInfo($"Using socket: {id.socket}");
+
+            Socket.Emit("REVIT_CONNECTION_START", id);
         }
 
         public void AddSocketEvent(string eventName, Action callback)
         {
+            LoggingService.LogInfo($"Attempting to add socket event called: {eventName}");
             Socket.On(eventName, callback);
+            LoggingService.LogInfo($"Added socket event called: {eventName}");
+        }
+
+        public void Dispose()
+        {
+            Socket.Disconnect();
         }
     }
 }

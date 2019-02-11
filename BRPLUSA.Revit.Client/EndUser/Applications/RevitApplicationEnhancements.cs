@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Autodesk.Revit.DB.Events;
 using Autodesk.Revit.UI;
 using Autodesk.Revit.UI.Events;
 using BRPLUSA.Core.Services;
@@ -19,10 +20,10 @@ namespace BRPLUSA.Revit.Client.EndUser.Applications
     // https://blogs.msdn.microsoft.com/devops/2013/10/16/switching-to-managed-compatibility-mode-in-visual-studio-2013/
     public class RevitApplicationEnhancements : IExternalApplication
     {
-        public BardWebClient Sidebar { get; set; }
         private static SocketService SocketService { get; set; }
         private static AppInstallClient InstallApp { get; set; }
         private UIControlledApplication UiApplication { get; set; }
+        private BardWebClient Sidebar { get; set; }
 
         public Result OnStartup(UIControlledApplication app)
         {
@@ -40,26 +41,24 @@ namespace BRPLUSA.Revit.Client.EndUser.Applications
             {
                 LoggingService.LogInfo("Starting up application via Revit");
                 ResolveBrowserBinaries();
-                RegisterSideBar(app);
-                RegisterInstallerEvents(app);
-                CreateRibbon(app);
 
                 var backupAuto = new AutoModelBackupService();
                 var backupManual = new ManualModelBackupService();
+                Sidebar = new BardWebClient(app);
 
                 UpdaterRegistrationService.AddRegisterableServices(
-                    //new SpatialPropertyUpdater(app),
                     backupAuto
-                    );
+                );
 
                 SocketRegistrationService.AddRegisterableServices(
-                    backupManual
-                    );
+                    backupManual,
+                    Sidebar
+                );
 
-                app.ControlledApplication.DocumentOpened += UpdaterRegistrationService.RegisterServices;
-                app.ControlledApplication.DocumentOpened += SocketRegistrationService.RegisterServices;
-                app.ControlledApplication.DocumentClosed += UpdaterRegistrationService.DeregisterServices;
-                app.ControlledApplication.DocumentClosed += SocketRegistrationService.DeregisterServices;
+                CreateRibbon(app);
+                RegisterAppEvents(app);
+                RegisterSideBar(app, Sidebar);
+                RegisterInstallerEvents(app);
 
                 LoggingService.LogInfo("Application loaded successfully");
                 return Result.Succeeded;
@@ -87,6 +86,19 @@ namespace BRPLUSA.Revit.Client.EndUser.Applications
                 LoggingService.LogError("Failure to shut down correctly", e);
                 return Result.Failed;
             }
+
+            finally
+            {
+                Sidebar?.Dispose();
+            }
+        }
+
+        private void RegisterAppEvents(UIControlledApplication app)
+        {
+            app.ControlledApplication.DocumentOpened += UpdaterRegistrationService.RegisterServices;
+            app.ControlledApplication.DocumentOpened += SocketRegistrationService.RegisterServices;
+            app.ControlledApplication.DocumentClosed += UpdaterRegistrationService.DeregisterServices;
+            app.ControlledApplication.DocumentClosed += SocketRegistrationService.DeregisterServices;
         }
 
         private void HandleServiceDeregistration(UIControlledApplication app)
@@ -204,7 +216,7 @@ namespace BRPLUSA.Revit.Client.EndUser.Applications
             {
                 LoggingService.LogInfo("Attempting to resolve browser binaries");
 
-                AppDomain.CurrentDomain.AssemblyResolve += BardWebClient.Resolver;
+                AppDomain.CurrentDomain.AssemblyResolve += BardWebClient.ResolveCefBinaries;
                 BardWebClient.InitializeCefSharp();
 
                 LoggingService.LogInfo("Browser binary resolution complete");
@@ -212,20 +224,21 @@ namespace BRPLUSA.Revit.Client.EndUser.Applications
 
             catch (Exception e)
             {
-                throw new Exception("Failed to resolve browser binaries", e);
+                var ex = new Exception("Fatal error! Failed to resolve browser binaries", e);
+
+                throw ex;
             }
         }
 
-        private void RegisterSideBar(UIControlledApplication app)
+        private void RegisterSideBar(UIControlledApplication app, BardWebClient sidebar)
         {
             try
             {
                 LoggingService.LogInfo("Attempting to register Bard Client sidebar with Revit");
-
-                Sidebar = new BardWebClient(SocketService);
-                Sidebar.RegisterEvents(app);
-
-                app.RegisterDockablePane(BardWebClient.Id, "BR+A Revit Helper", Sidebar);
+                
+                app.RegisterDockablePane(BardWebClient.Id, "BR+A Revit Helper", sidebar);
+                app.ControlledApplication.DocumentOpened += sidebar.JoinRevitSession;
+                app.ControlledApplication.DocumentOpened += sidebar.ShowSidebar;
 
                 LoggingService.LogInfo("Browser binary resolution complete");
             }

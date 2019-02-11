@@ -1,0 +1,45 @@
+{
+  "name": "brplusa.web.app",
+  "version": "1.0.8",
+  "main": "./dist/app.js",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "build": "node_modules/.bin/webpack",
+    "dev": "npm-run-all --parallel server:watch server:run",
+    "prestart": "yarn build",
+    "predev": "yarn build",
+    "server:run": "nodemon ./dist/server.js",
+    "server:watch": "webpack -w",
+    "start": "node ./dist/server.js"
+  },
+  "dependencies": {
+    "debug": "4.1.0",
+    "dotenv": "6.2.0",
+    "express": "4.16.4",
+    "react": "16.6.3",
+    "react-dom": "16.6.3",
+    "socket.io": "2.2.0",
+    "socket.io-client": "2.2.0"
+  },
+  "devDependencies": {
+    "@babel/core": "7.2.2",
+    "@babel/preset-env": "7.2.0",
+    "@babel/preset-react": "7.0.0",
+    "babel-eslint": "10.0.1",
+    "babel-loader": "8.0.4",
+    "css-loader": "2.0.1",
+    "eslint": "5.10.0",
+    "eslint-config-airbnb": "17.1.0",
+    "eslint-plugin-import": "2.14.0",
+    "eslint-plugin-jsx-a11y": "6.1.2",
+    "eslint-plugin-react": "7.11.1",
+    "nodemon": "1.18.9",
+    "npm-run-all": "4.1.5",
+    "prettier-eslint": "8.8.2",
+    "style-loader": "0.23.1",
+    "webpack": "4.27.1",
+    "webpack-cli": "3.1.2",
+    "webpack-node-externals": "1.7.2"
+  }
+}

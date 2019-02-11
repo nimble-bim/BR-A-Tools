@@ -2,8 +2,12 @@
 using System.IO;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using System.Windows.Controls;
+using Autodesk.Revit.DB;
 using Autodesk.Revit.DB.Events;
 using Autodesk.Revit.UI;
+using BRPLUSA.Core.Services;
+using BRPLUSA.Revit.Core.Interfaces;
 using BRPLUSA.Revit.Services.Web;
 using CefSharp;
 using CefSharp.Wpf;
@@ -13,20 +17,23 @@ namespace BRPLUSA.Revit.Client.UI.Views
     /// <summary>
     /// Interaction logic for BardWebClient.xaml
     /// </summary>
-    public partial class BardWebClient : IDockablePaneProvider
+    public partial class BardWebClient : Page, IDockablePaneProvider, ISocketConsumer, IDisposable
     {
         public static DockablePaneId Id => new DockablePaneId(new Guid());
-        private static UIControlledApplication App { get; set; }
-        private SocketService Socket { get; set; }
+        public static UIControlledApplication App { get; private set; }
+        private ISocketProvider Socket { get; set; }
 
-        public BardWebClient()
+        public BardWebClient(UIControlledApplication app)
         {
-            InitializeComponent();
-        }
-
-        public BardWebClient(SocketService service) : this()
-        {
-            Socket = service;
+            try
+            {
+                InitializeComponent();
+                App = app;
+            }
+            catch(Exception e)
+            {
+                LoggingService.LogError("Could not initialize the WebClient", e);
+            }
         }
 
         public void NavigateTo(string url)
@@ -34,16 +41,10 @@ namespace BRPLUSA.Revit.Client.UI.Views
             Browser.Load(url);
         }
 
-        public void JoinRevitSession(object sender, DocumentOpenedEventArgs args)
-        {
-            NavigateTo("https://www.brplusa.com");
-            //NavigateTo($@"http://localhost:4001/?room={Socket.Id}");
-            //NavigateTo(Socket.Location);
-        }
-
         public void SetupDockablePane(DockablePaneProviderData data)
         {
             data.FrameworkElement = this;
+            data.VisibleByDefault = true;
             data.InitialState = new DockablePaneState
             {
                 DockPosition = DockPosition.Tabbed,
@@ -51,18 +52,27 @@ namespace BRPLUSA.Revit.Client.UI.Views
             };
         }
 
-        public void ShowSidebar(object sender, DocumentOpenedEventArgs e)
+        public void JoinRevitSession(object sender, DocumentOpenedEventArgs args)
+        {
+            NavigateTo(Socket.ClientUri);
+            //Browser.ShowDevTools(); for DEBUG ONLY
+        }
+
+        public void ShowSidebar(object sender, DocumentOpenedEventArgs args)
         {
             var pane = App.GetDockablePane(Id);
             pane.Show();
-            App.ControlledApplication.DocumentOpened -= ShowSidebar;
+            args.Document.Application.DocumentOpened -= ShowSidebar;
         }
 
-        public void RegisterEvents(UIControlledApplication app)
+        public void Register(ISocketProvider service, Document doc)
         {
-            App = app;
-            App.ControlledApplication.DocumentOpened += ShowSidebar;
-            App.ControlledApplication.DocumentOpened += JoinRevitSession;
+            Socket = service;
+        }
+
+        public void Deregister()
+        {
+            App.ControlledApplication.DocumentOpened -= JoinRevitSession;
         }
 
         [MethodImpl(MethodImplOptions.NoInlining)]
@@ -72,7 +82,7 @@ namespace BRPLUSA.Revit.Client.UI.Views
             var settings = new CefSettings();
 
             settings.SetOffScreenRenderingBestPerformanceArgs();
-
+            
             // Set BrowserSubProcessPath based on app bitness at runtime
             settings.BrowserSubprocessPath = Path.Combine(location,
                 Environment.Is64BitProcess ? "x64" : "x86",
@@ -84,7 +94,7 @@ namespace BRPLUSA.Revit.Client.UI.Views
 
         // Will attempt to load missing assembly from either x86 or x64 subdir
         // Required by CefSharp to load the unmanaged dependencies when running using AnyCPU
-        public static Assembly Resolver(object sender, ResolveEventArgs args)
+        public static Assembly ResolveCefBinaries(object sender, ResolveEventArgs args)
         {
             if (args.Name.StartsWith("CefSharp"))
             {
@@ -104,6 +114,11 @@ namespace BRPLUSA.Revit.Client.UI.Views
             }
 
             return null;
+        }
+
+        public void Dispose()
+        {
+            Browser?.Dispose();
         }
     }
 }

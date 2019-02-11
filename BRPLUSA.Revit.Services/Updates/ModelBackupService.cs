@@ -6,6 +6,7 @@ using System.Threading;
 using Autodesk.Revit.DB;
 using Autodesk.Revit.DB.Events;
 using Autodesk.Revit.UI;
+using BRPLUSA.Core.Services;
 using BRPLUSA.Revit.Core.Interfaces;
 using BRPLUSA.Revit.Services.Handlers;
 using BRPLUSA.Revit.Services.Web;
@@ -76,7 +77,9 @@ namespace BRPLUSA.Revit.Services.Updates
 
         public static void HandleBackupRequest()
         {
+            LoggingService.LogInfo("Received model backup requested");
             BackupEvent.Raise();
+            LoggingService.LogInfo("Attempting to backup model");
         }
 
         private bool IsFromBIM360(string centralPath)
