@@ -99,5 +99,11 @@ namespace BRPLUSA.Revit.Services.Web
             Socket.On(eventName, callback);
             LoggingService.LogInfo($"Added socket event called: {eventName}");
         }
+
+        public void Dispose()
+        {
+            Socket.Disconnect();
+            
+        }
     }
 }
