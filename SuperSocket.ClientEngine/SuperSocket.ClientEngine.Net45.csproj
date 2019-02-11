@@ -76,7 +76,7 @@
     <None Include="packages.SuperSocket.ClientEngine.Net45.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\SuperSocket.ProtoBase\src\SuperSocket.ProtoBase.Net45.csproj">
+    <ProjectReference Include="..\SuperSocket.ProtoBase\src\SuperSocket.ProtoBase.Net45.csproj">
       <Project>{092dfe24-997a-41e3-9602-b5d52d3749dd}</Project>
       <Name>SuperSocket.ProtoBase.Net45</Name>
     </ProjectReference>

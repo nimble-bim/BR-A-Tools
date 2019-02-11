@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json.Linq;
-using System.Collections.Immutable;
 using Quobject.SocketIoClientDotNet.Modules;
 using Quobject.SocketIoClientDotNet.Parser;
 using System;
@@ -8,6 +7,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using EngineIoClientDotNet.ComponentEmitter;
 using EngineIoClientDotNet.Modules;
+using Quobject.Collections.Immutable;
 
 namespace Quobject.SocketIoClientDotNet.Client
 {

@@ -1,6 +1,6 @@
-﻿using System.Collections.Immutable;
-using System;
+﻿using System;
 using EngineIoClientDotNet.Modules;
+using Quobject.Collections.Immutable;
 
 namespace Quobject.SocketIoClientDotNet.Client
 {
