@@ -8,3 +8,11 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("SuperSocket.ProtoBase")]
 [assembly: AssemblyDescription("SuperSocket.ProtoBase")]
 [assembly: AssemblyConfiguration("")]
+
+[assembly: AssemblyVersion("1.7.0.17")]
+[assembly: AssemblyFileVersion("1.7.0.17")]
+[assembly: AssemblyCompany("SuperSocket")]
+[assembly: AssemblyProduct("SuperSocket")]
+[assembly: AssemblyCopyright("Copyright © www.supersocket.net 2010-2017")]
+[assembly: AssemblyTrademark("")]
+[assembly: AssemblyCulture("")]

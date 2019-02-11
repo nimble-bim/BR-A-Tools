@@ -35,8 +35,8 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
-	<GenerateDocumentationFile>true</GenerateDocumentationFile>
-	<DocumentationFile>$(OutputPath)\SuperSocket.ProtoBase.XML</DocumentationFile>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <DocumentationFile>$(OutputPath)\SuperSocket.ProtoBase.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -53,7 +53,6 @@
     <Compile Include="Encoder\IProtoDataEncoder.cs" />
     <Compile Include="IOutputBuffer.cs" />
     <Compile Include="IProtoHandler.cs" />
-    <Compile Include="Properties\AssemblyInfo.Product.cs" />
     <Compile Include="ProtoHandlerBase.cs" />
     <Compile Include="ReceiveFilters\BeginEndMarkReceiveFilter.cs" />
     <Compile Include="BufferedPackageInfo.cs" />
