@@ -33,18 +33,15 @@ namespace BRPLUSA.Revit.Services.Web
                 ? $"{clientUrl}?revitappid={RevitId}"
                 : $"{clientUrl}?revitappid={RevitId}&debug=true";
 
-            Options = new IO.Options()
+            Options = new IO.Options
             {
                 IgnoreServerCertificateValidation = true,
                 AutoConnect = true,
-                //ForceNew = true
             };
 
             Socket = IO.Socket(ServerUri, Options);
 
             SetSockets();
-
-            //Socket.Connect();
         }
 
         private void SetSockets()
@@ -90,7 +87,6 @@ namespace BRPLUSA.Revit.Services.Web
             LoggingService.LogInfo($"Using socket: {id.socket}");
 
             Socket.Emit("REVIT_CONNECTION_START", id);
-            //Socket.Send("REVIT_CONNECTION_START", JObject.FromObject(id)); fails to send correctly
         }
 
         public void AddSocketEvent(string eventName, Action callback)
@@ -103,7 +99,6 @@ namespace BRPLUSA.Revit.Services.Web
         public void Dispose()
         {
             Socket.Disconnect();
-            
         }
     }
 }
