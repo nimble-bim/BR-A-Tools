@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Threading.Tasks;
+using BRPLUSA.Core.Services;
 using EngineIoClientDotNet.ComponentEmitter;
 using EngineIoClientDotNet.Modules;
 
@@ -286,6 +287,7 @@ namespace EngineIoClientDotNet.Client.Transports
                 catch (Exception e)
                 {
                     log.Error(e);
+                    LoggingService.LogError("Couldn't handle a call from the server?", e);
                     OnError(e);
                     return;
                 }
@@ -312,8 +314,12 @@ namespace EngineIoClientDotNet.Client.Transports
                     {
                         var log2 = LogManager.GetLogger(Global.CallerName());
                         log2.Info("Task.Run Create start");
-                        using (var res = Xhr.GetResponse())
+
+                        WebResponse res = null;
+
+                        try
                         {
+                            res = Xhr.GetResponse();
                             log.Info("Xhr.GetResponse ");
 
                             var responseHeaders = new Dictionary<string, string>();
@@ -355,7 +361,20 @@ namespace EngineIoClientDotNet.Client.Transports
                             }
                         }
 
+                        catch (WebException e)
+                        {
+                            log.Error("Create call failed", e);
+                            LoggingService.LogError("Couldn't handle a call from the server?", e);
+                            OnError(e);
+                        }
+
+                        finally
+                        {
+                            res?.Dispose();
+                        }
+
                         log2.Info("Task.Run Create finish");
+                        LoggingService.LogInfo("XHR call completed");
 
                     }).Wait();
 
@@ -363,16 +382,19 @@ namespace EngineIoClientDotNet.Client.Transports
                 catch (System.IO.IOException e)
                 {
                     log.Error("Create call failed", e);
+                    LoggingService.LogError("Couldn't handle a call from the server?", e);
                     OnError(e);
                 }
                 catch (System.Net.WebException e)
                 {
                     log.Error("Create call failed", e);
+                    LoggingService.LogError("Couldn't handle a call from the server?", e);
                     OnError(e);
                 }
                 catch (Exception e)
                 {
                     log.Error("Create call failed", e);
+                    LoggingService.LogError("Couldn't handle a call from the server?", e);
                     OnError(e);
                 }
 
